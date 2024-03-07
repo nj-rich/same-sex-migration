@@ -1,0 +1,31 @@
+---
+title: "data_cleaning"
+output: html_document
+date: "2024-03-07"
+---
+Load packages
+```{r}
+library(tidyverse)
+install.packages("data.table")
+library(data.table)
+```
+
+Download the data
+```{r}
+pull1 <- fread("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv")
+initial_head_view <- head(pull1, 10)
+```
+
+Identify individuals in same-sex relationships
+```{r}
+pull1 <- pull1 %>%
+          mutate("samesex" = SPLOC)
+
+#figure out way to test if pernum in household is same sex or not and apply
+#make some variables (ie household identifier) another variable? easier in STATA?
+```
+
+Label states+
+```{r}
+
+```
