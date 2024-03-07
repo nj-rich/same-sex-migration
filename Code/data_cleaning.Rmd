@@ -3,8 +3,9 @@ title: "data_cleaning"
 output: html_document
 date: "2024-03-07"
 ---
-Load packages
+Load packages and set memory limit
 ```{r}
+
 library(tidyverse)
 install.packages("data.table")
 library(data.table)
@@ -14,12 +15,21 @@ Download the data
 ```{r}
 pull1 <- fread("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv")
 initial_head_view <- head(pull1, 10)
+
+df <- pull1
 ```
 
 Identify individuals in same-sex relationships
 ```{r}
-pull1 <- pull1 %>%
-          mutate("samesex" = SPLOC)
+#make partner list
+partner <- df %>%
+            select(YEAR, SAMPLE, PERNUM, SEX)
+
+head_partner <- head(partner)
+#join partners with 
+df <- df %>%
+      left_join(partner, join_by(SPLOC == PERNUM, YEAR, SAMPLE))
+#I like this idea and then can make a new variable; issue: running out of memory space maybe use data.table left join
 
 #figure out way to test if pernum in household is same sex or not and apply
 #make some variables (ie household identifier) another variable? easier in STATA?
