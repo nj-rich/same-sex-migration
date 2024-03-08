@@ -3,12 +3,16 @@ title: "data_cleaning"
 output: html_document
 date: "2024-03-07"
 ---
-Load packages and set memory limit
+Load packages
 ```{r}
-
+gc()
 library(tidyverse)
-install.packages("data.table")
+
+#to help deal with large data files
+install.packages("data.table") #for fread
 library(data.table)
+install.packages("arrow") #for parquet
+library(arrow)
 ```
 
 Download the data
@@ -17,17 +21,23 @@ pull1 <- fread("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull
 initial_head_view <- head(pull1, 10)
 
 df <- pull1
+
+rm(pull1)
 ```
 
 Identify individuals in same-sex relationships
 ```{r}
+gc()
 #make partner list
-partner <- df %>%
+partner <- df_selected %>%
             select(YEAR, SERIAL, PERNUM, SEX)
 
 head_partner <- head(partner)
 #join partners with og
-df_test <- df[partner, on = .(YEAR, SERIAL, SPLOC == PERNUM)]
+df_partners <- df_selected %>%
+              left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM))
+
+#df_test <- df_selected[partner, on = .(YEAR, SERIAL, SPLOC == PERNUM)]
 
 #still memory issue even though I am not sure this syntax is even right
 
