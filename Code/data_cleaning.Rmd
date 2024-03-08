@@ -23,16 +23,15 @@ Identify individuals in same-sex relationships
 ```{r}
 #make partner list
 partner <- df %>%
-            select(YEAR, SAMPLE, PERNUM, SEX)
+            select(YEAR, SERIAL, PERNUM, SEX)
 
 head_partner <- head(partner)
-#join partners with 
-df <- df %>%
-      left_join(partner, join_by(SPLOC == PERNUM, YEAR, SAMPLE))
-#I like this idea and then can make a new variable; issue: running out of memory space maybe use data.table left join
+#join partners with og
+df_test <- df[partner, on = .(YEAR, SERIAL, SPLOC == PERNUM)]
 
-#figure out way to test if pernum in household is same sex or not and apply
-#make some variables (ie household identifier) another variable? easier in STATA?
+#still memory issue even though I am not sure this syntax is even right
+
+#identify gay by checking if individuals with partner have matching sex of partner
 ```
 
 Label states+
