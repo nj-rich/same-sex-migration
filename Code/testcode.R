@@ -4,7 +4,7 @@ library(tidyverse)
 #to help deal with large data files
 #install.packages("data.table") #for fread
 #library(data.table)
-install.packages("arrow") #for parquet
+install.packages("arrow") #for arrow
 library(arrow)
 
 #loading data
@@ -44,5 +44,3 @@ df_partners <- pull1_csv %>%
   compute()
 
 #AND BOOM WE HAVE IT YAY ARROW WATCH IF MERGE WORKED (AND CHECK)
-
-

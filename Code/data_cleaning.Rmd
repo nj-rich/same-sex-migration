@@ -7,41 +7,46 @@ Load packages
 ```{r}
 gc()
 library(tidyverse)
-
-#to help deal with large data files
-install.packages("data.table") #for fread
-library(data.table)
-install.packages("arrow") #for parquet
+#install.packages("arrow")
+source("https://raw.githubusercontent.com/apache/arrow/master/r/R/install-arrow.R")
+install_arrow(minimal = Sys.getenv("LIBARROW_MINIMAL", FALSE)) #to turn off minimal... see if need this long term
 library(arrow)
+
 ```
 
-Download the data
+Download the data (hmm maybe just use computer with more RAM)
 ```{r}
-pull1 <- fread("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv")
-initial_head_view <- head(pull1, 10)
-
-df <- pull1
-
-rm(pull1)
+pull1_csv <- open_dataset(
+  sources = "/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv",
+  col_types = schema(CBSERIAL = int64(), COUPLETYPE = int64(), SSMC = int64(), 
+                     MIGPLAC1 = int64(), MIGCOUNTY1 = int64(), SPMPOV = int64(),
+                     OFFPOV = int64()),
+                     format = "csv") 
 ```
 
 Identify individuals in same-sex relationships
 ```{r}
 gc()
-#make partner list
-partner <- df_selected %>%
-            select(YEAR, SERIAL, PERNUM, SEX)
+partner <- pull1_csv %>%
+  select(YEAR, SERIAL, PERNUM, SEX) %>% #rename sex var for clarity?
+  compute()
 
-head_partner <- head(partner)
-#join partners with og
-df_partners <- df_selected %>%
-              left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM))
+#will expand variables over time  (tentative use FIP)
+df_partners <- pull1_csv %>%
+  left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM), suffix = c(".indv", ".partner")) %>% #WATCH CLARITY WHERE SPLOC IS
+  collect()
 
-#df_test <- df_selected[partner, on = .(YEAR, SERIAL, SPLOC == PERNUM)]
+df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
+  mutate(in_samesex = case_when(
+    (SEX.indv == 1) & (SEX.partner == 1) ~ 1, #gay
+    (SEX.indv == 2) & (SEX.partner == 2) ~ 1, #gay
+    (SEX.indv == 2) & (SEX.partner == 1) ~ 0, #straight
+    (SEX.indv == 1) & (SEX.partner == 2) ~ 0, #straight
+    (SEX.indv == 2) & (SEX.partner == 1) ~ 9 #NA
+  ))
 
-#still memory issue even though I am not sure this syntax is even right
-
-#identify gay by checking if individuals with partner have matching sex of partner
+rm(partner, df_partners)
+#convert back to arrow?, sigh weights              
 ```
 
 Label states+
