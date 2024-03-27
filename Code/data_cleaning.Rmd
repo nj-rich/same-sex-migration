@@ -52,11 +52,11 @@ rm(partner, df_partners, pull1_csv)
 #convert back to arrow?, sigh weights              
 ```
 
-Label states/input legalization year (use FIP - ask) 
+Label states/input legalization year/length of time since legalization (use FIP) 
 ```{r, include = F}
 gc()
 df_samesex <- df_samesex %>%
-  mutate(STATEFIP = case_when(
+  mutate(STATEFIP = case_when( #label states
     STATEFIP == 1 ~ "AL",
     STATEFIP == 2 ~ "AK",
     STATEFIP == 4 ~ "AZ",
@@ -112,7 +112,7 @@ df_samesex <- df_samesex %>%
     STATEFIP == 97 ~ "OMI", #Overseas Military Installations
     STATEFIP == 99 ~ NA
   )) %>%
-  mutate(date_legalization = case_when ( #from Gerstmann 2012 OG pqper
+  mutate(date_legalization = case_when ( #label legalization date from Gerstmann 2012 OG pqper
     STATEFIP == "AL" ~ 2015,
     STATEFIP == "AK" ~ 2014,
     STATEFIP == "AZ" ~ 2014,
@@ -166,12 +166,10 @@ df_samesex <- df_samesex %>%
     STATEFIP == "WY" ~ 2014,
     STATEFIP == "PR" ~ 2015, #from googling
     STATEFIP == "OMI" ~ 2015 #from guessing
-    
-  )) #watch CA issue does it matter?
-
-
-
+  )) %>%
+  mutate(time_since_legalization = YEAR - date_legalization) #make time_since variable
 ```
+
 Other data cleaning - watch weights see above for right variable
 
 REMEMBER WEIGHTS AND IGNORE ERROR MESSAGES
