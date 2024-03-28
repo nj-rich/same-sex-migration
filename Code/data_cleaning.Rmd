@@ -12,31 +12,34 @@ source("https://raw.githubusercontent.com/apache/arrow/master/r/R/install-arrow.
 install_arrow(minimal = Sys.getenv("LIBARROW_MINIMAL", FALSE)) #to turn off minimal... see if need this long term
 library(arrow)
 rm(arrow_repos, create_package_with_all_dependencies, install_arrow, on_rosetta, wslify_path, reload_arrow)
+
 ```
 
-Download the data (hmm maybe just use computer with more RAM)
+Download the data (MAC)
 ```{r, include = F}
 gc()
 
-#FOR MAC
-#pull1_csv <- open_dataset(
-#  sources = "/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv",
-#  col_types = schema(CBSERIAL = int64(), COUPLETYPE = int64(), SSMC = int64(), 
-#                     MIGPLAC1 = int64(), MIGCOUNTY1 = int64(), SPMPOV = int64(),
-#                     OFFPOV = int64()),
-#                     format = "csv") 
-#FOR WINDOWS
 pull1_csv <- open_dataset(
-  sources = "I:\\Y3S2\\Econ495\\pull1.csv",
+  sources = "/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv",
   col_types = schema(CBSERIAL = int64(), COUPLETYPE = int64(), SSMC = int64(), 
                      MIGPLAC1 = int64(), MIGCOUNTY1 = int64(), SPMPOV = int64(),
                      OFFPOV = int64()),
-                     format = "csv")
+                     format = "csv") 
 
 #note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights
 ```
 
-Identify individuals in same-sex relationships (WATCH OPTIMIZATION FOR WINDOWS)
+
+WINDOWS METHOD (WATCH OPTIMIZATION FOR WINDOWS - maybe don't use arrow)
+```{r, include = F}
+gc()
+library(data.table)
+pull1_csv <- read_csv("I:\\Y3S2\\Econ495\\pull1.csv")
+
+#note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights
+```
+
+Identify individuals in same-sex relationships  (MAC)
 ```{r, include = F}
 gc()
 partner <- pull1_csv %>%
