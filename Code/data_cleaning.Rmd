@@ -77,7 +77,7 @@ df_samesex <- df_samesex %>%
     STATEFIP == 8 ~ "CO",
     STATEFIP == 9 ~ "CT",
     STATEFIP == 10 ~ "DE",
-    STATEFIP == 11 ~ "DC"
+    STATEFIP == 11 ~ "DC",
     STATEFIP == 12 ~ "FL",
     STATEFIP == 13 ~ "GA",
     STATEFIP == 15 ~ "HI",
