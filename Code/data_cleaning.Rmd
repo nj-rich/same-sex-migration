@@ -6,51 +6,41 @@ output: html_document
 Load packages
 ```{r, include = F}
 gc()
-library(tidyverse)
-#install.packages("arrow")
-source("https://raw.githubusercontent.com/apache/arrow/master/r/R/install-arrow.R")
-install_arrow(minimal = Sys.getenv("LIBARROW_MINIMAL", FALSE)) #to turn off minimal... see if need this long term
-library(arrow)
-rm(arrow_repos, create_package_with_all_dependencies, install_arrow, on_rosetta, wslify_path, reload_arrow)
+library(tidyverse) #for data work
+library(data.table) #for data loading
 
+#watch these packages for dummies
+install.packages("fastDummies") # --- recipes package might also work or tidymodels? (step_dummy maybe work darn recipe use confusion) (or not- different method) - issue: combo 2 years - check
+library(fastDummies)
 ```
 
-Download the data (MAC)
+Download the data
 ```{r, include = F}
 gc()
 
-pull1_csv <- open_dataset(
-  sources = "/Users/njrich/Desktop/Econ495/same-sex-migration/Data/pull1/pull1.csv",
-  col_types = schema(CBSERIAL = int64(), COUPLETYPE = int64(), SSMC = int64(), 
-                     MIGPLAC1 = int64(), MIGCOUNTY1 = int64(), SPMPOV = int64(),
-                     OFFPOV = int64()),
-                     format = "csv") 
+pull1_csv <- fread("C:\\Users\\njrich\\Downloads\\pull1.csv")
 
 #note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights
 ```
 
-
-WINDOWS METHOD (WATCH OPTIMIZATION FOR WINDOWS - maybe don't use arrow)
+Select out unneeded variables
 ```{r, include = F}
 gc()
-library(data.table)
-pull1_csv <- read_csv("I:\\Y3S2\\Econ495\\pull1.csv")
 
-#note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights
+
 ```
 
-Identify individuals in same-sex relationships  (MAC)
+Identify individuals in same-sex relationships  
 ```{r, include = F}
 gc()
 partner <- pull1_csv %>%
-  select(YEAR, SERIAL, PERNUM, SEX) %>% #rename sex var for clarity?
-  compute()
+  select(YEAR, SERIAL, PERNUM, SEX) 
 
-#will expand variables over time  (tentative use FIP)
+gc()
 df_partners <- pull1_csv %>%
-  left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM), suffix = c(".indv", ".partner")) %>% #WATCH CLARITY WHERE SPLOC IS
-  collect()
+  left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM), suffix = c(".indv", ".partner"))
 
+gc()
 df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
   mutate(in_samesex = case_when(
     (SEX.indv == 1) & (SEX.partner == 1) ~ 1, #gay
@@ -61,14 +51,17 @@ df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
   ))
 
 rm(partner, df_partners, pull1_csv)
-#convert back to arrow?, sigh weights              
+#check all mutate works             
 ```
 
 Label states/input legalization year/length of time since legalization (use FIP) 
 ```{r, include = F}
+
+#label states
 gc()
 df_samesex <- df_samesex %>%
-  mutate(STATEFIP = case_when( #label states
+  mutate(state_name = NA) %>% #ok this seems to work
+  mutate(state_name = case_when( 
     STATEFIP == 1 ~ "AL",
     STATEFIP == 2 ~ "AK",
     STATEFIP == 4 ~ "AZ",
@@ -76,7 +69,11 @@ df_samesex <- df_samesex %>%
     STATEFIP == 6 ~ "CA",
     STATEFIP == 8 ~ "CO",
     STATEFIP == 9 ~ "CT",
-    STATEFIP == 10 ~ "DE",
+    STATEFIP == 10 ~ "DE")) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
     STATEFIP == 11 ~ "DC",
     STATEFIP == 12 ~ "FL",
     STATEFIP == 13 ~ "GA",
@@ -85,7 +82,11 @@ df_samesex <- df_samesex %>%
     STATEFIP == 17 ~ "IL",
     STATEFIP == 18 ~ "IN",
     STATEFIP == 19 ~ "IA",
-    STATEFIP == 20 ~ "KS",
+    STATEFIP == 20 ~ "KS")) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
     STATEFIP == 21 ~ "KY",
     STATEFIP == 22 ~ "LA",
     STATEFIP == 23 ~ "MI",
@@ -95,7 +96,11 @@ df_samesex <- df_samesex %>%
     STATEFIP == 27 ~ "MN",
     STATEFIP == 28 ~ "MS",
     STATEFIP == 29 ~ "MO",
-    STATEFIP == 30 ~ "MT",
+    STATEFIP == 30 ~ "MT")) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
     STATEFIP == 31 ~ "NE",
     STATEFIP == 32 ~ "NV",
     STATEFIP == 33 ~ "NH",
@@ -105,7 +110,11 @@ df_samesex <- df_samesex %>%
     STATEFIP == 37 ~ "NC",
     STATEFIP == 38 ~ "ND",
     STATEFIP == 39 ~ "OH",
-    STATEFIP == 40 ~ "OK",
+    STATEFIP == 40 ~ "OK")) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
     STATEFIP == 41 ~ "OR",
     STATEFIP == 42 ~ "PA",
     STATEFIP == 44 ~ "RI",
@@ -122,67 +131,106 @@ df_samesex <- df_samesex %>%
     STATEFIP == 56 ~ "WY",
     STATEFIP == 72 ~ "PR",
     STATEFIP == 97 ~ "OMI", #Overseas Military Installations
-    STATEFIP == 99 ~ NA
-  )) %>%
-  mutate(date_legalization = case_when ( #label legalization date from Gerstmann 2012 OG pqper
-    STATEFIP == "AL" ~ 2015,
-    STATEFIP == "AK" ~ 2014,
-    STATEFIP == "AZ" ~ 2014,
-    STATEFIP == "AR" ~ 2015,
-    STATEFIP == "CA" ~ 2013, #watch leglized/repealed issue
-    STATEFIP == "CO" ~ 2014,
-    STATEFIP == "CT" ~ 2008,
-    STATEFIP == "DE" ~ 2013,
-    STATEFIP == "DC" ~ 2009,
-    STATEFIP == "FL" ~ 2015,
-    STATEFIP == "GA" ~ 2015,
-    STATEFIP == "HI" ~ 2013,
-    STATEFIP == "ID" ~ 2014,
-    STATEFIP == "IL" ~ 2013,
-    STATEFIP == "IN" ~ 2014,
-    STATEFIP == "IA" ~ 2009,
-    STATEFIP == "KS" ~ 2014,
-    STATEFIP == "KY" ~ 2015,
-    STATEFIP == "LA" ~ 2015,
-    STATEFIP == "ME" ~ 2012,
-    STATEFIP == "MD" ~ 2012,
-    STATEFIP == "MA" ~ 2003,
-    STATEFIP == "MI" ~ 2015,
-    STATEFIP == "MN" ~ 2013,
-    STATEFIP == "MS" ~ 2015,
-    STATEFIP == "MO" ~ 2015,
-    STATEFIP == "MT" ~ 2014,
-    STATEFIP == "NE" ~ 2015,
-    STATEFIP == "NV" ~ 2014,
-    STATEFIP == "NH" ~ 2009,
-    STATEFIP == "NJ" ~ 2013,
-    STATEFIP == "NM" ~ 2013,
-    STATEFIP == "NY" ~ 2011,
-    STATEFIP == "NC" ~ 2014,
-    STATEFIP == "ND" ~ 2015,
-    STATEFIP == "OH" ~ 2015,
-    STATEFIP == "OK" ~ 2014,
-    STATEFIP == "OR" ~ 2014,
-    STATEFIP == "PA" ~ 2014,
-    STATEFIP == "RI" ~ 2013,
-    STATEFIP == "SC" ~ 2014,
-    STATEFIP == "SD" ~ 2015,
-    STATEFIP == "TN" ~ 2015,
-    STATEFIP == "TX" ~ 2015,
-    STATEFIP == "UT" ~ 2014,
-    STATEFIP == "VT" ~ 2009,
-    STATEFIP == "VA" ~ 2014,
-    STATEFIP == "WA" ~ 2012,
-    STATEFIP == "WV" ~ 2014,
-    STATEFIP == "WI" ~ 2014,
-    STATEFIP == "WY" ~ 2014,
-    STATEFIP == "PR" ~ 2015, #from googling
-    STATEFIP == "OMI" ~ 2015 #from guessing
-  )) %>%
-  mutate(time_since_legalization = YEAR - date_legalization) #make time_since variable
+    STATEFIP == 99 ~ NA #redundant now
+  )) 
+
+#remove og STATEFIP var? drop other vars?
+
+#label legalization date from Gerstmann 2012 OG pqper (see issues)
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = NA) %>%
+  mutate(date_legalization = case_when ( 
+    state_name == "AL" ~ 2015,
+    state_name == "AK" ~ 2014,
+    state_name == "AZ" ~ 2014,
+    state_name == "AR" ~ 2015,
+    state_name == "CA" ~ 2013, #watch leglized/repealed issue
+    state_name == "CO" ~ 2014,
+    state_name == "CT" ~ 2008,
+    state_name == "DE" ~ 2013,
+    state_name == "DC" ~ 2009,
+    state_name == "FL" ~ 2015)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    state_name == "GA" ~ 2015,
+    state_name == "HI" ~ 2013,
+    state_name == "ID" ~ 2014,
+    state_name == "IL" ~ 2013,
+    state_name == "IN" ~ 2014,
+    state_name == "IA" ~ 2009,
+    state_name == "KS" ~ 2014,
+    state_name == "KY" ~ 2015,
+    state_name == "LA" ~ 2015,
+    state_name == "ME" ~ 2012)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    state_name == "MD" ~ 2012,
+    state_name == "MA" ~ 2003,
+    state_name == "MI" ~ 2015,
+    state_name == "MN" ~ 2013,
+    state_name == "MS" ~ 2015,
+    state_name == "MO" ~ 2015,
+    state_name == "MT" ~ 2014,
+    state_name == "NE" ~ 2015,
+    state_name == "NV" ~ 2014,
+    state_name == "NH" ~ 2009)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    state_name == "NJ" ~ 2013,
+    state_name == "NM" ~ 2013,
+    state_name == "NY" ~ 2011,
+    state_name == "NC" ~ 2014,
+    state_name == "ND" ~ 2015,
+    state_name == "OH" ~ 2015,
+    state_name == "OK" ~ 2014,
+    state_name == "OR" ~ 2014,
+    state_name == "PA" ~ 2014,
+    state_name == "RI" ~ 2013)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    state_name == "SC" ~ 2014,
+    state_name == "SD" ~ 2015,
+    state_name == "TN" ~ 2015,
+    state_name == "TX" ~ 2015,
+    state_name == "UT" ~ 2014,
+    state_name == "VT" ~ 2009,
+    state_name == "VA" ~ 2014,
+    state_name == "WA" ~ 2012,
+    state_name == "WV" ~ 2014,
+    state_name == "WI" ~ 2014,
+    state_name == "WY" ~ 2014,
+    state_name == "PR" ~ 2015, #from googling
+    state_name == "OMI" ~ 2015 #from guessing
+  ))
+
+
+#make time_since variable
+gc()
+df_samesex <- df_samesex %>%
+  mutate(time_since_legalization = YEAR - date_legalization) 
+
 ```
 
-Other data cleaning - watch weights see above for right variable
+Make dummies for analysis based on time_since_legalization (other methods possible with different packages?)
+```{r, include = F}
+gc()
+?model_matrix #concerned... actually make matrix
+
+#other options
+#if_else method
+#fastDummies library + dummy_cols()
+
+```
+Other data cleaning - watch weights see above for right variable - watch NAs too
 
 REMEMBER WEIGHTS AND IGNORE ERROR MESSAGES
 
