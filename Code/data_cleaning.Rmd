@@ -20,13 +20,16 @@ gc()
 
 pull1_csv <- fread("C:\\Users\\njrich\\Downloads\\pull1.csv")
 
-#note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights
+#note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights - questions about ASECWT only in IPUMS CPS maybe also widow var... hmm.....
 ```
 
 Select out unneeded variables
 ```{r, include = F}
 gc()
+pull1_csv <- pull1_csv %>%
+  select(-SAMPLE, -CBSERIAL, -HHWT, -CLUSTER, -STRATA, -GQ)
 
+#note: need to add ASECWT weight var after looking
 
 ```
 
@@ -55,6 +58,9 @@ rm(partner, df_partners, pull1_csv)
 ```
 
 Label states/input legalization year/length of time since legalization (use FIP) 
+
+PROBLEM: MISSING YEARS AND STATE NAMES WITH CHUNKING
+ChatGPT solution doesn't seem to work... keep thinking with everything else return to og and come back to later
 ```{r, include = F}
 
 #label states
@@ -69,7 +75,7 @@ df_samesex <- df_samesex %>%
     STATEFIP == 6 ~ "CA",
     STATEFIP == 8 ~ "CO",
     STATEFIP == 9 ~ "CT",
-    STATEFIP == 10 ~ "DE")) 
+    STATEFIP == 10 ~ "DE"))
 
 gc()
 df_samesex <- df_samesex %>%
@@ -113,7 +119,7 @@ df_samesex <- df_samesex %>%
     STATEFIP == 40 ~ "OK")) 
 
 gc()
-df_samesex <- df_samesex %>%
+df_samesex <- df_samesex %>% #this seems to be the only clause that works...
   mutate(state_name = case_when(
     STATEFIP == 41 ~ "OR",
     STATEFIP == 42 ~ "PA",
@@ -134,7 +140,12 @@ df_samesex <- df_samesex %>%
     STATEFIP == 99 ~ NA #redundant now
   )) 
 
-#remove og STATEFIP var? drop other vars?
+
+##TEMP SOLN
+df_samesex <- df_samesex %>%
+  filter(!is.na(state_name)) #TEMPORARY SOLUTION HMM
+##TEMP SOLN
+
 
 #label legalization date from Gerstmann 2012 OG pqper (see issues)
 gc()
@@ -212,13 +223,33 @@ df_samesex <- df_samesex %>%
     state_name == "OMI" ~ 2015 #from guessing
   ))
 
-
 #make time_since variable
 gc()
 df_samesex <- df_samesex %>%
-  mutate(time_since_legalization = YEAR - date_legalization) 
+  mutate(time_since_legalization = if_else(YEAR - date_legalization < 0, NA, YEAR - date_legalization)) #check if this makes sense
+
+#save output of this somewhere for ease of use?
 
 ```
+
+Make pct same-sex by state and year var (NOTE: WILL NEED TO ADD WEIGHTS EVENTUALLY -I believe only here tho)
+```{r, include = F}
+gc()
+samesex_staterate <- df_samesex %>%
+  filter(!is.na(MIGPLAC1)) %>% #get interstate migrants only
+  group_by(YEAR, state_name) %>%
+  summarize(samesex_state_count = sum(in_samesex, na.rm = T)) %>%
+  ungroup() %>%
+  group_by(YEAR) %>%
+  mutate(year_totals = sum(samesex_state_count)) %>%
+  ungroup() %>%
+  mutate(staterate_year = samesex_state_count/year_totals) %>%
+  select(YEAR, state_name, staterate_year)
+
+#watch NA state names taking large percent of migrants hmm check out (OPE WE STILL HAVE MISSING STATE NAMES OI), FIGURE OUT WAY TO KEEP OTHER COLUMNS INDIVIDUAL LEVEL DATA TOO HMM YAY HETEROGENEITY ANALYSIS PREP... more merges? oi., drop NAs
+
+```
+PROBLEM: MISSING YEARS AND STATE NAMES WITH CHUNKING
 
 Make dummies for analysis based on time_since_legalization (other methods possible with different packages?)
 ```{r, include = F}
@@ -231,9 +262,5 @@ gc()
 
 ```
 Other data cleaning - watch weights see above for right variable - watch NAs too
-
-REMEMBER WEIGHTS AND IGNORE ERROR MESSAGES
-
-Summary statistics
 
 Initial Regression
