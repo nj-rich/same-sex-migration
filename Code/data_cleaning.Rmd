@@ -9,12 +9,13 @@ gc()
 library(tidyverse) #for data work
 library(data.table) #for data loading
 library(haven) #for writing to dta
+library(readxl) #for reading in FRED data
 #watch these packages for dummies
 install.packages("fastDummies") # --- recipes package might also work or tidymodels? (step_dummy maybe work darn recipe use confusion) (or not- different method) - issue: combo 2 years - check
 library(fastDummies)
 ```
 
-Download the data
+Download IPUMS data
 ```{r, include = F}
 gc()
 
@@ -244,10 +245,31 @@ df_samesex <- df_samesex %>%
 
 ```
 
-Create state pop table for future weighting
+Filter/sort data to match Marcén/Morales target population
 ```{r, include = F}
 gc()
 
+```
+
+Create state pop table for pop weighting (NOTE: this code is for reading in from personal MAC, not UGLI computer)
+```{r, include = F}
+gc()
+state_pop <- read_excel("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/FRED_statepops/STATEPOP.xls", sheet = "Annual")
+
+#match up columns
+state_pop <- state_pop %>%
+  pivot_longer(AKPOP:WYPOP, names_to = "state_name") %>%
+  rename("POP" = "value") 
+
+#match up strings
+state_pop <- state_pop %>%
+  mutate(state_name = str_remove(state_name, "POP")) %>%
+  mutate(DATE = as.character(DATE)) %>%
+  mutate(DATE = str_remove(DATE, "-01-01")) %>%
+  mutate(DATE = as.numeric(DATE)) %>%
+  mutate(POP = as.character(POP)) %>%
+  mutate(POP = str_remove(POP, "\\.")) %>%
+  mutate(POP = as.numeric(POP)) 
 
 ```
 
@@ -270,19 +292,20 @@ samesex_staterate <- df_samesex %>%
   select(YEAR, state_name, staterate_year)
 
 #ID key variables to merge back in
-extra_variables <- df_samesex %>% #question: 
+extra_variables <- df_samesex %>% 
   distinct(YEAR, state_name, time_since_legalization)
 
 #merge back in - think about implications of extra_variables having extra rows relative to state rate
 
-samesex_staterate_cleanish <- samesex_staterate %>%
-  left_join(extra_variables, join_by(YEAR, state_name))
+cleaned_data <- samesex_staterate %>%
+  left_join(extra_variables, join_by(YEAR, state_name)) %>%
+  left_join(state_pop, join_by(YEAR, state_name))
 
 
 #****add in state-level controls#
 
 
-rm(samesex_staterate, extra_variables)
+rm(samesex_staterate, extra_variables, state_pop)
 ```
 
 Export cleanish data for code testing purposes
