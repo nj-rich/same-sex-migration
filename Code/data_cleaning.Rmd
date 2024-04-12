@@ -244,9 +244,13 @@ df_samesex <- df_samesex %>%
 
 ```
 
+Create state pop table for future weighting
+```{r, include = F}
+gc()
 
 
-WHAT FOLLOWS IS PRELIMINARY ANALYSIS; SUPERFICIAL CLEANING STILL NEEDED SO ANALYSIS SHOULD NOT BE TAKEN SERIOUSLY
+```
+
 
 
 Make pct same-sex by state and year var (see weighting/exclusions) - MERGE THIS BACK/THINK BETTER WAY? --turn this into function?
@@ -274,8 +278,13 @@ extra_variables <- df_samesex %>% #question:
 samesex_staterate_cleanish <- samesex_staterate %>%
   left_join(extra_variables, join_by(YEAR, state_name))
 
+
+#****add in state-level controls#
+
+
 rm(samesex_staterate, extra_variables)
 ```
+
 Export cleanish data for code testing purposes
 ```{r, include = F}
 gc()
@@ -286,9 +295,7 @@ write_dta(samesex_staterate_cleanish, "C:\\Users\\njrich\\Desktop\\same-sex-migr
 
 Make dummies/do analysis
 ```{r, include = F}
-#fastDummies library + dummy_cols()
-
-#current plan of attack: use STATA/Wolfers code
+#USE WOLFERS CODE
 
 ```
 Other data cleaning - STATE POPULATION INCLUDE!! (:( more merging data sets)
