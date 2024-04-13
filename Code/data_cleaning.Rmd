@@ -53,7 +53,7 @@ df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
     (SEX.indv == 1) & (SEX.partner == 2) ~ 0, #straight
     (SEX.indv == 9) | (SEX.partner == 9) ~ NA #NA 
   )) %>%
-  mutate(in_samesex_weighted = in_samesex * PERWT) #NOTE: I AM NOT SURE IF THIS IS CORRECT METHOD, SE OFF NOT ADJUSTED
+  mutate(in_samesex_weighted = in_samesex * PERWT) #NOTE: I AM NOT SURE IF THIS IS CORRECT METHOD, SE OFF NOT ADJUSTED; see https://forum.ipums.org/t/identifying-same-sex-and-opposite-sex-couples/3878 for more help; https://forum.ipums.org/t/how-to-identify-same-sex-couples/2554/5
 
 rm(partner, df_partners, pull1_csv)
 #PUT IN PERWT HERE WATCH NEED DIVIDE BY 100 AND GET DECIMALS            
@@ -241,46 +241,55 @@ gc()
 df_samesex <- df_samesex %>%
   mutate(time_since_legalization = if_else(YEAR - date_legalization < 0, NA, YEAR - date_legalization)) #check if this makes sense
 
-#save output of this somewhere for ease of use?
+
 
 ```
 
-Filter/sort data to match Marcén/Morales target population
+Filter data to match Marcén/Morales target population
 ```{r, include = F}
 gc()
+
+df_samesex_mm <- df_samesex %>%
+  filter(AGE >= 30 & AGE <= 64) %>%
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
 
 ```
 
 Create state pop table for pop weighting (NOTE: this code is for reading in from personal MAC, not UGLI computer)
 ```{r, include = F}
 gc()
-state_pop <- read_excel("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/FRED_statepops/STATEPOP.xls", sheet = "Annual")
+
+#read in data
+#FRED <- read_excel("/Users/njrich/Desktop/Econ495/same-sex-migration/Data/FRED_statepops/STATEPOP.xls", sheet = "Annual") #for Mac
+FRED <- read_excel("C:\\Users\\njrich\\Downloads\\STATEPOP.xls", sheet = "Annual") #for Windows
 
 #match up columns
-state_pop <- state_pop %>%
+FRED <- FRED %>%
   pivot_longer(AKPOP:WYPOP, names_to = "state_name") %>%
-  rename("POP" = "value") 
+  rename("state_pop" = "value") %>%
+  rename("YEAR" = "DATE")
 
 #match up strings
-state_pop <- state_pop %>%
+FRED <- FRED %>%
   mutate(state_name = str_remove(state_name, "POP")) %>%
-  mutate(DATE = as.character(DATE)) %>%
-  mutate(DATE = str_remove(DATE, "-01-01")) %>%
-  mutate(DATE = as.numeric(DATE)) %>%
-  mutate(POP = as.character(POP)) %>%
-  mutate(POP = str_remove(POP, "\\.")) %>%
-  mutate(POP = as.numeric(POP)) 
+  mutate(YEAR = as.character(YEAR)) %>%
+  mutate(YEAR = str_remove(YEAR, "-01-01")) %>%
+  mutate(YEAR = as.numeric(YEAR)) %>%
+  mutate(state_pop = as.character(state_pop)) %>%
+  mutate(state_pop = str_remove(state_pop, "\\.")) %>%
+  mutate(state_pop = as.numeric(state_pop)) 
 
 ```
 
 
 
-Make pct same-sex by state and year var (see weighting/exclusions) - MERGE THIS BACK/THINK BETTER WAY? --turn this into function?
+Make pct same-sex by state and year var (see weighting/exclusions) - WATCH STILL NEED SEPARATE BY GENDER
 ```{r, include = F}
 gc()
 
 #find pcts
-samesex_staterate <- df_samesex %>%
+samesex_staterate <- df_samesex_mm %>%
   filter(!is.na(MIGPLAC1)) %>% #get interstate migrants only
   group_by(YEAR, state_name) %>%
   summarize(samesex_state_count = sum(in_samesex_weighted, na.rm = T)) %>% #note: weight implementation means SE unreliable
@@ -299,20 +308,30 @@ extra_variables <- df_samesex %>%
 
 cleaned_data <- samesex_staterate %>%
   left_join(extra_variables, join_by(YEAR, state_name)) %>%
-  left_join(state_pop, join_by(YEAR, state_name))
+  left_join(FRED, join_by(YEAR, state_name))
+
+#make dummy variables for 1-2, 3-4, 5-6, >7 years (interest results with/without all of this filtering including above)
+cleaned_data <- cleaned_data %>%
+  mutate(time_leg_chunked = case_when(
+    time_since_legalization == 1 ~ 2,
+    time_since_legalization == 2 ~ 2,
+    time_since_legalization == 3 ~ 4,
+    time_since_legalization == 4 ~ 4,
+    time_since_legalization == 5 ~ 6,
+    time_since_legalization == 6 ~ 6,
+    time_since_legalization >= 7 ~ 7,
+  ))
 
 
-#****add in state-level controls#
 
-
-rm(samesex_staterate, extra_variables, state_pop)
+rm(samesex_staterate, extra_variables)
 ```
 
 Export cleanish data for code testing purposes
 ```{r, include = F}
 gc()
-write.csv(samesex_staterate_cleanish, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\test_regression_data.csv")
-write_dta(samesex_staterate_cleanish, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\test_regression_data.dta")
+write.csv(cleaned_data, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\cleaned_data.csv")
+write_dta(cleaned_data, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\cleaned_data.dta")
 
 ```
 
@@ -321,6 +340,6 @@ Make dummies/do analysis
 #USE WOLFERS CODE
 
 ```
-Other data cleaning - STATE POPULATION INCLUDE!! (:( more merging data sets)
 
-Initial Regression
+
+Question - this is starting to get messy; best way to clearly delineate what is what?
