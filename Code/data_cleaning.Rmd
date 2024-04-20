@@ -245,18 +245,19 @@ df_samesex <- df_samesex %>%
 
 ```
 
-Filter data to match Marcén/Morales target population
+Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRANTS FILTER, only in_samesex add?)
 ```{r, include = F}
 gc()
 
 df_samesex_mm <- df_samesex %>%
   filter(AGE >= 30 & AGE <= 64) %>%
   filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
-  filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
+  filter(MARST == 4 | MARST == 5 | MARST == 6) %>% #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
+  filter(!is.na(MIGPLAC1)) #get interstate migrants only
 
 ```
 
-Create state pop table for pop weighting (NOTE: this code is for reading in from personal MAC, not UGLI computer)
+Create state pop table for pop weighting
 ```{r, include = F}
 gc()
 
@@ -284,13 +285,12 @@ FRED <- FRED %>%
 
 
 
-Make pct same-sex by state and year var (see weighting/exclusions) - WATCH STILL NEED SEPARATE BY GENDER
+Make pct same-sex by state and year var (see weighting/exclusions) - WATCH STILL NEED SEPARATE BY GENDER (MOVED INTERSTATE MIGRANTS FILTER TO MARCEN/MORALES)
 ```{r, include = F}
 gc()
 
 #find pcts
 samesex_staterate <- df_samesex_mm %>%
-  filter(!is.na(MIGPLAC1)) %>% #get interstate migrants only
   group_by(YEAR, state_name) %>%
   summarize(samesex_state_count = sum(in_samesex_weighted, na.rm = T)) %>% #note: weight implementation means SE unreliable
   ungroup() %>%
