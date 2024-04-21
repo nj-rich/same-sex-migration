@@ -1,5 +1,5 @@
 #test making state level pop estimates including state var
-
+df_samesex_mm <- fread("/Users/njrich/Desktop/Econ495/same-sex-migration/test_data.csv") #read in test_code on mac
 gc()
 
 state_names <- unique(df_samesex_mm$state_name)
@@ -12,24 +12,19 @@ for(i in 1:length(state_names)) {
     rename(!!indv_names[i] := column) #thank you chatgpt
 }
 
-
 total_names <- paste(state_names, "excluded_total", sep = "_")
 
 for(i in 1:length(state_names)) {
     col_name <- indv_names[i] #thank you data.frame
-    col <- df_samesex_mm[[col_name]]
     
     df_samesex_mm <- df_samesex_mm %>% 
-    group_by(YEAR) %>%
-    mutate(column = sum(col)) %>%
-    rename(!!total_names[i] := column)%>% #thank you chatgpt
-    ungroup()
+      group_by(YEAR) %>% 
+      mutate(columned = sum(!!sym(col_name))) %>% #this seems to work oi thanks chatgpt
+      ungroup() %>%
+      rename(!!total_names[i] := columned)
 }
 
-test <- indv_names[1]
-df_samesex_mm[, ..test, drop = F] #.. was working earlier, not anymore
-
-df_samesex_mm[[test]]
+#AND IT WORKS NOW MOVING ON NEXT STEP DIVISION:)
 
 
 ##MAKING PROGRESS ISH KEEP FIXING LOOP ABOVE
