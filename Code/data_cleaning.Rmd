@@ -11,8 +11,8 @@ library(data.table) #for data loading
 library(haven) #for writing to dta
 library(readxl) #for reading in FRED data
 #watch these packages for dummies
-install.packages("fastDummies") # --- recipes package might also work or tidymodels? (step_dummy maybe work darn recipe use confusion) (or not- different method) - issue: combo 2 years - check
-library(fastDummies)
+#install.packages("fastDummies") # --- recipes package might also work or tidymodels? (step_dummy maybe work darn recipe use confusion) (or not- different method) - issue: combo 2 years - check
+#library(fastDummies)
 ```
 
 Download IPUMS data
@@ -285,21 +285,69 @@ FRED <- FRED %>%
 
 
 
-Make pct same-sex by state and year var (see weighting/exclusions) - WATCH STILL NEED SEPARATE BY GENDER (MOVED INTERSTATE MIGRANTS FILTER TO MARCEN/MORALES)
+Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still need test large data
 ```{r, include = F}
-gc()
+gc() 
+df <- df_samesex_mm
 
-#find pcts
-samesex_staterate <- df_samesex_mm %>%
+state_names <- unique(df$state_name)
+
+indv_names <- paste(state_names, "excluded_indv", sep = "_")
+
+for(i in 1:length(state_names)) {
+  df <- df %>% #restrict this to gay earlier?
+    mutate(column = if_else(state_name != state_names[i], in_samesex_weighted, 0)) %>%
+    rename(!!indv_names[i] := column) #thank you chatgpt
+}
+
+total_names <- paste(state_names, "excluded_total", sep = "_")
+
+for(i in 1:length(state_names)) {
+    col_name <- indv_names[i] #thank you data.frame
+    
+    df <- df %>% 
+      group_by(YEAR) %>% 
+      mutate(columned = sum(!!sym(col_name))) %>% #this seems to work oi thanks chatgpt
+      ungroup() %>%
+      rename(!!total_names[i] := columned)
+}
+
+
+#line up state and overall year totals (does not seem very efficient:()
+state_year_totals <- df %>%
   group_by(YEAR, state_name) %>%
-  summarize(samesex_state_count = sum(in_samesex_weighted, na.rm = T)) %>% #note: weight implementation means SE unreliable
-  ungroup() %>%
-  group_by(YEAR) %>%
-  mutate(year_totals = sum(samesex_state_count)) %>%
-  ungroup() %>%
-  mutate(staterate_year = samesex_state_count/year_totals) %>%
-  select(YEAR, state_name, staterate_year)
+  summarize(samesex_state_count = sum(in_samesex_weighted, na.rm = T)) %>% #WATCH NO USE SPECIAL COUNT HERE
+  ungroup()
 
+
+year_totals <- df %>%
+  select(YEAR, state_name, RI_excluded_total:OK_excluded_total) 
+
+merged_totals <- state_year_totals %>%
+  left_join(year_totals, join_by(YEAR, state_name), multiple = "any") #yay get rid of duplicates
+
+#do the division
+samesex_staterate <- merged_totals %>% #oopsy amount of variable names
+  pivot_wider(names_from = state_name, values_from = samesex_state_count)
+
+for(i in 1:length(state_names)) {
+  state = state_names[i]
+  total = total_names[i]
+  
+  samesex_staterate <- samesex_staterate %>% 
+    mutate(!!state := !!sym(state)/!!sym(total))
+  
+}
+
+#clean up variables pivot long to get back to beginning:)
+
+samesex_staterate <- samesex_staterate %>%
+  select(YEAR, AK:WY) %>%
+  pivot_longer(AK:WY, names_to = "state_name")
+
+rm(df, merged_totals, state_year_totals, year_totals, col_name, i, indv_names, state, state_names, total, total_names)
+
+#BACK TO BEGINNING
 #ID key variables to merge back in
 extra_variables <- df_samesex %>% 
   distinct(YEAR, state_name, time_since_legalization)
