@@ -19,4 +19,19 @@ reg staterate_year _I* if YEAR>2000 & YEAR<2016 [w=state_pop]
 testparm _IYEAR_*
 testparm _Istate_nam_*
 
-***issue: my results not lining up with Marcen and Morales's perfectly, check gay coding right, negative coefficients?
+*ACTUALLY USE THIS REGRESSION STILL ISSUES OI BUT WHATEVER
+xi i.time_leg_chunked i.state_name*time i.YEAR
+reg staterate_year _I* if YEAR>2000 & YEAR<2016 [w=state_pop] 
+testparm _IYEAR_*
+testparm _Istate_nam_*
+*need to check testparm below
+testparm _IstaXtime_*
+
+
+
+xi i.time_leg_chunked i.state_name*time i.state_name*timesq i.YEAR 
+reg staterate_year _I*  if YEAR>2000 & YEAR<2016 [w=state_pop] 
+testparm _IYEAR_*
+testparm _Istate_nam_*
+testparm _IstaXtime_*
+testparm _IstaXtimea*

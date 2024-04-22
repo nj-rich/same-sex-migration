@@ -241,22 +241,11 @@ gc()
 df_samesex <- df_samesex %>%
   mutate(time_since_legalization = if_else(YEAR - date_legalization < 0, NA, YEAR - date_legalization)) #check if this makes sense
 
-
-
-```
-
-Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRANTS FILTER/in_samesex filter) WATCH LABELING WHEN START DOING SUBSAMPLES
-```{r, include = F}
+#make time variable
 gc()
-
-df_samesex_mm <- df_samesex %>%
-  filter(in_samesex == 1) %>%
-  filter(AGE >= 30 & AGE <= 64) %>%
-  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
-  filter(MARST == 4 | MARST == 5 | MARST == 6) %>% #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
-  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) #get interstate migrants only #FIX THIS
-
-#THIS LEAVES AN ODD AMOUNT OF OBSERVATIONS
+df_samesex <- df_samesex %>%
+  mutate(time = YEAR - 2001) %>%
+  mutate(timesq = time ^2)
 
 ```
 
@@ -282,13 +271,35 @@ FRED <- FRED %>%
   mutate(YEAR = as.numeric(YEAR)) %>%
   mutate(state_pop = as.character(state_pop)) %>%
   mutate(state_pop = str_remove(state_pop, "\\.")) %>%
-  mutate(state_pop = as.numeric(state_pop)) 
+  mutate(state_pop = as.numeric(state_pop)) %>%
+  mutate(time = YEAR - 2001) %>%
+  mutate(timesq = time ^2)
 
 ```
 
+##MARCEN REPLICATION
+
+Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRANTS FILTER/in_samesex filter) WATCH LABELING WHEN START DOING SUBSAMPLES
+```{r, include = F}
+gc()
+
+df_samesex_mm <- df_samesex %>%
+  filter(in_samesex == 1) %>%
+  filter(AGE >= 30 & AGE <= 64) %>%
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(MARST == 4 | MARST == 5 | MARST == 6) %>% #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
+  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) #get interstate migrants only #FIX THIS
+
+#filter by sample
+df_samesex_mm_gen <- df_samesex_mm #general sample
+df_samesex_mm_m <- df_samesex_mm %>% #men only
+                    filter(SEX.indv == 1)
+df_samesex_mm_f <- df_samesex_mm %>% #women only
+                    filter(SEX.indv == 2)
+```
 
 
-Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still getting opposite results; make sure population definition makes sense(see MM page 5 under the equation)
+Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still getting opposite results; make sure population definition makes sense(see MM page 5 under the equation) (TURN INTO FINCTION)
 ```{r, include = F}
 gc() 
 df <- df_samesex_mm
@@ -360,12 +371,12 @@ extra_variables <- df_samesex %>%
 
 #merge back in - think about implications of extra_variables having extra rows relative to state rate
 
-cleaned_data <- samesex_staterate %>%
+mm_gen <- samesex_staterate %>%
   left_join(extra_variables, join_by(YEAR, state_name)) %>%
   left_join(FRED, join_by(YEAR, state_name))
 
 #make dummy variables for 1-2, 3-4, 5-6, >7 years (interest results with/without all of this filtering including above)
-cleaned_data <- cleaned_data %>%
+mm_gen <- mm_gen %>%
   mutate(time_leg_chunked = case_when(
     time_since_legalization == 1 ~ 2,
     time_since_legalization == 2 ~ 2,
@@ -384,8 +395,8 @@ rm(samesex_staterate, extra_variables)
 Export cleanish data for code testing purposes (oop need to rename).... still negative effect do my filters work?
 ```{r, include = F}
 gc()
-write.csv(cleaned_data, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\cleaned_data.csv")
-write_dta(cleaned_data, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\cleaned_data.dta")
+write.csv(mm_gen, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\mm_gen.csv")
+write_dta(mm_gen, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\mm_gen.dta") #fill in rest by gender
 
 ```
 
