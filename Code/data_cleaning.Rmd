@@ -245,15 +245,18 @@ df_samesex <- df_samesex %>%
 
 ```
 
-Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRANTS FILTER, only in_samesex add?)
+Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRANTS FILTER/in_samesex filter) WATCH LABELING WHEN START DOING SUBSAMPLES
 ```{r, include = F}
 gc()
 
 df_samesex_mm <- df_samesex %>%
+  filter(in_samesex == 1) %>%
   filter(AGE >= 30 & AGE <= 64) %>%
   filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
   filter(MARST == 4 | MARST == 5 | MARST == 6) %>% #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
-  filter(!is.na(MIGPLAC1)) #get interstate migrants only
+  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) #get interstate migrants only #FIX THIS
+
+#THIS LEAVES AN ODD AMOUNT OF OBSERVATIONS
 
 ```
 
@@ -285,7 +288,7 @@ FRED <- FRED %>%
 
 
 
-Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still need test large data
+Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still getting opposite results; make sure population definition makes sense(see MM page 5 under the equation)
 ```{r, include = F}
 gc() 
 df <- df_samesex_mm
@@ -300,6 +303,7 @@ for(i in 1:length(state_names)) {
     rename(!!indv_names[i] := column) #thank you chatgpt
 }
 
+gc()
 total_names <- paste(state_names, "excluded_total", sep = "_")
 
 for(i in 1:length(state_names)) {
@@ -307,12 +311,12 @@ for(i in 1:length(state_names)) {
     
     df <- df %>% 
       group_by(YEAR) %>% 
-      mutate(columned = sum(!!sym(col_name))) %>% #this seems to work oi thanks chatgpt
+      mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% #this seems to work oi thanks chatgpt, just missing na.rm = T? why work Mac earlier?
       ungroup() %>%
       rename(!!total_names[i] := columned)
 }
 
-
+gc()
 #line up state and overall year totals (does not seem very efficient:()
 state_year_totals <- df %>%
   group_by(YEAR, state_name) %>%
@@ -321,7 +325,7 @@ state_year_totals <- df %>%
 
 
 year_totals <- df %>%
-  select(YEAR, state_name, RI_excluded_total:OK_excluded_total) 
+  select(YEAR, state_name, AL_excluded_total:WY_excluded_total) #watch order changes Mac > Windows for some reason
 
 merged_totals <- state_year_totals %>%
   left_join(year_totals, join_by(YEAR, state_name), multiple = "any") #yay get rid of duplicates
@@ -343,10 +347,12 @@ for(i in 1:length(state_names)) {
 
 samesex_staterate <- samesex_staterate %>%
   select(YEAR, AK:WY) %>%
-  pivot_longer(AK:WY, names_to = "state_name")
+  pivot_longer(AK:WY, names_to = "state_name") %>%
+  rename(staterate_year = value) #check if this works in pipeline later
 
 rm(df, merged_totals, state_year_totals, year_totals, col_name, i, indv_names, state, state_names, total, total_names)
 
+gc()
 #BACK TO BEGINNING
 #ID key variables to merge back in
 extra_variables <- df_samesex %>% 
@@ -375,7 +381,7 @@ cleaned_data <- cleaned_data %>%
 rm(samesex_staterate, extra_variables)
 ```
 
-Export cleanish data for code testing purposes
+Export cleanish data for code testing purposes (oop need to rename).... still negative effect do my filters work?
 ```{r, include = F}
 gc()
 write.csv(cleaned_data, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\cleaned_data.csv")
@@ -388,6 +394,3 @@ Make dummies/do analysis
 #USE WOLFERS CODE
 
 ```
-
-
-Question - this is starting to get messy; best way to clearly delineate what is what?

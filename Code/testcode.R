@@ -1,8 +1,8 @@
 #test making state level pop estimates including state var
-df_samesex_mm <- fread("/Users/njrich/Desktop/Econ495/same-sex-migration/test_data.csv") #read in test_code on mac
+test <- df_samesex_mm
 
 gc() 
-df <- df_samesex_mm
+df <- test
 
 state_names <- unique(df$state_name)
 
@@ -21,7 +21,7 @@ for(i in 1:length(state_names)) {
     
     df <- df %>% 
       group_by(YEAR) %>% 
-      mutate(columned = sum(!!sym(col_name))) %>% #this seems to work oi thanks chatgpt
+      mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% #this seems to work oi thanks chatgpt, just missing na.rm = T? why work Mac earlier?
       ungroup() %>%
       rename(!!total_names[i] := columned)
 }
@@ -35,7 +35,7 @@ state_year_totals <- df %>%
 
 
 year_totals <- df %>%
-  select(YEAR, state_name, RI_excluded_total:OK_excluded_total) 
+  select(YEAR, state_name, AL_excluded_total:WY_excluded_total) #watch order changes Mac > Windows for some reason
 
 merged_totals <- state_year_totals %>%
   left_join(year_totals, join_by(YEAR, state_name), multiple = "any") #yay get rid of duplicates
@@ -60,10 +60,12 @@ samesex_staterate <- samesex_staterate %>%
   pivot_longer(AK:WY, names_to = "state_name")
 
 rm(df, merged_totals, state_year_totals, year_totals, col_name, i, indv_names, state, state_names, total, total_names)
+
+rm(df, merged_totals, state_year_totals, year_totals, col_name, i, indv_names, state, state_names, total, total_names, test, samesex_staterate) #debugging
 #AND IT WORKS NOW MOVING ON NEXT STEP DIVISION:)
 
 
-
+#goddamnit broken again some variables seem missing
 
 
 ##IGNORE BELOW
