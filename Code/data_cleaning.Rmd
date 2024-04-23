@@ -56,7 +56,7 @@ df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
   mutate(in_samesex_weighted = in_samesex * PERWT) #NOTE: I AM NOT SURE IF THIS IS CORRECT METHOD, SE OFF NOT ADJUSTED; see https://forum.ipums.org/t/identifying-same-sex-and-opposite-sex-couples/3878 for more help; https://forum.ipums.org/t/how-to-identify-same-sex-couples/2554/5
 
 
-#THINK: cases where people don't have a partner, check filters
+#THINK: cases where people don't have a partner, check filters - think should be good
 
 rm(partner, df_partners, pull1_csv)
 #PUT IN PERWT HERE WATCH NEED DIVIDE BY 100 AND GET DECIMALS            
@@ -230,8 +230,8 @@ df_samesex <- df_samesex %>%
     date_legalization == "WV" ~ "2014",
     date_legalization == "WI" ~ "2014",
     date_legalization == "WY" ~ "2014",
-    date_legalization == "PR" ~ "2015", #from googling - DROP
-    date_legalization == "OMI" ~ "2015", #from guessing - DROP
+    date_legalization == "PR" ~ "2015", #from googling - not in data, ok
+    date_legalization == "OMI" ~ "2015", #from guessing - not in data, ok
     TRUE ~ date_legalization 
   ))
 
@@ -290,8 +290,7 @@ df_samesex_mm <- df_samesex %>%
   filter(in_samesex == 1) %>% #CHECK THIS CUTS STUFF OUT -watch double v single &
   filter(AGE >= 30 & AGE <= 64) %>%
   filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
-  filter(MARST == 4 | MARST == 5 | MARST == 6) %>% #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
-  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) #get interstate migrants only #FIX THIS
+  filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
 
 #filter by sample
 df_samesex_mm_gen <- df_samesex_mm #general sample
@@ -299,20 +298,27 @@ df_samesex_mm_m <- df_samesex_mm %>% #men only
                     filter(SEX.indv == 1)
 df_samesex_mm_f <- df_samesex_mm %>% #women only
                     filter(SEX.indv == 2)
+
+#rm(df_samesex_mm)
 ```
 
 
 Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still getting opposite results; make sure population definition makes sense(see MM page 5 under the equation) (TURN INTO FINCTION)
 ```{r, include = F}
-gc() 
+gc()
+
 df <- df_samesex_mm
+
+#make year totals excluding each state (no migrant restrictions)
+
+df_yeartotals <- df
 
 state_names <- unique(df$state_name)
 
 indv_names <- paste(state_names, "excluded_indv", sep = "_")
 
 for(i in 1:length(state_names)) {
-  df <- df %>% #restrict this to gay earlier?
+  df_yeartotals <- df_yeartotals %>% #restrict this to gay earlier?
     mutate(column = if_else(state_name != state_names[i], in_samesex_weighted, 0)) %>%
     rename(!!indv_names[i] := column) #thank you chatgpt
 }
@@ -321,32 +327,38 @@ gc()
 total_names <- paste(state_names, "excluded_total", sep = "_")
 
 for(i in 1:length(state_names)) {
-    col_name <- indv_names[i] #thank you data.frame
-    
-    df <- df %>% 
-      group_by(YEAR) %>% 
-      mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% #this seems to work oi thanks chatgpt, just missing na.rm = T? why work Mac earlier?
-      ungroup() %>%
-      rename(!!total_names[i] := columned)
+  col_name <- indv_names[i] #thank you data.frame
+  
+  df_yeartotals <- df_yeartotals %>% 
+    group_by(YEAR) %>% 
+    mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% #this seems to work oi thanks chatgpt, just missing na.rm = T? why work Mac earlier?
+    ungroup() %>%
+    rename(!!total_names[i] := columned)
 }
 
-gc()
-#line up state and overall year totals (does not seem very efficient:()
-state_year_totals <- df %>%
+df_yeartotals <- df_yeartotals %>%
+  select(YEAR, state_name, AL_excluded_total:WY_excluded_total)
+
+#make state year totals
+
+df_statetotals <- df %>%
+  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) %>%
   group_by(YEAR, state_name) %>%
-  summarize(samesex_state_count = sum(in_samesex_weighted, na.rm = T)) %>% #WATCH NO USE SPECIAL COUNT HERE
+  summarize(state_total = sum(in_samesex_weighted, na.rm = T)) %>%
   ungroup()
 
+#some states don't exist here so convert later to 0
 
-year_totals <- df %>%
-  select(YEAR, state_name, AL_excluded_total:WY_excluded_total) #watch order changes Mac > Windows for some reason
+#set up division
 
-merged_totals <- state_year_totals %>%
-  left_join(year_totals, join_by(YEAR, state_name), multiple = "any") #yay get rid of duplicates
+merged_totals <- df_statetotals %>%
+  left_join(df_yeartotals, join_by(YEAR, state_name), multiple = "any") #yay get rid of duplicates
+
+samesex_staterate <- merged_totals %>% #oopsy amount of variable names
+  pivot_wider(names_from = state_name, values_from = state_total) %>%
+  mutate_all(~replace(., is.na(.), 0)) #coerce missing values to 0
 
 #do the division
-samesex_staterate <- merged_totals %>% #oopsy amount of variable names
-  pivot_wider(names_from = state_name, values_from = samesex_state_count)
 
 for(i in 1:length(state_names)) {
   state = state_names[i]
@@ -357,14 +369,11 @@ for(i in 1:length(state_names)) {
   
 }
 
-#clean up variables pivot long to get back to beginning:)
-
 samesex_staterate <- samesex_staterate %>%
   select(YEAR, AK:WY) %>%
   pivot_longer(AK:WY, names_to = "state_name") %>%
-  rename(staterate_year = value) #check if this works in pipeline later
-
-rm(df, merged_totals, state_year_totals, year_totals, col_name, i, indv_names, state, state_names, total, total_names)
+  rename(staterate_year = value) 
+rm(df, merged_totals, df_statetotals, df_yeartotals, col_name, i, indv_names, state, state_names, total, total_names)
 
 gc()
 #BACK TO BEGINNING
