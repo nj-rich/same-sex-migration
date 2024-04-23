@@ -21,16 +21,14 @@ gc()
 
 pull1_csv <- fread("C:\\Users\\njrich\\Downloads\\pull1.csv")
 
-#note might need to redownload to factor in ASECWT weights - watch individual v household serial and rules of weights - questions about ASECWT only in IPUMS CPS maybe also widow var... hmm.....
 ```
 
 Select out unneeded variables
 ```{r, include = F}
 gc()
 pull1_csv <- pull1_csv %>%
-  select(-SAMPLE, -CBSERIAL, -HHWT, -CLUSTER, -STRATA, -GQ)
-
-#note: need to add ASECWT weight var after looking
+  select(-SAMPLE, -CBSERIAL, -HHWT, -CLUSTER, -STRATA, -GQ) %>%
+  filter(SPLOC != 0) #filter out people not in relationships
 
 ```
 
@@ -372,7 +370,8 @@ for(i in 1:length(state_names)) {
 samesex_staterate <- samesex_staterate %>%
   select(YEAR, AK:WY) %>%
   pivot_longer(AK:WY, names_to = "state_name") %>%
-  rename(staterate_year = value) 
+  rename(staterate_year = value) %>%
+  mutate(staterate_year = staterate_year * 100)
 rm(df, merged_totals, df_statetotals, df_yeartotals, col_name, i, indv_names, state, state_names, total, total_names)
 
 gc()

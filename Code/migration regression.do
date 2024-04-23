@@ -8,7 +8,7 @@ clear
 set mem 50m
 set matsize 400
 
-use "C:\Users\njrich\Desktop\same-sex-migration\cleaned_data.dta"
+use "C:\Users\njrich\Desktop\same-sex-migration\mm_gen.dta"
 
 *encode NAs to -99 so STATA processes NAs like Wolfers processes NAs
 mvencode time_leg_chunked, mv(-99)
