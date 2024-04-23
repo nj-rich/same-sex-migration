@@ -55,6 +55,9 @@ df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
   )) %>%
   mutate(in_samesex_weighted = in_samesex * PERWT) #NOTE: I AM NOT SURE IF THIS IS CORRECT METHOD, SE OFF NOT ADJUSTED; see https://forum.ipums.org/t/identifying-same-sex-and-opposite-sex-couples/3878 for more help; https://forum.ipums.org/t/how-to-identify-same-sex-couples/2554/5
 
+
+#THINK: cases where people don't have a partner, check filters
+
 rm(partner, df_partners, pull1_csv)
 #PUT IN PERWT HERE WATCH NEED DIVIDE BY 100 AND GET DECIMALS            
 ```
@@ -227,8 +230,8 @@ df_samesex <- df_samesex %>%
     date_legalization == "WV" ~ "2014",
     date_legalization == "WI" ~ "2014",
     date_legalization == "WY" ~ "2014",
-    date_legalization == "PR" ~ "2015", #from googling
-    date_legalization == "OMI" ~ "2015", #from guessing
+    date_legalization == "PR" ~ "2015", #from googling - DROP
+    date_legalization == "OMI" ~ "2015", #from guessing - DROP
     TRUE ~ date_legalization 
   ))
 
@@ -284,7 +287,7 @@ Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRA
 gc()
 
 df_samesex_mm <- df_samesex %>%
-  filter(in_samesex == 1) %>%
+  filter(in_samesex == 1) %>% #CHECK THIS CUTS STUFF OUT -watch double v single &
   filter(AGE >= 30 & AGE <= 64) %>%
   filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
   filter(MARST == 4 | MARST == 5 | MARST == 6) %>% #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
