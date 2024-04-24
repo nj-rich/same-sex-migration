@@ -273,7 +273,7 @@ FRED <- FRED %>%
   mutate(state_pop = as.character(state_pop)) %>%
   mutate(state_pop = str_remove(state_pop, "\\.")) %>%
   mutate(state_pop = as.numeric(state_pop)) %>%
-  mutate(time = YEAR - 2001) %>%
+  mutate(time = YEAR - 2001) %>% #interesting
   mutate(timesq = time ^2)
 
 ```
@@ -285,7 +285,7 @@ Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRA
 gc()
 
 df_samesex_mm <- df_samesex %>%
-  filter(in_samesex == 1) %>% #CHECK THIS CUTS STUFF OUT -watch double v single &
+  filter(in_samesex == 1) %>% 
   filter(AGE >= 30 & AGE <= 64) %>%
   filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
   filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
@@ -296,16 +296,103 @@ df_samesex_mm_m <- df_samesex_mm %>% #men only
                     filter(SEX.indv == 1)
 df_samesex_mm_f <- df_samesex_mm %>% #women only
                     filter(SEX.indv == 2)
-
-#rm(df_samesex_mm)
 ```
 
-
-Make pct same-sex by state and year var (see weighting/exclusions) - UPDATED - still getting opposite results; make sure population definition makes sense(see MM page 5 under the equation) (TURN INTO FINCTION)
+##EXTENSION - 2001 - 2019
 ```{r, include = F}
 gc()
 
-df <- df_samesex_mm
+df_samesex_2019 <- df_samesex %>%
+  filter(in_samesex == 1) %>% 
+  filter(AGE >= 30 & AGE <= 64) %>%
+  filter(YEAR >= 2001 & YEAR <= 2019) %>% ##interesting include 2001
+  filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
+
+#filter by sample
+df_samesex_2019_gen <- df_samesex_2019 #general sample
+df_samesex_2019_m <- df_samesex_2019 %>% #men only
+                    filter(SEX.indv == 1)
+df_samesex_2019_f <- df_samesex_2019 %>% #women only
+                    filter(SEX.indv == 2)
+
+```
+
+##EXTENSION - 2001 - 2015 by income (USE OFFICIAL METRICS IN THE FUTURE SAMPLES TOO SMALL COME BACK LATER
+```{r, include = F}
+gc()
+
+df_samesex_inc <- df_samesex %>%
+  filter(in_samesex == 1) %>% 
+  filter(AGE >= 30 & AGE <= 64) %>%
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
+
+#make groups- method: by year arrange income low to high then divide by 5; BETTER WAY TO DO WITH OFFICIAL INCOME LINES?
+df_samesex_inc <- df_samesex_inc %>%
+  arrange(YEAR, INCTOT) %>%
+  group_by(YEAR) %>%
+  mutate(row_count = n()) %>%
+  mutate(row_number = row_number()) %>%
+  mutate(year_position = row_number / row_count) %>%
+  mutate(inc_class_year = case_when(
+    year_position < 1/5 ~ 1,
+    (year_position >= 1/5) & (year_position < 2/5) ~ 2,
+    (year_position >= 2/5) & (year_position < 3/5) ~ 3,
+    (year_position >= 3/5) & (year_position < 4/5) ~ 4,
+    (year_position >= 4/5) & (year_position < 1) ~ 5
+  )) %>%
+  select(-row_count, -row_number, -year_position) %>%
+  ungroup()
+
+
+
+df_samesex_inc_1 <- df_samesex_inc %>%
+  filter(inc_class_year == 1) 
+
+
+df_samesex_inc_2 <- df_samesex_inc %>%
+  filter(inc_class_year == 2) 
+
+
+df_samesex_inc_3 <- df_samesex_inc %>%
+  filter(inc_class_year == 3) 
+
+
+df_samesex_inc_4 <- df_samesex_inc %>%
+  filter(inc_class_year == 4) 
+
+
+df_samesex_inc_5 <- df_samesex_inc %>%
+  filter(inc_class_year == 5) 
+```
+
+
+##MARCEN BUT STRAIGHT COUPLES
+```{r, include = F}
+gc()
+
+df_samesex_st <- df_samesex %>%
+  filter(in_samesex == 0) %>% 
+  mutate(in_samesex_weighted = PERWT) %>% #done just for syncing purposes
+  filter(AGE >= 30 & AGE <= 64) %>%
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
+
+#filter by sample
+df_samesex_st_gen <- df_samesex_st #general sample
+df_samesex_st_m <- df_samesex_st %>% #men only
+                    filter(SEX.indv == 1)
+df_samesex_st_f <- df_samesex_st %>% #women only
+                    filter(SEX.indv == 2)
+```
+
+
+final division and cleaning (see MM page 5 under the equation) (TURN INTO FUNCTION)
+
+```{r, include = F}
+gc()
+
+df <- df_samesex_st_m
 
 #make year totals excluding each state (no migrant restrictions)
 
@@ -382,12 +469,12 @@ extra_variables <- df_samesex %>%
 
 #merge back in - think about implications of extra_variables having extra rows relative to state rate
 
-mm_gen <- samesex_staterate %>%
+output <-samesex_staterate %>%
   left_join(extra_variables, join_by(YEAR, state_name)) %>%
   left_join(FRED, join_by(YEAR, state_name))
 
 #make dummy variables for 1-2, 3-4, 5-6, >7 years (interest results with/without all of this filtering including above)
-mm_gen <- mm_gen %>%
+output <- output %>%
   mutate(time_leg_chunked = case_when(
     time_since_legalization == 1 ~ 2,
     time_since_legalization == 2 ~ 2,
@@ -406,8 +493,8 @@ rm(samesex_staterate, extra_variables)
 Export cleanish data for code testing purposes (oop need to rename).... still negative effect do my filters work?
 ```{r, include = F}
 gc()
-write.csv(mm_gen, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\mm_gen.csv")
-write_dta(mm_gen, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\mm_gen.dta") #fill in rest by gender
+write.csv(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\st_f.csv")
+write_dta(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\st_f.dta") #fill in rest by gender
 
 ```
 
