@@ -335,16 +335,13 @@ df_samesex_inc <- df_samesex_inc %>%
   mutate(row_number = row_number()) %>%
   mutate(year_position = row_number / row_count) %>%
   mutate(inc_class_year = case_when(
-    year_position < 1/5 ~ 1,
-    (year_position >= 1/5) & (year_position < 2/5) ~ 2,
-    (year_position >= 2/5) & (year_position < 3/5) ~ 3,
-    (year_position >= 3/5) & (year_position < 4/5) ~ 4,
-    (year_position >= 4/5) & (year_position < 1) ~ 5
+    year_position < 1/2 ~ 1, #lower income
+    (year_position >= 1/2) & (year_position =< 1) ~ 2  #higher income
   )) %>%
   select(-row_count, -row_number, -year_position) %>%
   ungroup()
 
-
+#do 2 groups, want to tie to official lines but will settle with per year sample percentiles in the meantime
 
 df_samesex_inc_1 <- df_samesex_inc %>%
   filter(inc_class_year == 1) 
@@ -352,18 +349,6 @@ df_samesex_inc_1 <- df_samesex_inc %>%
 
 df_samesex_inc_2 <- df_samesex_inc %>%
   filter(inc_class_year == 2) 
-
-
-df_samesex_inc_3 <- df_samesex_inc %>%
-  filter(inc_class_year == 3) 
-
-
-df_samesex_inc_4 <- df_samesex_inc %>%
-  filter(inc_class_year == 4) 
-
-
-df_samesex_inc_5 <- df_samesex_inc %>%
-  filter(inc_class_year == 5) 
 ```
 
 
