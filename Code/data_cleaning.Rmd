@@ -329,16 +329,24 @@ df_samesex_inc <- df_samesex %>%
 
 #make groups- method: by year arrange income low to high then divide by 5; BETTER WAY TO DO WITH OFFICIAL INCOME LINES?
 df_samesex_inc <- df_samesex_inc %>%
-  arrange(YEAR, INCTOT) %>%
-  group_by(YEAR) %>%
-  mutate(row_count = n()) %>%
-  mutate(row_number = row_number()) %>%
-  mutate(year_position = row_number / row_count) %>%
-  mutate(inc_class_year = if_else(year_position < 1/2, 1, 2)) %>% #lower income = 1, higher income = 2
-  select(-row_count, -row_number, -year_position) %>%
-  ungroup()
-
-#do 2 groups, want to tie to official lines but will settle with per year sample percentiles in the meantime
+  mutate(inc_class_year = case_when( #data in current dollars from IRS, below 50th percentile = 1, higher income = 2
+    YEAR == 2001 & INCTOT < 31418 ~ 1,
+    YEAR == 2002 & INCTOT < 31299 ~ 1,
+    YEAR == 2003 & INCTOT < 31447 ~ 1,
+    YEAR == 2004 & INCTOT < 32622 ~ 1,
+    YEAR == 2005 & INCTOT < 33484 ~ 1,
+    YEAR == 2006 & INCTOT < 34417 ~ 1,
+    YEAR == 2007 & INCTOT < 35541 ~ 1,
+    YEAR == 2008 & INCTOT < 35340 ~ 1,
+    YEAR == 2009 & INCTOT < 34156 ~ 1,
+    YEAR == 2010 & INCTOT < 34338 ~ 1,
+    YEAR == 2011 & INCTOT < 34823 ~ 1,
+    YEAR == 2012 & INCTOT < 36055 ~ 1,
+    YEAR == 2013 & INCTOT < 36841 ~ 1,
+    YEAR == 2014 & INCTOT < 38173 ~ 1,
+    YEAR == 2015 & INCTOT < 39275 ~ 1,
+    TRUE ~ 2
+  )) 
 
 df_samesex_inc_1 <- df_samesex_inc %>%
   filter(inc_class_year == 1) 
@@ -374,7 +382,7 @@ final division and cleaning (see MM page 5 under the equation) (TURN INTO FUNCTI
 ```{r, include = F}
 gc()
 
-df <- df_samesex_st_f
+df <- df_samesex_inc_2
 
 #make year totals excluding each state (no migrant restrictions)
 
@@ -475,8 +483,8 @@ rm(samesex_staterate, extra_variables)
 Export cleanish data for code testing purposes (oop need to rename).... still negative effect do my filters work?
 ```{r, include = F}
 gc()
-write.csv(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\st_f.csv")
-write_dta(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\st_f.dta") #fill in rest by gender
+write.csv(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.csv")
+write_dta(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.dta") #fill in rest by gender
 
 ```
 
