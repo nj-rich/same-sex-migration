@@ -10,7 +10,7 @@ set matsize 400
 
 
 * Windows
-* use "C:\Users\njrich\Desktop\same-sex-migration\mm_gen.dta" 
+ use "C:\Users\njrich\Desktop\same-sex-migration\st_f.dta" 
 
 *Mac
 *use "/Users/njrich/Desktop/Econ495/same-sex-migration/st_m.dta"

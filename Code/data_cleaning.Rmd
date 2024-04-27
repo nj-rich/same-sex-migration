@@ -334,10 +334,7 @@ df_samesex_inc <- df_samesex_inc %>%
   mutate(row_count = n()) %>%
   mutate(row_number = row_number()) %>%
   mutate(year_position = row_number / row_count) %>%
-  mutate(inc_class_year = case_when(
-    year_position < 1/2 ~ 1, #lower income
-    (year_position >= 1/2) & (year_position =< 1) ~ 2  #higher income
-  )) %>%
+  mutate(inc_class_year = if_else(year_position < 1/2, 1, 2)) %>% #lower income = 1, higher income = 2
   select(-row_count, -row_number, -year_position) %>%
   ungroup()
 
@@ -377,7 +374,7 @@ final division and cleaning (see MM page 5 under the equation) (TURN INTO FUNCTI
 ```{r, include = F}
 gc()
 
-df <- df_samesex_st_m
+df <- df_samesex_st_f
 
 #make year totals excluding each state (no migrant restrictions)
 
