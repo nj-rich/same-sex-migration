@@ -10,9 +10,6 @@ library(tidyverse) #for data work
 library(data.table) #for data loading
 library(haven) #for writing to dta
 library(readxl) #for reading in FRED data
-#watch these packages for dummies
-#install.packages("fastDummies") # --- recipes package might also work or tidymodels? (step_dummy maybe work darn recipe use confusion) (or not- different method) - issue: combo 2 years - check
-#library(fastDummies)
 ```
 
 Download IPUMS data
@@ -43,7 +40,7 @@ df_partners <- pull1_csv %>%
   left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM), suffix = c(".indv", ".partner"))
 
 gc()
-df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
+df_samesex <- df_partners %>% 
   mutate(in_samesex = case_when(
     (SEX.indv == 1) & (SEX.partner == 1) ~ 1, #gay
     (SEX.indv == 2) & (SEX.partner == 2) ~ 1, #gay
@@ -51,25 +48,24 @@ df_samesex <- df_partners %>% #WATCH CLARITY WHERE SPLOC IS
     (SEX.indv == 1) & (SEX.partner == 2) ~ 0, #straight
     (SEX.indv == 9) | (SEX.partner == 9) ~ NA #NA 
   )) %>%
-  mutate(in_samesex_weighted = in_samesex * PERWT) #NOTE: I AM NOT SURE IF THIS IS CORRECT METHOD, SE OFF NOT ADJUSTED; see https://forum.ipums.org/t/identifying-same-sex-and-opposite-sex-couples/3878 for more help; https://forum.ipums.org/t/how-to-identify-same-sex-couples/2554/5
-
-
-#THINK: cases where people don't have a partner, check filters - think should be good
+  mutate(in_samesex_weighted = in_samesex * PERWT) #NOTE: justification on weighting methodology: https://forum.ipums.org/t/identifying-same-sex-and-opposite-sex-couples/3878 for more help; https://forum.ipums.org/t/how-to-identify-same-sex-couples/2554/5
 
 rm(partner, df_partners, pull1_csv)
-#PUT IN PERWT HERE WATCH NEED DIVIDE BY 100 AND GET DECIMALS            
+
+
+#next steps: download attached partner information directly from IPUMS          
 ```
 
 Label states/input legalization year/length of time since legalization (use FIP) 
 
 ```{r, include = F}
 
-#label states
+#label states using chunking for memory management
 gc()
 df_samesex <- df_samesex %>%
-  mutate(state_name = as.character(STATEFIP)) #better way to do this- see 309 notes too? (fixing state_name=NA issue)
+  mutate(state_name = as.character(STATEFIP)) 
 
-df_samesex <- df_samesex %>% #ok this seems to work
+df_samesex <- df_samesex %>% 
   mutate(state_name = case_when( 
     state_name == "1" ~ "AL",
     state_name == "2" ~ "AK",
@@ -126,7 +122,7 @@ df_samesex <- df_samesex %>%
     TRUE ~ state_name)) 
 
 gc()
-df_samesex <- df_samesex %>% #this seems to be the only clause that works...
+df_samesex <- df_samesex %>% 
   mutate(state_name = case_when(
     state_name == "41" ~ "OR",
     state_name == "42" ~ "PA",
@@ -150,7 +146,7 @@ df_samesex <- df_samesex %>% #this seems to be the only clause that works...
 
 
 
-#label legalization date from Gerstmann "2012" OG pqper (see issues)
+#label legalization date from Gerstmann "2012" pqper
 gc()
 df_samesex <- df_samesex %>%
   mutate(date_legalization = state_name) 
@@ -161,7 +157,7 @@ df_samesex <- df_samesex %>%
     date_legalization == "AK" ~ "2014",
     date_legalization == "AZ" ~ "2014",
     date_legalization == "AR" ~ "2015",
-    date_legalization == "CA" ~ "2013", #watch legalized/repealed issue
+    date_legalization == "CA" ~ "2013", #watch legalized/repealed timeline
     date_legalization == "CO" ~ "2014",
     date_legalization == "CT" ~ "2008",
     date_legalization == "DE" ~ "2013",
@@ -228,8 +224,8 @@ df_samesex <- df_samesex %>%
     date_legalization == "WV" ~ "2014",
     date_legalization == "WI" ~ "2014",
     date_legalization == "WY" ~ "2014",
-    date_legalization == "PR" ~ "2015", #from googling - not in data, ok
-    date_legalization == "OMI" ~ "2015", #from guessing - not in data, ok
+    date_legalization == "PR" ~ "2015", 
+    date_legalization == "OMI" ~ "2015", 
     TRUE ~ date_legalization 
   ))
 
@@ -240,7 +236,7 @@ df_samesex <- df_samesex %>%
 #make time_since variable
 gc()
 df_samesex <- df_samesex %>%
-  mutate(time_since_legalization = if_else(YEAR - date_legalization < 0, NA, YEAR - date_legalization)) #check if this makes sense
+  mutate(time_since_legalization = if_else(YEAR - date_legalization < 0, NA, YEAR - date_legalization)) 
 
 #make time variable
 gc()
@@ -273,21 +269,21 @@ FRED <- FRED %>%
   mutate(state_pop = as.character(state_pop)) %>%
   mutate(state_pop = str_remove(state_pop, "\\.")) %>%
   mutate(state_pop = as.numeric(state_pop)) %>%
-  mutate(time = YEAR - 2001) %>% #interesting
+  mutate(time = YEAR - 2001) %>% 
   mutate(timesq = time ^2)
 
 ```
 
 ##MARCEN REPLICATION
 
-Filter data to match Marcén/Morales target population (INCLUDE INTERSTATE MIGRANTS FILTER/in_samesex filter) WATCH LABELING WHEN START DOING SUBSAMPLES
+Filter data to match Marcén/Morales target population
 ```{r, include = F}
 gc()
 
 df_samesex_mm <- df_samesex %>%
   filter(in_samesex == 1) %>% 
   filter(AGE >= 30 & AGE <= 64) %>%
-  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% 
   filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
 
 #filter by sample
@@ -296,6 +292,8 @@ df_samesex_mm_m <- df_samesex_mm %>% #men only
                     filter(SEX.indv == 1)
 df_samesex_mm_f <- df_samesex_mm %>% #women only
                     filter(SEX.indv == 2)
+
+#next steps: adjust filters to exclude individuals mis-identified as partners by IPUMS
 ```
 
 ##EXTENSION - 2001 - 2019
@@ -305,7 +303,7 @@ gc()
 df_samesex_2019 <- df_samesex %>%
   filter(in_samesex == 1) %>% 
   filter(AGE >= 30 & AGE <= 64) %>%
-  filter(YEAR >= 2001 & YEAR <= 2019) %>% ##interesting include 2001
+  filter(YEAR >= 2001 & YEAR <= 2019) %>% 
   filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
 
 #filter by sample
@@ -324,10 +322,10 @@ gc()
 df_samesex_inc <- df_samesex %>%
   filter(in_samesex == 1) %>% 
   filter(AGE >= 30 & AGE <= 64) %>%
-  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% 
   filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
 
-#make groups- method: by year arrange income low to high then divide by 5; BETTER WAY TO DO WITH OFFICIAL INCOME LINES?
+
 df_samesex_inc <- df_samesex_inc %>%
   mutate(inc_class_year = case_when( #data in current dollars from IRS, below 50th percentile = 1, higher income = 2
     YEAR == 2001 & INCTOT < 31418 ~ 1,
@@ -363,9 +361,9 @@ gc()
 
 df_samesex_st <- df_samesex %>%
   filter(in_samesex == 0) %>% 
-  mutate(in_samesex_weighted = PERWT) %>% #done just for syncing purposes
+  mutate(in_samesex_weighted = PERWT) %>% 
   filter(AGE >= 30 & AGE <= 64) %>%
-  filter(YEAR >= 2001 & YEAR <= 2015) %>% ##interesting include 2001
+  filter(YEAR >= 2001 & YEAR <= 2015) %>% 
   filter(MARST == 4 | MARST == 5 | MARST == 6) #includes those divorced, widowed, never married/single (NOTE: this excludes those married, separated, blank/missing)
 
 #filter by sample
@@ -377,7 +375,7 @@ df_samesex_st_f <- df_samesex_st %>% #women only
 ```
 
 
-final division and cleaning (see MM page 5 under the equation) (TURN INTO FUNCTION)
+final division and cleaning (see MM page 5 under the equation)
 
 ```{r, include = F}
 gc()
@@ -393,20 +391,20 @@ state_names <- unique(df$state_name)
 indv_names <- paste(state_names, "excluded_indv", sep = "_")
 
 for(i in 1:length(state_names)) {
-  df_yeartotals <- df_yeartotals %>% #restrict this to gay earlier?
+  df_yeartotals <- df_yeartotals %>% 
     mutate(column = if_else(state_name != state_names[i], in_samesex_weighted, 0)) %>%
-    rename(!!indv_names[i] := column) #thank you chatgpt
+    rename(!!indv_names[i] := column) 
 }
 
 gc()
 total_names <- paste(state_names, "excluded_total", sep = "_")
 
 for(i in 1:length(state_names)) {
-  col_name <- indv_names[i] #thank you data.frame
+  col_name <- indv_names[i] 
   
   df_yeartotals <- df_yeartotals %>% 
     group_by(YEAR) %>% 
-    mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% #this seems to work oi thanks chatgpt, just missing na.rm = T? why work Mac earlier?
+    mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% 
     ungroup() %>%
     rename(!!total_names[i] := columned)
 }
@@ -427,9 +425,9 @@ df_statetotals <- df %>%
 #set up division
 
 merged_totals <- df_statetotals %>%
-  left_join(df_yeartotals, join_by(YEAR, state_name), multiple = "any") #yay get rid of duplicates
+  left_join(df_yeartotals, join_by(YEAR, state_name), multiple = "any") #get rid of duplicates
 
-samesex_staterate <- merged_totals %>% #oopsy amount of variable names
+samesex_staterate <- merged_totals %>% 
   pivot_wider(names_from = state_name, values_from = state_total) %>%
   mutate_all(~replace(., is.na(.), 0)) #coerce missing values to 0
 
@@ -452,18 +450,19 @@ samesex_staterate <- samesex_staterate %>%
 rm(df, merged_totals, df_statetotals, df_yeartotals, col_name, i, indv_names, state, state_names, total, total_names)
 
 gc()
-#BACK TO BEGINNING
+
+
 #ID key variables to merge back in
 extra_variables <- df_samesex %>% 
   distinct(YEAR, state_name, time_since_legalization)
 
-#merge back in - think about implications of extra_variables having extra rows relative to state rate
+#merge back in 
 
 output <-samesex_staterate %>%
   left_join(extra_variables, join_by(YEAR, state_name)) %>%
   left_join(FRED, join_by(YEAR, state_name))
 
-#make dummy variables for 1-2, 3-4, 5-6, >7 years (interest results with/without all of this filtering including above)
+#make dummy variables for 1-2, 3-4, 5-6, >7 years 
 output <- output %>%
   mutate(time_leg_chunked = case_when(
     time_since_legalization == 1 ~ 2,
@@ -478,18 +477,14 @@ output <- output %>%
 
 
 rm(samesex_staterate, extra_variables)
+
+#next steps: functionalize, adjust whether states are dropped by lack of same-sex individuals or lack of same-sex migrants, try building new dataframe technique (building row by row) instead of pivot technique
 ```
 
-Export cleanish data for code testing purposes (oop need to rename).... still negative effect do my filters work?
+Export
 ```{r, include = F}
 gc()
 write.csv(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.csv")
 write_dta(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.dta") #fill in rest by gender
-
-```
-
-Make dummies/do analysis
-```{r, include = F}
-#USE WOLFERS CODE
 
 ```
