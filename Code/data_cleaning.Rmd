@@ -246,6 +246,14 @@ df_samesex <- df_samesex %>%
 
 ```
 
+Export partially labeled data
+```{r, include = F}
+gc()
+write.csv(df_samesex, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\df_samesex_partial.csv")
+
+```
+
+
 Create state pop table for pop weighting
 ```{r, include = F}
 gc()
