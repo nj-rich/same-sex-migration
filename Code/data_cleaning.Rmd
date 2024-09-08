@@ -53,7 +53,7 @@ df_samesex <- df_partners %>%
 rm(partner, df_partners, pull1_csv)
 
 
-#next steps: download attached partner information directly from IPUMS          
+#next steps: download attached partner information directly from IPUMS (see pull3)
 ```
 
 Label states/input legalization year/length of time since legalization (use FIP) 
@@ -236,7 +236,7 @@ df_samesex <- df_samesex %>%
 #make time_since variable
 gc()
 df_samesex <- df_samesex %>%
-  mutate(time_since_legalization = if_else(YEAR - date_legalization < 0, NA, YEAR - date_legalization)) 
+  mutate(time_since_legalization = if_else(((YEAR - date_legalization) < 0), NA, (YEAR - date_legalization))) 
 
 #make time variable
 gc()
@@ -249,7 +249,7 @@ df_samesex <- df_samesex %>%
 Export partially labeled data
 ```{r, include = F}
 gc()
-write.csv(df_samesex, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\df_samesex_partial.csv")
+write.csv(df_samesex, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\raw_labelled.csv")
 
 ```
 
@@ -388,7 +388,7 @@ final division and cleaning (see MM page 5 under the equation)
 ```{r, include = F}
 gc()
 
-df <- df_samesex_inc_2
+df <- df_samesex_mm
 
 #make year totals excluding each state (no migrant restrictions)
 
