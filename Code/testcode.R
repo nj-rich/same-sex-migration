@@ -42,8 +42,8 @@ df <- input_df %>%
 
 #create export file paths
 df_name_string <- deparse(substitute(input_df)) #convert df name to string for later file export
-csv_filepath <- paste("C:\\Users\\njrich\\Desktop\\same-sex-migration\\W24_builds\\F24_validation", gsub("df_samesex_", "", df_name_string), ".csv")
-stata_filepath <- paste("C:\\Users\\njrich\\Desktop\\same-sex-migration\\W24_builds\\F24_validation", gsub("df_samesex_", "", df_name_string), ".dta")
+csv_filepath <- paste("C:\\Users\\njrich\\Desktop\\same-sex-migration\\W24_builds\\F24_validation\\", gsub("df_samesex_", "", df_name_string), ".csv")
+stata_filepath <- paste("C:\\Users\\njrich\\Desktop\\same-sex-migration\\W24_builds\\F24_validation\\", gsub("df_samesex_", "", df_name_string), ".dta")
 
 #inner function building export row by row- add if statement for stateyears not present
 
@@ -121,14 +121,14 @@ output <- output %>%
   ))
 
 #Export
-# write.csv(output, csv_filepath) #broken
-# write_dta(output, stata_filepath) #broken
+write.csv(output, csv_filepath)
+write_dta(output, stata_filepath)
+
 return(output)
 }
 
 test2 <- create_output(df_samesex_mm)
 #function not actually faster? intriguing.
-#export not working, rest is
 #still need to rCompare
 
 
