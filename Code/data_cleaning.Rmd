@@ -6,10 +6,10 @@ output: html_document
 Load packages
 ```{r, include = F}
 gc()
-library(tidyverse) #for data work
 library(data.table) #for data loading
 library(haven) #for writing to dta
 library(readxl) #for reading in FRED data
+library(tidyverse) #for data work
 ```
 
 Download IPUMS data
