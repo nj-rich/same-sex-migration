@@ -6,6 +6,10 @@ output: html_document
 Load packages
 ```{r, include = F}
 gc()
+install.packages("dataCompareR")
+library(dataCompareR) #for rCompare
+
+
 library(data.table) #for data loading
 library(haven) #for writing to dta
 library(readxl) #for reading in FRED data
@@ -363,7 +367,7 @@ df_samesex_inc_2 <- df_samesex_inc %>%
 ```
 
 
-##MARCEN BUT STRAIGHT COUPLES
+##MARCEN BUT STRAIGHT COUPLES (ignore variable names, kept for matching purposes)
 ```{r, include = F}
 gc()
 
@@ -383,116 +387,131 @@ df_samesex_st_f <- df_samesex_st %>% #women only
 ```
 
 
-final division and cleaning (see MM page 5 under the equation)
+---W24 ARCHIVED--- final division and cleaning (see MM page 5 under the equation)
 
 ```{r, include = F}
-gc()
-
-df <- df_samesex_mm
-
-#make year totals excluding each state (no migrant restrictions)
-
-df_yeartotals <- df
-
-state_names <- unique(df$state_name)
-
-indv_names <- paste(state_names, "excluded_indv", sep = "_")
-
-for(i in 1:length(state_names)) {
-  df_yeartotals <- df_yeartotals %>% 
-    mutate(column = if_else(state_name != state_names[i], in_samesex_weighted, 0)) %>%
-    rename(!!indv_names[i] := column) 
-}
-
-gc()
-total_names <- paste(state_names, "excluded_total", sep = "_")
-
-for(i in 1:length(state_names)) {
-  col_name <- indv_names[i] 
-  
-  df_yeartotals <- df_yeartotals %>% 
-    group_by(YEAR) %>% 
-    mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% 
-    ungroup() %>%
-    rename(!!total_names[i] := columned)
-}
-
-df_yeartotals <- df_yeartotals %>%
-  select(YEAR, state_name, AL_excluded_total:WY_excluded_total)
-
-#make state year totals
-
-df_statetotals <- df %>%
-  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) %>%
-  group_by(YEAR, state_name) %>%
-  summarize(state_total = sum(in_samesex_weighted, na.rm = T)) %>%
-  ungroup()
-
-#some states don't exist here so convert later to 0
-
-#set up division
-
-merged_totals <- df_statetotals %>%
-  left_join(df_yeartotals, join_by(YEAR, state_name), multiple = "any") #get rid of duplicates
-
-samesex_staterate <- merged_totals %>% 
-  pivot_wider(names_from = state_name, values_from = state_total) %>%
-  mutate_all(~replace(., is.na(.), 0)) #coerce missing values to 0
-
-#do the division
-
-for(i in 1:length(state_names)) {
-  state = state_names[i]
-  total = total_names[i]
-  
-  samesex_staterate <- samesex_staterate %>% 
-    mutate(!!state := !!sym(state)/!!sym(total))
-  
-}
-
-samesex_staterate <- samesex_staterate %>%
-  select(YEAR, AK:WY) %>%
-  pivot_longer(AK:WY, names_to = "state_name") %>%
-  rename(staterate_year = value) %>%
-  mutate(staterate_year = staterate_year * 100)
-rm(df, merged_totals, df_statetotals, df_yeartotals, col_name, i, indv_names, state, state_names, total, total_names)
-
-gc()
-
-
-#ID key variables to merge back in
-extra_variables <- df_samesex %>% 
-  distinct(YEAR, state_name, time_since_legalization)
-
-#merge back in 
-
-output <-samesex_staterate %>%
-  left_join(extra_variables, join_by(YEAR, state_name)) %>%
-  left_join(FRED, join_by(YEAR, state_name))
-
-#make dummy variables for 1-2, 3-4, 5-6, >7 years 
-output <- output %>%
-  mutate(time_leg_chunked = case_when(
-    time_since_legalization == 1 ~ 2,
-    time_since_legalization == 2 ~ 2,
-    time_since_legalization == 3 ~ 4,
-    time_since_legalization == 4 ~ 4,
-    time_since_legalization == 5 ~ 6,
-    time_since_legalization == 6 ~ 6,
-    time_since_legalization >= 7 ~ 7,
-  ))
-
-
-
-rm(samesex_staterate, extra_variables)
+# gc()
+# 
+# df <- df_samesex_mm_f
+# 
+# #make year totals excluding each state (no migrant restrictions)
+# 
+# df_yeartotals <- df
+# 
+# state_names <- unique(df$state_name)
+# 
+# indv_names <- paste(state_names, "excluded_indv", sep = "_")
+# 
+# for(i in 1:length(state_names)) {
+#   df_yeartotals <- df_yeartotals %>% 
+#     mutate(column = if_else(state_name != state_names[i], in_samesex_weighted, 0)) %>%
+#     rename(!!indv_names[i] := column) 
+# }
+# 
+# gc()
+# total_names <- paste(state_names, "excluded_total", sep = "_")
+# 
+# for(i in 1:length(state_names)) {
+#   col_name <- indv_names[i] 
+#   
+#   df_yeartotals <- df_yeartotals %>% 
+#     group_by(YEAR) %>% 
+#     mutate(columned = sum(!!sym(col_name), na.rm = T)) %>% 
+#     ungroup() %>%
+#     rename(!!total_names[i] := columned)
+# }
+# 
+# df_yeartotals <- df_yeartotals %>%
+#   select(YEAR, state_name, AL_excluded_total:WY_excluded_total)
+# 
+# #make state year totals
+# 
+# df_statetotals <- df %>%
+#   filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) %>%
+#   group_by(YEAR, state_name) %>%
+#   summarize(state_total = sum(in_samesex_weighted, na.rm = T)) %>%
+#   ungroup()
+# 
+# #some states don't exist here so convert later to 0
+# 
+# #set up division
+# 
+# merged_totals <- df_statetotals %>%
+#   left_join(df_yeartotals, join_by(YEAR, state_name), multiple = "any") #get rid of duplicates
+# 
+# samesex_staterate <- merged_totals %>% 
+#   pivot_wider(names_from = state_name, values_from = state_total) %>%
+#   mutate_all(~replace(., is.na(.), 0)) #coerce missing values to 0
+# 
+# #do the division
+# 
+# for(i in 1:length(state_names)) {
+#   state = state_names[i]
+#   total = total_names[i]
+#   
+#   samesex_staterate <- samesex_staterate %>% 
+#     mutate(!!state := !!sym(state)/!!sym(total))
+#   
+# }
+# 
+# samesex_staterate <- samesex_staterate %>%
+#   select(YEAR, AK:WY) %>%
+#   pivot_longer(AK:WY, names_to = "state_name") %>%
+#   rename(staterate_year = value) %>%
+#   mutate(staterate_year = staterate_year * 100)
+# rm(df, merged_totals, df_statetotals, df_yeartotals, col_name, i, indv_names, state, state_names, total, total_names)
+# 
+# gc()
+# 
+# 
+# #ID key variables to merge back in
+# extra_variables <- df_samesex %>% 
+#   distinct(YEAR, state_name, time_since_legalization)
+# 
+# #merge back in 
+# 
+# output <-samesex_staterate %>%
+#   left_join(extra_variables, join_by(YEAR, state_name)) %>%
+#   left_join(FRED, join_by(YEAR, state_name))
+# 
+# #make dummy variables for 1-2, 3-4, 5-6, >7 years 
+# output <- output %>%
+#   mutate(time_leg_chunked = case_when(
+#     time_since_legalization == 1 ~ 2,
+#     time_since_legalization == 2 ~ 2,
+#     time_since_legalization == 3 ~ 4,
+#     time_since_legalization == 4 ~ 4,
+#     time_since_legalization == 5 ~ 6,
+#     time_since_legalization == 6 ~ 6,
+#     time_since_legalization >= 7 ~ 7,
+#   ))
+# 
+# 
+# 
+# rm(samesex_staterate, extra_variables)
 
 #next steps: functionalize, adjust whether states are dropped by lack of same-sex individuals or lack of same-sex migrants, try building new dataframe technique (building row by row) instead of pivot technique
 ```
 
-Export
+---W24 ARCHIVED--- Export
 ```{r, include = F}
-gc()
-write.csv(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.csv")
-write_dta(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.dta") #fill in rest by gender
+# gc()
+# write.csv(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.csv")
+# write_dta(output, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\inc_2.dta") #fill in rest by gender
 
+```
+
+--- F24 version (still expect differences from MM- see count differences remaining)--- final division and cleaning (see MM page 5 under the equation)
+```{r, include = F}
+# code
+```
+
+Summary statistics testing
+```{r, include = F}
+# code
+```
+
+Future regressions
+```{r, include = F}
+# code
 ```
