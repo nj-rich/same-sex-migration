@@ -29,7 +29,7 @@ Select out unneeded variables
 gc()
 pull1_csv <- pull1_csv %>%
   select(-SAMPLE, -CBSERIAL, -HHWT, -CLUSTER, -STRATA, -GQ) %>%
-  filter(SPLOC != 0) #filter out people not in relationships
+  filter(SPLOC != 0) #filter out people not in relationships, update with pull3 methodology
 
 ```
 
@@ -41,7 +41,7 @@ partner <- pull1_csv %>%
 
 gc()
 df_partners <- pull1_csv %>%
-  left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM), suffix = c(".indv", ".partner"))
+  left_join(partner, join_by(YEAR, SERIAL, SPLOC == PERNUM), suffix = c(".indv", ".partner")) #update with pull3 methodology
 
 gc()
 df_samesex <- df_partners %>% 
@@ -253,7 +253,7 @@ df_samesex <- df_samesex %>%
 Export partially labeled data
 ```{r, include = F}
 gc()
-write.csv(df_samesex, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\raw_labelled.csv")
+write.csv(df_samesex, "C:\\Users\\njrich\\Desktop\\same-sex-migration\\raw_labeled.csv")
 
 ```
 
@@ -501,14 +501,190 @@ df_samesex_st_f <- df_samesex_st %>% #women only
 
 ```
 
---- F24 version (still expect differences from MM- see count differences remaining)--- final division and cleaning (see MM page 5 under the equation)
+--- F24 version output function
 ```{r, include = F}
-# code
+gc()
+#make state_years string for repeated use
+df_state_years <- df_samesex %>%
+  distinct(state_name, YEAR) %>%
+  mutate(state_year = paste(state_name, YEAR, sep = "_"))
+
+state_years <- df_state_years$state_year %>% unique()
+rm(df_state_years)
+
+#outer function (watch opposite sex df differences)
+create_output <- function(input_df, begin, end) {
+
+#make state_years (note: watch handling general state_years string for dfs with missing state_years)
+df <- input_df %>%
+  mutate(state_year = paste(state_name, YEAR, sep = "_"))
+
+
+#create export file paths
+df_name_string <- deparse(substitute(input_df)) #convert df name to string for later file export
+csv_filepath <- paste("C:\\Users\\njrich\\Desktop\\same-sex-migration\\W24_builds\\F24_validation\\", gsub("df_samesex_", "", df_name_string), ".csv", sep = "")
+stata_filepath <- paste("C:\\Users\\njrich\\Desktop\\same-sex-migration\\W24_builds\\F24_validation\\", gsub("df_samesex_", "", df_name_string), ".dta", sep = "")
+
+#inner function building export row by row
+
+build_samesex_rows <- function(input_stateyear) {
+small_df = df
+
+state_year = input_stateyear
+
+indv_state = substr(input_stateyear, 1, 2)
+indv_year = substr(input_stateyear, 4, 8) %>%
+  as.numeric()
+
+
+#count total potential migrants to state (all same-sex indv in given year excluding those in destination state)
+tot_pot_mig_build <- small_df %>%
+  filter(YEAR == indv_year) %>%
+  filter(state_name != indv_state) %>%
+  summarize(count = sum(in_samesex_weighted))
+
+tot_pot_mig <- tot_pot_mig_build$count[1]
+
+#count actual migrants to state
+
+mig_to_state_build <- small_df %>%
+  filter(YEAR == indv_year) %>%
+  filter(state_name == indv_state) %>%
+  filter(MIGPLAC1 > 0 & MIGPLAC1 < 57) %>%
+  summarize(count = sum(in_samesex_weighted))
+
+mig_to_state = mig_to_state_build$count[1]
+
+#make fraction
+if(mig_to_state != 0){ #MM drop observations with 0 same-sex migrants (pdf page 8)
+#MOVE IF STATEMENT DOWN HERE - FOR MM NA
+rate = mig_to_state/tot_pot_mig
+}
+#for missing state-years
+else{
+  rate = NA
+}
+
+#build row to stack later (and fraction) - watch NAs/comparison check
+
+df_row = data.frame(YEAR = indv_year,
+                    migrants = mig_to_state,
+                    total_potential_migrants = tot_pot_mig,
+                    state_name = indv_state,
+                    staterate_year = rate)
+
+return(df_row)
+}
+
+partial_output <- map(state_years, build_samesex_rows) %>% list_rbind()
+
+#drop NAs (temporarily keep NAs for RCompare)
+# partial_output <- partial_output %>%
+#   filter(!is.na(staterate_year))
+
+#ID key variables to merge back in
+extra_variables <- df_samesex %>% 
+  distinct(YEAR, state_name, time_since_legalization)
+
+#merge back in 
+
+output <-partial_output %>%
+  left_join(extra_variables, join_by(YEAR, state_name)) %>%
+  left_join(FRED, join_by(YEAR, state_name))
+
+#make dummy variables for 1-2, 3-4, 5-6, >7 years 
+output <- output %>%
+  mutate(time_leg_chunked = case_when(
+    time_since_legalization == 1 ~ 2,
+    time_since_legalization == 2 ~ 2,
+    time_since_legalization == 3 ~ 4,
+    time_since_legalization == 4 ~ 4,
+    time_since_legalization == 5 ~ 6,
+    time_since_legalization == 6 ~ 6,
+    time_since_legalization >= 7 ~ 7,
+  ))
+
+#Restrict years
+output <- output %>% 
+  filter(begin <= YEAR) %>% 
+  filter(YEAR <= end)
+
+#Export
+write.csv(output, csv_filepath)
+write_dta(output, stata_filepath)
+
+return(output)
+
+}
 ```
+
+function output (11/8/24 results: relative to MM drop 101 v 5 male observations, 89 v 2 female observations, 35 v 0 general observations; still need to drop some stuff for MM matchup but maybe need to include stuff not currently including- see testcode)
+```{r, include = F}
+gc()
+F24_mm_m <- create_output(df_samesex_mm_m, 2001, 2015)
+F24_mm_f <- create_output(df_samesex_mm_f, 2001, 2015)
+F24_mm_gen <- create_output(df_samesex_mm_gen, 2001, 2015)
+```
+
 
 Summary statistics testing
 ```{r, include = F}
-# code
+# replicate MM figure 3
+fig3 <- F24_mm_gen %>%
+  select(YEAR, migrants, time_since_legalization) %>%
+  mutate(is_legal = ifelse(!is.na(time_since_legalization), "legal", "not_legal")) %>%
+  group_by(YEAR, is_legal) %>%
+  summarize(migrants = sum(migrants)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = is_legal, values_from = migrants) %>%
+  mutate(not_legal = ifelse(is.na(not_legal), 0, not_legal),
+         legal = ifelse(is.na(legal), 0, legal)) %>%
+  mutate(tot_mig = not_legal + legal) %>%
+  ggplot() +
+  geom_line(aes(x = YEAR, y = legal), color = "blue") +
+  geom_line(aes(x = YEAR, y = not_legal), color = "green") +
+  geom_line(aes(x = YEAR, y = tot_mig), color = "red")
+#add more graph labels
+
+fig3
+#relative to figure 3 in MM, these figures are up to 5x the magnitude. This cannot be attributed to the presence of weights (removing weights does not bring this graph i line with MM's graph)
+```
+```{r, include = F}
+# replicate MM figure 2
+#code
+fig2 <- df_samesex %>%
+  select(YEAR, PERWT, state_name) %>%
+  group_by(YEAR, state_name) %>%
+  summarize(total_indv = sum(PERWT)) %>%
+  ungroup() %>%
+  filter(2001 <= YEAR) %>%
+  filter(2015 >= YEAR) %>%
+  left_join(F24_mm_gen) %>%
+  mutate(is_legal_tot = ifelse(!is.na(time_since_legalization), "legal_tot", "not_legal_tot")) %>%
+  pivot_wider(names_from = is_legal_tot, values_from = total_indv) %>%
+  mutate(not_legal_tot = ifelse(is.na(not_legal_tot), 0, not_legal_tot),
+         legal_tot = ifelse(is.na(legal_tot), 0, legal_tot)) %>%
+  mutate(tot_tot = not_legal_tot + legal_tot) %>%
+  mutate(migrants = ifelse(is.na(migrants), 0, migrants)) %>%
+  mutate(total_potential_migrants = ifelse(is.na(total_potential_migrants), 0, total_potential_migrants)) %>%
+  select(YEAR, state_name, total_potential_migrants, migrants, tot_tot, legal_tot) %>%
+  group_by(YEAR) %>%
+  summarize(total_pot_mig = sum(total_potential_migrants),
+            mig_frac = sum(migrants)/sum(total_potential_migrants),
+            total_pop = sum(tot_tot),
+            legal_frac = sum(legal_tot)/sum(tot_tot)) %>%
+  ungroup() %>%
+  ggplot() +
+  geom_line(aes(x = YEAR, y = mig_frac), color = "red") #+
+  # geom_line(aes(x = YEAR, y = legal_frac), color = "blue") +
+  # scale_y_continuous(name = "legal_frac",
+  #                    sec.axis = sec_axis(~ . * 1000, name = "mig_frac"))
+  # 
+#add more graph labels and fix axis
+
+fig2
+
+#takeaways: tot_pot_mig seems absurdly high (~1/3 of weighed US pop here) making tot_mig/tot_pot_mig seem absurdly low... need to go back, make charts displaying summary stats of migration using these values and go back and correct manually labeled couples/genders+++ hoping this will help solve some of the issues
 ```
 
 Future regressions
