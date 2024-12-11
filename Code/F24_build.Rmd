@@ -1,0 +1,229 @@
+---
+title: "F24_build"
+output: html_document
+date: "2024-12-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load packages
+```{r, include = F}
+gc()
+library(data.table) #for data loading
+library(readxl) #for reading in FRED data
+library(tidyverse) #for data work
+install.packages("janitor")
+library(janitor) #for clean_names
+library(srvyr) #for weighting
+```
+
+Download IPUMS data
+```{r, include = F}
+gc()
+#mac
+F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>% #didn't break
+  clean_names()
+#windows
+
+```
+
+transform to survey object for weighting (note: watch export to STATA needs)
+```{r, include = F}
+gc()
+#mac
+summary_stats <- as_survey(F24_pull1, weights = perwt) #note: exclude rep_wts so standard errors are inaccurate (file otherwise insanely big- talk someone about it)
+stata_analysis <- F24_pull1
+#rm(F24_pull1)
+#windows
+
+```
+
+Label states/input legalization year (use FIP) 
+(NEED SCHOOL COMPUTER FOR THIS)
+```{r, include = F}
+gc()
+#label states using chunking for memory management
+add_context <- function(df_samesex) {
+gc()
+
+df_samesex <- df_samesex %>%
+  mutate(state_name = as.character(statefip)) 
+
+df_samesex <- df_samesex %>% 
+  mutate(state_name = case_when( 
+    state_name == "1" ~ "AL",
+    state_name == "2" ~ "AK",
+    state_name == "4" ~ "AZ",
+    state_name == "5" ~ "AR",
+    state_name == "6" ~ "CA",
+    state_name == "8" ~ "CO",
+    state_name == "9" ~ "CT",
+    state_name == "10" ~ "DE",
+    TRUE ~ state_name))
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
+    state_name == "11" ~ "DC",
+    state_name == "12" ~ "FL",
+    state_name == "13" ~ "GA",
+    state_name == "15" ~ "HI",
+    state_name == "16" ~ "ID",
+    state_name == "17" ~ "IL",
+    state_name == "18" ~ "IN",
+    state_name == "19" ~ "IA",
+    state_name == "20" ~ "KS",
+    TRUE ~ state_name)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
+    state_name == "21" ~ "KY",
+    state_name == "22" ~ "LA",
+    state_name == "23" ~ "MI",
+    state_name == "24" ~ "MD",
+    state_name == "25" ~ "MA",
+    state_name == "26" ~ "ME",
+    state_name == "27" ~ "MN",
+    state_name == "28" ~ "MS",
+    state_name == "29" ~ "MO",
+    state_name == "30" ~ "MT",
+    TRUE ~ state_name)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(state_name = case_when(
+    state_name == "31" ~ "NE",
+    state_name == "32" ~ "NV",
+    state_name == "33" ~ "NH",
+    state_name == "34" ~ "NJ",
+    state_name == "35" ~ "NM",
+    state_name == "36" ~ "NY",
+    state_name == "37" ~ "NC",
+    state_name == "38" ~ "ND",
+    state_name == "39" ~ "OH",
+    state_name == "40" ~ "OK",
+    TRUE ~ state_name)) 
+
+gc()
+df_samesex <- df_samesex %>% 
+  mutate(state_name = case_when(
+    state_name == "41" ~ "OR",
+    state_name == "42" ~ "PA",
+    state_name == "44" ~ "RI",
+    state_name == "45" ~ "SC",
+    state_name == "46" ~ "SD",
+    state_name == "47" ~ "TN",
+    state_name == "48" ~ "TX",
+    state_name == "49" ~ "UT",
+    state_name == "50" ~ "VT",
+    state_name == "51" ~ "VA",
+    state_name == "53" ~ "WA",
+    state_name == "54" ~ "WV",
+    state_name == "55" ~ "WI",
+    state_name == "56" ~ "WY",
+    state_name == "72" ~ "PR",
+    state_name == "97" ~ "OMI", #Overseas Military Installations
+    state_name == "99" ~ NA,
+    TRUE ~ state_name 
+  )) 
+
+
+
+#label legalization date from Gerstmann "2012" pqper
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = state_name) 
+
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when ( 
+    date_legalization == "AL" ~ "2015",
+    date_legalization == "AK" ~ "2014",
+    date_legalization == "AZ" ~ "2014",
+    date_legalization == "AR" ~ "2015",
+    date_legalization == "CA" ~ "2013", #watch legalized/repealed timeline
+    date_legalization == "CO" ~ "2014",
+    date_legalization == "CT" ~ "2008",
+    date_legalization == "DE" ~ "2013",
+    date_legalization == "DC" ~ "2009",
+    date_legalization == "FL" ~ "2015",
+    TRUE ~ date_legalization)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    date_legalization == "GA" ~ "2015",
+    date_legalization == "HI" ~ "2013",
+    date_legalization == "ID" ~ "2014",
+    date_legalization == "IL" ~ "2013",
+    date_legalization == "IN" ~ "2014",
+    date_legalization == "IA" ~ "2009",
+    date_legalization == "KS" ~ "2014",
+    date_legalization == "KY" ~ "2015",
+    date_legalization == "LA" ~ "2015",
+    date_legalization == "ME" ~ "2012",
+    TRUE ~ date_legalization)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    date_legalization == "MD" ~ "2012",
+    date_legalization == "MA" ~ "2003",
+    date_legalization == "MI" ~ "2015",
+    date_legalization == "MN" ~ "2013",
+    date_legalization == "MS" ~ "2015",
+    date_legalization == "MO" ~ "2015",
+    date_legalization == "MT" ~ "2014",
+    date_legalization == "NE" ~ "2015",
+    date_legalization == "NV" ~ "2014",
+    date_legalization == "NH" ~ "2009",
+    TRUE ~ date_legalization)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    date_legalization == "NJ" ~ "2013",
+    date_legalization == "NM" ~ "2013",
+    date_legalization == "NY" ~ "2011",
+    date_legalization == "NC" ~ "2014",
+    date_legalization == "ND" ~ "2015",
+    date_legalization == "OH" ~ "2015",
+    date_legalization == "OK" ~ "2014",
+    date_legalization == "OR" ~ "2014",
+    date_legalization == "PA" ~ "2014",
+    date_legalization == "RI" ~ "2013",
+    TRUE ~ date_legalization)) 
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = case_when(
+    date_legalization == "SC" ~ "2014",
+    date_legalization == "SD" ~ "2015",
+    date_legalization == "TN" ~ "2015",
+    date_legalization == "TX" ~ "2015",
+    date_legalization == "UT" ~ "2014",
+    date_legalization == "VT" ~ "2009",
+    date_legalization == "VA" ~ "2014",
+    date_legalization == "WA" ~ "2012",
+    date_legalization == "WV" ~ "2014",
+    date_legalization == "WI" ~ "2014",
+    date_legalization == "WY" ~ "2014",
+    date_legalization == "PR" ~ "2015", 
+    date_legalization == "OMI" ~ "2015", 
+    TRUE ~ date_legalization 
+  ))
+
+gc()
+df_samesex <- df_samesex %>%
+  mutate(date_legalization = as.numeric(date_legalization))
+
+return(df_samesex)
+}
+summary_stats <- add_context(summary_stats)
+stata_analysis <- add_context(stata_analysis)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
