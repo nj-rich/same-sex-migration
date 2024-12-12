@@ -226,7 +226,8 @@ df_samesex <- df_samesex %>%
 gc()
 df_samesex <- df_samesex %>% 
   mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
-  mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here
+  mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here/coding issues
+  mutate(in_oppositesex = ifelse((sex_sp != sex) & !is.na(sex_sp), 1, 0)) %>% #watch techdef here
   mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
   mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1))) #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
 
@@ -245,8 +246,16 @@ gc()
 #count those in/not in same sex
 count_same_sex <- summary_stats %>%
   group_by(year) %>%
-  summarize(in_samesex = survey_mean(in_samesex, na.rm = T)) %>%
-  select(-in_samesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+  summarize(prop_samesex = survey_mean(in_samesex, na.rm = T)) %>%
+  select(-prop_samesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+gc()
+#count those in/not in opposite sex
+count_same_sex <- summary_stats %>%
+  group_by(year) %>%
+  summarize(prop_oppositesex = survey_mean(in_oppocitesex, na.rm = T)) %>%
+  select(-prop_oppositesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
 
 gc()
 #count male/female
@@ -266,7 +275,7 @@ count_in_legal <- summary_stats %>%
 gc()
 #analyze by what triple diff will ultimately look like
 reg_graph_data <- summary_stats %>%
-  filter((in_samesex == 1) | (in_samesex == 0)) %>%
+  filter((in_samesex == 1) | (in_samesex == 0)) %>% #WATCH ADJUSTMENTS HERE FOR BETTER COMPARISON
   mutate(mig_type = ifelse((migrant == 1) & (old_legal == 1), "to_old_legal", ifelse((migrant == 1) & (old_legal == 0), "to_old_not_legal", "not a migrant"))) %>% #PUT THIS VARIABLE IN FUNCTION ABOVE OI STATA SET UP (issues, watch dynamism, OI LOGIC CHECK)
   mutate(to_old_legal = ifelse(mig_type == "to_old_legal", 1, 0)) %>% #use pivot wider?
   mutate(to_old_not_legal = ifelse(mig_type == "to_old_not_legal", 1, 0)) %>% #use pivot wider?
@@ -280,20 +289,25 @@ reg_graph_data <- summary_stats %>%
 gc()
 same_sex_trends <- reg_graph_data %>%
   filter(in_samesex == 1) %>%
+  pivot_longer(cols = c(prop_to_old_legal, prop_to_old_not_legal), names_to = "destination_state") %>%
   ggplot(aes(x = year)) +
-    geom_line(aes(y = prop_to_old_legal), color = "blue") +
-    geom_line(aes(y = prop_to_old_not_legal), color = "red") #oop add labels etc etc and y axis
+    geom_line(aes(y = value, color = destination_state)) +
+    scale_x_binned() +
+    labs(title = "Migration of Same-Sex Individuals to Various States",
+         x = "Year",
+         y = "Fraction to State Type",
+         color = "Destination State") #watch clarifications needed here
 same_sex_trends
 
 opposite_sex_trends <- reg_graph_data %>%
-  filter(in_samesex == 0) %>%
+  filter(in_samesex == 0) %>% #THIS NEEDS ADJUSTMENT
   ggplot(aes(x = year)) +
     geom_line(aes(y = prop_to_old_legal), color = "blue") +
     geom_line(aes(y = prop_to_old_not_legal), color = "red") #oop add labels etc etc
 opposite_sex_trends
 
 subtracted_trends <- reg_graph_data %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "not_samesex")) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "not_samesex")) %>% #THIS NEEDS ADJUSTMENT FOR RELATIVE COMPARISON BETTER
   pivot_wider(names_from = in_samesex, values_from = c(prop_to_old_legal, prop_to_old_not_legal)) %>%
   mutate(diff_old_legal = prop_to_old_legal_samesex - prop_to_old_legal_not_samesex,
         diff_old_not_legal = prop_to_old_not_legal_samesex - prop_to_old_not_legal_not_samesex ) %>% #oi naming, put some of these in data columns then functionalize
@@ -309,6 +323,11 @@ subtracted_trends #subtract from same-sex
 #interesting
 #go past 2019? hmm hmm hmm, compare migration rates overall?
 #oi so much more cleaning work left to do need to be systematic
+#watch tech fixes, esp. for opposite sex couples (add indicator function to big cleaning function a few steps up)
+#so much more to adjust and prettify and functionalize here but good spot (oi vey labels)
+#also need smaller random sampled data for break for testing stuff (not final regression)
+#oop standard errors
+#need make output var, need think more on stata too interaction terms make sure actually have everything
 ```
 
 ```{r, include = F}
