@@ -227,24 +227,88 @@ gc()
 df_samesex <- df_samesex %>% 
   mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
   mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here
-  mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) #watch greater than/greater than or equal to
+  mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
+  mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1))) #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
 
 return(df_samesex)
+
+#collapse for readability/organization above?
 }
 summary_stats <- add_context(summary_stats)
 stata_analysis <- add_context(stata_analysis)
 
 ```
 
-Base summary stats (AGAIN HAVEN'T RESTRICTED SAMPLE YET, NO SE, OI GO BACK AND CHECK LIT REVIEW)
+Base summary stats (AGAIN HAVEN'T RESTRICTED SAMPLE YET, NO SE, OI GO BACK AND CHECK LIT REVIEW)- functionalize?
 ```{r, include = F}
+gc()
 #count those in/not in same sex
 count_same_sex <- summary_stats %>%
   group_by(year) %>%
   summarize(in_samesex = survey_mean(in_samesex, na.rm = T)) %>%
   select(-in_samesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
 
+gc()
+#count male/female
+count_male_female <- summary_stats %>%
+  group_by(year) %>%
+  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
+  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
+  select(-prop_fem_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+gc()
+#count prop in legal same-sex state/not:
+count_in_legal <- summary_stats %>%
+  group_by(year) %>%
+  summarize(prop_in_legal = survey_mean(legal_state, na.rm = T)) %>%
+  select(-prop_in_legal_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+gc()
 #analyze by what triple diff will ultimately look like
+reg_graph_data <- summary_stats %>%
+  filter((in_samesex == 1) | (in_samesex == 0)) %>%
+  mutate(mig_type = ifelse((migrant == 1) & (old_legal == 1), "to_old_legal", ifelse((migrant == 1) & (old_legal == 0), "to_old_not_legal", "not a migrant"))) %>% #PUT THIS VARIABLE IN FUNCTION ABOVE OI STATA SET UP (issues, watch dynamism, OI LOGIC CHECK)
+  mutate(to_old_legal = ifelse(mig_type == "to_old_legal", 1, 0)) %>% #use pivot wider?
+  mutate(to_old_not_legal = ifelse(mig_type == "to_old_not_legal", 1, 0)) %>% #use pivot wider?
+  group_by(year, in_samesex) %>%
+  summarize(prop_to_old_legal = survey_mean(to_old_legal, na.rm = T),
+            prop_to_old_not_legal = survey_mean(to_old_not_legal, na.rm = T)) %>%
+  ungroup()%>%
+  select(-prop_to_old_legal_se, -prop_to_old_not_legal_se) #YAY SO COOL OK THINK GRAPHS
+
+#FUNCTIONALIZE BELOW CODE
+gc()
+same_sex_trends <- reg_graph_data %>%
+  filter(in_samesex == 1) %>%
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = prop_to_old_legal), color = "blue") +
+    geom_line(aes(y = prop_to_old_not_legal), color = "red") #oop add labels etc etc and y axis
+same_sex_trends
+
+opposite_sex_trends <- reg_graph_data %>%
+  filter(in_samesex == 0) %>%
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = prop_to_old_legal), color = "blue") +
+    geom_line(aes(y = prop_to_old_not_legal), color = "red") #oop add labels etc etc
+opposite_sex_trends
+
+subtracted_trends <- reg_graph_data %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "not_samesex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = c(prop_to_old_legal, prop_to_old_not_legal)) %>%
+  mutate(diff_old_legal = prop_to_old_legal_samesex - prop_to_old_legal_not_samesex,
+        diff_old_not_legal = prop_to_old_not_legal_samesex - prop_to_old_not_legal_not_samesex ) %>% #oi naming, put some of these in data columns then functionalize
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = diff_old_legal), color = "blue") +
+    geom_line(aes(y = diff_old_not_legal), color = "red")
+subtracted_trends #subtract from same-sex
+
+#hmm watch trends and issues with old legal definitions
+#make graphs prettier
+#oopsy functionalize, watch plots + weights
+#WATCH SELECTING AND FILTERING
+#interesting
+#go past 2019? hmm hmm hmm, compare migration rates overall?
+#oi so much more cleaning work left to do need to be systematic
 ```
 
 ```{r, include = F}
