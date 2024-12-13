@@ -18,6 +18,12 @@ install.packages("janitor")
 library(janitor) #for clean_names
 install.packages("srvyr")
 library(srvyr) #for weighting
+
+install.packages("fastDummies")
+library(fastDummies) #for dummies- maybe
+
+install.packages("fixest")
+library(fixest) #for regression - maybe
 ```
 
 Download IPUMS data
@@ -229,7 +235,8 @@ df_samesex <- df_samesex %>%
   mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here/coding issues
   mutate(in_oppositesex = ifelse((sex_sp != sex) & !is.na(sex_sp), 1, 0)) %>% #watch techdef here
   mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
-  mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1))) #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
+  mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1)))  %>% #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
+  mutate(post_2015 = ifelse(year >= 2015, 1, 0))
 
 return(df_samesex)
 
@@ -253,7 +260,7 @@ gc()
 #count those in/not in opposite sex
 count_same_sex <- summary_stats %>%
   group_by(year) %>%
-  summarize(prop_oppositesex = survey_mean(in_oppocitesex, na.rm = T)) %>%
+  summarize(prop_oppositesex = survey_mean(in_oppositesex, na.rm = T)) %>%
   select(-prop_oppositesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
 
 
@@ -330,6 +337,29 @@ subtracted_trends #subtract from same-sex
 #need make output var, need think more on stata too interaction terms make sure actually have everything
 ```
 
+Test build regression in here (note: lot of work needed to clean up variables + understand clustering etc oop SE weights)
 ```{r, include = F}
-# code
+gc()
+#desired (ish) model - still missing stuff- way too big for computer to handle:
+# model <- feols(migrant ~ in_samesex * old_legal * post_2015, + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot| in_samesex + year + state_name + in_samesex^year + in_samesex^state_name + year^state_name, weights = perwt, data = stata_analysis)
+
+#what computer can handle
+model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex), weights = ~perwt, data = stata_analysis) #rip cluster, SE, how incl in_samesex, oh my goodness regression way too big, think through fixed effects and clustering where put relative to regression
+summary(model)
+
+#watch missing values (like a lot of them need to go back and work thorugh stuff)
+```
+
+
+
+Test with sample of data
+```{r, include = F}
+gc()
+set.seed(123)
+data_sample <- slice_sample(stata_analysis, n = 10000)
+sample_model <- model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot, weights = ~perwt, data = data_sample) #watch still remaining issues, oop removing fixed effects
+summary(sample_model)
+#watch missing values
+#yay collinearity solving my problems ish oop still need solve clustering- hmm how much more to mess with, think what is equivalent treatment ie legalization effect vs post 2015 convergence stuff
+#hmmm... need set old_legal va and post_2015 variable as different than time and year fixed effects... hurt my heart... estimate seem rather high need more here to fully flesh out the model
 ```
