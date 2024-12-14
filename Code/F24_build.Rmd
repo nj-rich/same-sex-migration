@@ -49,9 +49,7 @@ stata_analysis <- F24_pull1
 
 ```
 
-Label same_sex/states/input legalization year/add if mover (use FIP) 
-(NEED SCHOOL COMPUTER FOR THIS)
-(WATCH TECHNICAL FINE PRINT)
+Data cleaning- label states, add same-sex info, add in regression/summary stats var(tentative incl. this here)
 ```{r, include = F}
 gc()
 #label states using chunking for memory management
@@ -229,6 +227,7 @@ gc()
 df_samesex <- df_samesex %>%
   mutate(date_legalization = as.numeric(date_legalization))
 
+#maybe move what is below
 gc()
 df_samesex <- df_samesex %>% 
   mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
@@ -245,6 +244,18 @@ return(df_samesex)
 summary_stats <- add_context(summary_stats)
 stata_analysis <- add_context(stata_analysis)
 
+```
+
+Data cleaning- technical variable reclassification/filtering
+```{r, include = F}
+gc()
+#code
+```
+
+Data cleaning- model variable reclassification/filtering
+```{r, include = F}
+gc()
+#code
 ```
 
 Base summary stats (AGAIN HAVEN'T RESTRICTED SAMPLE YET, NO SE, OI GO BACK AND CHECK LIT REVIEW)- functionalize?
