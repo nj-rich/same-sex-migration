@@ -30,8 +30,8 @@ Download IPUMS data
 ```{r, include = F}
 gc()
 #mac
-F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>% 
-  clean_names()
+# F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>% 
+#   clean_names()
 #windows
 F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
   clean_names()
@@ -231,6 +231,7 @@ df_samesex <- df_samesex %>%
 gc()
 df_samesex <- df_samesex %>% 
   mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
+  mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #this is also inputted later, for sanity add this here too (make more efficient later)
   mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here/coding issues
   mutate(in_oppositesex = ifelse((sex_sp != sex) & !is.na(sex_sp), 1, 0)) %>% #watch techdef here
   mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
@@ -246,16 +247,42 @@ stata_analysis <- add_context(stata_analysis)
 
 ```
 
-Data cleaning- technical variable reclassification/filtering
+Data cleaning- technical variable reclassification/filtering (mostly resolving missing occurences)
 ```{r, include = F}
 gc()
-#code
+technical_cleaning <- function (data) {
+  data <- data %>%
+    mutate(state_name = factor(state_name)) %>%
+    filter(sex != 9) %>%
+    filter(age != 999) %>%
+    mutate(race = factor(race)) %>%
+    filter(educ != 99) %>%
+    mutate(educ = factor(educ)) %>%
+    filter(empstat != 9) %>%
+    mutate(empstat = factor(empstat)) %>%
+    mutate(occ = factor(occ)) %>%
+    mutate(ind = factor (ind)) %>%
+    filter(inctot != 9999998) %>%
+    mutate(inctot = ifelse(inctot == 9999999, NA, inctot)) %>%
+    filter(migplac1 <= 57) %>%
+    mutate(migplac1 = factor(migplac1)) %>% #ensure migrants have state identified
+    filter(qsex != 4) %>% #get rid of those with imputed sex- watch partner's sex here too
+    filter(qrace != 3) %>% #get rid of missing race
+    mutate(offpov = factor(offpov)) %>%
+    mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #relabel no have partner, watch placement in code
+    mutate(sex_sp = factor(sex_sp))
+}
+
+stata_analysis <- technical_cleaning(stata_analysis)
+summary_stats <- technical_cleaning(summary_stats)
+
+#oop hope this doesn't crash
 ```
 
 Data cleaning- model variable reclassification/filtering
 ```{r, include = F}
 gc()
-#code
+#tentatively nothing for now, see controls and 2011 thoughts
 ```
 
 Base summary stats (AGAIN HAVEN'T RESTRICTED SAMPLE YET, NO SE, OI GO BACK AND CHECK LIT REVIEW)- functionalize?
