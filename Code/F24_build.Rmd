@@ -16,32 +16,41 @@ library(readxl) #for reading in FRED data
 library(tidyverse) #for data work
 install.packages("janitor")
 library(janitor) #for clean_names
+install.packages("srvyr")
 library(srvyr) #for weighting
+
+install.packages("fastDummies")
+library(fastDummies) #for dummies- maybe
+
+install.packages("fixest")
+library(fixest) #for regression - maybe
+library(haven) #for data export
 ```
 
 Download IPUMS data
 ```{r, include = F}
 gc()
 #mac
-F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>% #didn't break
-  clean_names()
+# F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>% 
+#   clean_names()
 #windows
+F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
+  clean_names()
 
 ```
 
 transform to survey object for weighting (note: watch export to STATA needs)
 ```{r, include = F}
 gc()
-#mac
+
 summary_stats <- as_survey(F24_pull1, weights = perwt) #note: exclude rep_wts so standard errors are inaccurate (file otherwise insanely big- talk someone about it)
 stata_analysis <- F24_pull1
 #rm(F24_pull1)
-#windows
+
 
 ```
 
-Label states/input legalization year (use FIP) 
-(NEED SCHOOL COMPUTER FOR THIS)
+Data cleaning- label states, add same-sex info, add in regression/summary stats var(tentative incl. this here)
 ```{r, include = F}
 gc()
 #label states using chunking for memory management
@@ -219,11 +228,202 @@ gc()
 df_samesex <- df_samesex %>%
   mutate(date_legalization = as.numeric(date_legalization))
 
+#maybe move what is below
+gc()
+df_samesex <- df_samesex %>% 
+  mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
+  mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #this is also inputted later, for sanity add this here too (make more efficient later)
+  mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here/coding issues
+  mutate(in_oppositesex = ifelse((sex_sp != sex) & !is.na(sex_sp), 1, 0)) %>% #watch techdef here
+  mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
+  mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1)))  %>% #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
+  mutate(post_2015 = ifelse(year >= 2015, 1, 0))
+
 return(df_samesex)
+
+#collapse for readability/organization above?
 }
 summary_stats <- add_context(summary_stats)
 stata_analysis <- add_context(stata_analysis)
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Data cleaning (mostly technical and resolving missing occurrences)
+```{r, include = F}
+gc()
+technical_cleaning <- function (data) {
+  gc()
+  
+  data <- data %>%
+    mutate(state_name = factor(state_name)) %>%
+    filter(sex != 9) %>%
+    filter(age != 999) %>%
+    mutate(race = factor(race))
+  gc()
+  data <- data %>%
+    filter(educ != 99) %>%
+    mutate(educ = factor(educ)) %>%
+    filter(empstat != 9) %>%
+    mutate(empstat = factor(empstat)) %>%
+    mutate(occ = factor(occ)) %>%
+    mutate(ind = factor (ind)) %>%
+    filter(inctot != 9999998)
+  gc()
+  data <- data %>%
+    mutate(inctot = ifelse(inctot == 9999999, NA, inctot)) %>%
+    filter(migplac1 <= 57) %>%
+    mutate(migplac1 = factor(migplac1)) %>% #ensure migrants have state identified
+    filter(qsex != 4) %>% #get rid of those with imputed sex- watch partner's sex here too
+    filter(qrace != 3) %>% #get rid of missing race
+    mutate(offpov = factor(offpov)) %>%
+    mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #relabel no have partner, watch placement in code
+    filter(!is.na(sex_sp)) %>% #to restrict to only those in relationships (argue more model cleaning than technical cleaning oops)
+    mutate(sex_sp = factor(sex_sp))
+  
+  return(data)
+}
+
+stata_analysis <- technical_cleaning(stata_analysis)
+summary_stats <- technical_cleaning(summary_stats)
+
+#oop works just very slow
+```
+
+Base summary stats (check what is included what isn't, add migration summary stats to, functionalize)
+```{r, include = F}
+gc()
+#count those in/not in same sex
+count_same_sex <- summary_stats %>%
+  group_by(year) %>%
+  summarize(prop_samesex = survey_mean(in_samesex, na.rm = T)) %>%
+  select(-prop_samesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+gc()
+#count those in/not in opposite sex
+count_same_sex <- summary_stats %>%
+  group_by(year) %>%
+  summarize(prop_oppositesex = survey_mean(in_oppositesex, na.rm = T)) %>%
+  select(-prop_oppositesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+
+gc()
+#count male/female
+count_male_female <- summary_stats %>%
+  group_by(year) %>%
+  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
+  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
+  select(-prop_fem_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+gc()
+#count prop in legal same-sex state/not:
+count_in_legal <- summary_stats %>%
+  group_by(year) %>%
+  summarize(prop_in_legal = survey_mean(legal_state, na.rm = T)) %>%
+  select(-prop_in_legal_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+
+gc()
+#analyze by what triple diff will ultimately look like
+reg_graph_data <- summary_stats %>%
+  filter((in_samesex == 1) | (in_samesex == 0)) %>% #WATCH ADJUSTMENTS HERE FOR BETTER COMPARISON
+  mutate(mig_type = ifelse((migrant == 1) & (old_legal == 1), "to_old_legal", ifelse((migrant == 1) & (old_legal == 0), "to_old_not_legal", "not a migrant"))) %>% #PUT THIS VARIABLE IN FUNCTION ABOVE OI STATA SET UP (issues, watch dynamism, OI LOGIC CHECK)
+  mutate(to_old_legal = ifelse(mig_type == "to_old_legal", 1, 0)) %>% #use pivot wider?
+  mutate(to_old_not_legal = ifelse(mig_type == "to_old_not_legal", 1, 0)) %>% #use pivot wider?
+  group_by(year, in_samesex) %>%
+  summarize(prop_to_old_legal = survey_mean(to_old_legal, na.rm = T),
+            prop_to_old_not_legal = survey_mean(to_old_not_legal, na.rm = T)) %>%
+  ungroup()%>%
+  select(-prop_to_old_legal_se, -prop_to_old_not_legal_se) #YAY SO COOL OK THINK GRAPHS
+
+#FUNCTIONALIZE BELOW CODE
+gc()
+same_sex_trends <- reg_graph_data %>%
+  filter(in_samesex == 1) %>%
+  pivot_longer(cols = c(prop_to_old_legal, prop_to_old_not_legal), names_to = "destination_state") %>%
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = value, color = destination_state)) +
+    scale_x_binned() +
+    labs(title = "Migration of Same-Sex Individuals to Various States",
+         x = "Year",
+         y = "Fraction to State Type",
+         color = "Destination State") #watch clarifications needed here
+same_sex_trends
+
+opposite_sex_trends <- reg_graph_data %>%
+  filter(in_samesex == 0) %>% #THIS NEEDS ADJUSTMENT
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = prop_to_old_legal), color = "blue") +
+    geom_line(aes(y = prop_to_old_not_legal), color = "red") #oop add labels etc etc
+opposite_sex_trends
+
+subtracted_trends <- reg_graph_data %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "not_samesex")) %>% #THIS NEEDS ADJUSTMENT FOR RELATIVE COMPARISON BETTER
+  pivot_wider(names_from = in_samesex, values_from = c(prop_to_old_legal, prop_to_old_not_legal)) %>%
+  mutate(diff_old_legal = prop_to_old_legal_samesex - prop_to_old_legal_not_samesex,
+        diff_old_not_legal = prop_to_old_not_legal_samesex - prop_to_old_not_legal_not_samesex ) %>% #oi naming, put some of these in data columns then functionalize
+  ggplot(aes(x = year)) +
+    geom_line(aes(y = diff_old_legal), color = "blue") +
+    geom_line(aes(y = diff_old_not_legal), color = "red")
+subtracted_trends #subtract from same-sex
+
+#hmm watch trends and issues with old legal definitions
+#make graphs prettier
+#oopsy functionalize, watch plots + weights
+#WATCH SELECTING AND FILTERING
+#interesting
+#go past 2019? hmm hmm hmm, compare migration rates overall?
+#oi so much more cleaning work left to do need to be systematic
+#watch tech fixes, esp. for opposite sex couples (add indicator function to big cleaning function a few steps up)
+#so much more to adjust and prettify and functionalize here but good spot (oi vey labels)
+#also need smaller random sampled data for break for testing stuff (not final regression)
+#oop standard errors
+#need make output var, need think more on stata too interaction terms make sure actually have everything
+```
+
+Clear memory for more efficient running, export to STATA
+```{r, include = F}
+gc()
+selected_data <- stata_analysis %>%
+  select(migrant, in_samesex, old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, inctot, perwt, year, state_name)
+rm(F24_pull1, summary_stats, add_context, technical_cleaning)
+
+#Export for STATA analysis (can use other purposes low key too)
+write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\F24_stata_analysis.dta")
+
+gc()
+
+```
+
+STATA might be better than code below- still testing
+
+Test build regression in here (note: lot of work needed to clean up variables + understand clustering etc oop SE weights)
+```{r, include = F}
+gc()
+#desired (ish) model - still missing stuff- too big for computer (61gb):
+# full_model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot | year + state_name, weights = perwt, data = selected_data)
+# summary(full_model)
+
+#what computer can handle
+model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex), weights = ~perwt, data = selected_data) #rip cluster, SE, how incl in_samesex, oh my goodness regression way too big, think through fixed effects and clustering where put relative to regression
+summary(model)
+
+#watch missing values (like a lot of them need to go back and work thorugh stuff)
+```
+
+
+
+Test with sample of data
+```{r, include = F}
+gc()
+set.seed(123)
+data_sample <- slice_sample(selected_data, n = 10000)
+sample_model <- model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot, weights = ~perwt, data = data_sample) #watch still remaining issues, oop removing fixed effects
+summary(sample_model)
+#watch missing values
+#yay collinearity solving my problems ish oop still need solve clustering- hmm how much more to mess with, think what is equivalent treatment ie legalization effect vs post 2015 convergence stuff
+#hmmm... need set old_legal va and post_2015 variable as different than time and year fixed effects... hurt my heart... estimate seem rather high need more here to fully flesh out the model
+
+#12/15/24 comments
+#uh oh 1 positive 1 negative, need to keep iterating but suggests maybe just 1 small effect
+#watch coding issues with multiple re-runnings
+#REALLY DO NEED TO THINK IF NEED SEPARATE STATE/YEAR FIXED EFFECTS (do not believe need to use i() function)
+```
