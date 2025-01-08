@@ -24,7 +24,12 @@ library(fastDummies) #for dummies- maybe
 
 install.packages("fixest")
 library(fixest) #for regression - maybe
-library(haven) #for data export
+library(haven) #for stata data export/import
+
+install.packages("stargazer")
+library(stargazer) #for latex output
+
+library(broom) #convert fixest outputs to data frames
 ```
 
 Download IPUMS data
@@ -36,6 +41,11 @@ gc()
 #windows
 F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
   clean_names()
+
+#download cleaned-ish data
+#mac
+cleanish <- read_dta("/Users/njrich/Downloads/F24_stata_analysis.dta")
+#windows
 
 ```
 
@@ -406,7 +416,14 @@ gc()
 model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex), weights = ~perwt, data = selected_data) #rip cluster, SE, how incl in_samesex, oh my goodness regression way too big, think through fixed effects and clustering where put relative to regression
 summary(model)
 
+#mac test
+model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex), weights = ~perwt, data = cleanish) #stil need to cluster
+base_model <- tidy(model)
+base_model
 #watch missing values (like a lot of them need to go back and work thorugh stuff)
+#watch run tests to see what parallel trends assumptions holds for/does not hold for
+#watch time frame issues
+#watch clustering- might need to add more variables to cleanish- maybe by source state/household?
 ```
 
 
@@ -426,4 +443,17 @@ summary(sample_model)
 #uh oh 1 positive 1 negative, need to keep iterating but suggests maybe just 1 small effect
 #watch coding issues with multiple re-runnings
 #REALLY DO NEED TO THINK IF NEED SEPARATE STATE/YEAR FIXED EFFECTS (do not believe need to use i() function)
+```
+
+Save and export tables/charts/regressions
+```{r, include = F}
+gc()
+write.csv(base_model, file = "/Users/njrich/Desktop/same-sex-migration/outputs/base_model.csv")
+
+#keep things cleaner:)
+```
+
+```{r, include = F}
+gc()
+#code
 ```
