@@ -389,7 +389,7 @@ subtracted_trends #subtract from same-sex
 #need make output var, need think more on stata too interaction terms make sure actually have everything
 ```
 
-Clear memory for more efficient running, export to STATA
+Make file smaller for more efficient running, export to STATA
 ```{r, include = F}
 gc()
 selected_data <- stata_analysis %>%
