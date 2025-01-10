@@ -68,7 +68,10 @@ add_context <- function(df_samesex) {
 gc()
 
 add_state_labels <- function(df, variable, label) {
+df_samesex <- df_samesex %>%
+  rename({{ variable }} = "variable")
 
+  
 df_samesex <- df_samesex %>%
   mutate(state = as.character(variable)) 
 
@@ -248,18 +251,27 @@ df_samesex <- df_samesex %>%
 
 if(label == "expost") {
   df <- df %>%
-    rename(state - "expost_state", date_legalization = "expost_date_legalization", legal_state = "expost_legal_state", old_legal = "expost_old_legal")
+    rename(state = "expost_state", date_legalization = "expost_date_legalization", legal_state = "expost_legal_state", old_legal = "expost_old_legal")
 }  
-else if(label == "exante")
+else if(label == "exante") {
+  df <- df %>%
+    rename(state = "exante_state", date_legalization = "exante_date_legalization", legal_state = "exante_legal_state", old_legal = "exante_old_legal")
+}
 
 return(df)
 }
+
+#prelim filtering for ease of use
+df_samesex <- df_samesex %>%
+  filter(statefip < 60) %>%
+  filter(migplac1 < 60) %>%
+  mutate(past_state = ifelse(migplac1 == 0, statefip, migplac1)) #for ease of coding above and below bc subtle differences and similarities between statefip1 and migplac1
 
 #ex-post (ie look at legal status of state moved to)
 df_samesex <- add_state_labels(df_samesex, statefip, "expost")
 
 #ex-ante (ie look at legal status of state moved from)
-df_samesex <- add_state_labels(df_samesex, migplac1, "exante")
+df_samesex <- add_state_labels(df_samesex, past_state, "exante") #likely more efficient way...
 
 
 #add person labels 
@@ -273,7 +285,7 @@ return(df_samesex)
 
 #collapse for readability/organization above?
 }
-summary_stats <- add_context(summary_stats)
+#summary_stats <- add_context(summary_stats)
 stata_analysis <- add_context(stata_analysis)
 
 #oop watch expost v exante labeling (destination v origin state difference)
