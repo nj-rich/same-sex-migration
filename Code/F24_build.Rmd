@@ -60,93 +60,95 @@ stata_analysis <- F24_pull1
 
 ```
 
-Data cleaning- label states, add same-sex info, add in regression/summary stats var(tentative incl. this here)
+Data cleaning- label states, add same-sex info, add in regression/summary stats var(tentative incl. this here), watch expost v exante labeling (note-migplac/statefip look identical)
 ```{r, include = F}
 gc()
 #label states using chunking for memory management
 add_context <- function(df_samesex) {
 gc()
 
+add_state_labels <- function(df, variable, label) {
+
 df_samesex <- df_samesex %>%
-  mutate(state_name = as.character(statefip)) 
+  mutate(state = as.character(variable)) 
 
 df_samesex <- df_samesex %>% 
-  mutate(state_name = case_when( 
-    state_name == "1" ~ "AL",
-    state_name == "2" ~ "AK",
-    state_name == "4" ~ "AZ",
-    state_name == "5" ~ "AR",
-    state_name == "6" ~ "CA",
-    state_name == "8" ~ "CO",
-    state_name == "9" ~ "CT",
-    state_name == "10" ~ "DE",
-    TRUE ~ state_name))
+  mutate(state = case_when( 
+    state == "1" ~ "AL",
+    state == "2" ~ "AK",
+    state == "4" ~ "AZ",
+    state == "5" ~ "AR",
+    state == "6" ~ "CA",
+    state == "8" ~ "CO",
+    state == "9" ~ "CT",
+    state == "10" ~ "DE",
+    TRUE ~ state))
 
 gc()
 df_samesex <- df_samesex %>%
-  mutate(state_name = case_when(
-    state_name == "11" ~ "DC",
-    state_name == "12" ~ "FL",
-    state_name == "13" ~ "GA",
-    state_name == "15" ~ "HI",
-    state_name == "16" ~ "ID",
-    state_name == "17" ~ "IL",
-    state_name == "18" ~ "IN",
-    state_name == "19" ~ "IA",
-    state_name == "20" ~ "KS",
-    TRUE ~ state_name)) 
+  mutate(state = case_when(
+    state == "11" ~ "DC",
+    state == "12" ~ "FL",
+    state == "13" ~ "GA",
+    state == "15" ~ "HI",
+    state == "16" ~ "ID",
+    state == "17" ~ "IL",
+    state == "18" ~ "IN",
+    state == "19" ~ "IA",
+    state == "20" ~ "KS",
+    TRUE ~ state)) 
 
 gc()
 df_samesex <- df_samesex %>%
-  mutate(state_name = case_when(
-    state_name == "21" ~ "KY",
-    state_name == "22" ~ "LA",
-    state_name == "23" ~ "MI",
-    state_name == "24" ~ "MD",
-    state_name == "25" ~ "MA",
-    state_name == "26" ~ "ME",
-    state_name == "27" ~ "MN",
-    state_name == "28" ~ "MS",
-    state_name == "29" ~ "MO",
-    state_name == "30" ~ "MT",
-    TRUE ~ state_name)) 
+  mutate(state = case_when(
+    state == "21" ~ "KY",
+    state == "22" ~ "LA",
+    state == "23" ~ "MI",
+    state == "24" ~ "MD",
+    state == "25" ~ "MA",
+    state == "26" ~ "ME",
+    state == "27" ~ "MN",
+    state == "28" ~ "MS",
+    state == "29" ~ "MO",
+    state == "30" ~ "MT",
+    TRUE ~ state)) 
 
 gc()
 df_samesex <- df_samesex %>%
-  mutate(state_name = case_when(
-    state_name == "31" ~ "NE",
-    state_name == "32" ~ "NV",
-    state_name == "33" ~ "NH",
-    state_name == "34" ~ "NJ",
-    state_name == "35" ~ "NM",
-    state_name == "36" ~ "NY",
-    state_name == "37" ~ "NC",
-    state_name == "38" ~ "ND",
-    state_name == "39" ~ "OH",
-    state_name == "40" ~ "OK",
-    TRUE ~ state_name)) 
+  mutate(state = case_when(
+    state == "31" ~ "NE",
+    state == "32" ~ "NV",
+    state == "33" ~ "NH",
+    state == "34" ~ "NJ",
+    state == "35" ~ "NM",
+    state == "36" ~ "NY",
+    state == "37" ~ "NC",
+    state == "38" ~ "ND",
+    state == "39" ~ "OH",
+    state == "40" ~ "OK",
+    TRUE ~ state)) 
 
 gc()
 df_samesex <- df_samesex %>% 
-  mutate(state_name = case_when(
-    state_name == "41" ~ "OR",
-    state_name == "42" ~ "PA",
-    state_name == "44" ~ "RI",
-    state_name == "45" ~ "SC",
-    state_name == "46" ~ "SD",
-    state_name == "47" ~ "TN",
-    state_name == "48" ~ "TX",
-    state_name == "49" ~ "UT",
-    state_name == "50" ~ "VT",
-    state_name == "51" ~ "VA",
-    state_name == "53" ~ "WA",
-    state_name == "54" ~ "WV",
-    state_name == "55" ~ "WI",
-    state_name == "56" ~ "WY",
-    state_name == "72" ~ "PR",
-    state_name == "97" ~ "OMI", #Overseas Military Installations
-    state_name == "99" ~ NA,
-    TRUE ~ state_name 
+  mutate(state = case_when(
+    state == "41" ~ "OR",
+    state == "42" ~ "PA",
+    state == "44" ~ "RI",
+    state == "45" ~ "SC",
+    state == "46" ~ "SD",
+    state == "47" ~ "TN",
+    state == "48" ~ "TX",
+    state == "49" ~ "UT",
+    state == "50" ~ "VT",
+    state == "51" ~ "VA",
+    state == "53" ~ "WA",
+    state == "54" ~ "WV",
+    state == "55" ~ "WI",
+    state == "56" ~ "WY",
+    state == "72" ~ "PR",
+    state == "97" ~ "OMI", #Overseas Military Installations
+    state == "99" ~ NA,
+    TRUE ~ state 
   )) 
 
 
@@ -154,7 +156,7 @@ df_samesex <- df_samesex %>%
 #label legalization date from Gerstmann "2012" pqper
 gc()
 df_samesex <- df_samesex %>%
-  mutate(date_legalization = state_name) 
+  mutate(date_legalization = state) 
 
 df_samesex <- df_samesex %>%
   mutate(date_legalization = case_when ( 
@@ -241,14 +243,32 @@ df_samesex <- df_samesex %>%
 #maybe move what is below
 gc()
 df_samesex <- df_samesex %>% 
+  mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
+  mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1)))  %>% #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
+
+if(label == "expost") {
+  df <- df %>%
+    rename(state - "expost_state", date_legalization = "expost_date_legalization", legal_state = "expost_legal_state", old_legal = "expost_old_legal")
+}  
+else if(label == "exante")
+
+return(df)
+}
+
+#ex-post (ie look at legal status of state moved to)
+df_samesex <- add_state_labels(df_samesex, statefip, "expost")
+
+#ex-ante (ie look at legal status of state moved from)
+df_samesex <- add_state_labels(df_samesex, migplac1, "exante")
+
+
+#add person labels 
+df_samesex <-df_samesex %>%
   mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
   mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #this is also inputted later, for sanity add this here too (make more efficient later)
   mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here/coding issues
   mutate(in_oppositesex = ifelse((sex_sp != sex) & !is.na(sex_sp), 1, 0)) %>% #watch techdef here
-  mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to 
-  mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1)))  %>% #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
   mutate(post_2015 = ifelse(year >= 2015, 1, 0))
-
 return(df_samesex)
 
 #collapse for readability/organization above?
@@ -256,6 +276,7 @@ return(df_samesex)
 summary_stats <- add_context(summary_stats)
 stata_analysis <- add_context(stata_analysis)
 
+#oop watch expost v exante labeling (destination v origin state difference)
 ```
 
 Data cleaning (mostly technical and resolving missing occurrences)
@@ -265,7 +286,7 @@ technical_cleaning <- function (data) {
   gc()
   
   data <- data %>%
-    mutate(state_name = factor(state_name)) %>%
+    mutate(expost_state = factor(expost_state)) %>%
     filter(sex != 9) %>%
     filter(age != 999) %>%
     mutate(race = factor(race))
@@ -299,7 +320,7 @@ summary_stats <- technical_cleaning(summary_stats)
 #oop works just very slow
 ```
 
-Base summary stats (check what is included what isn't, add migration summary stats to, functionalize)
+Base summary stats (check what is included what isn't, add migration summary stats to, functionalize) (UPDATE EXPOST EXANTE)
 ```{r, include = F}
 gc()
 #count those in/not in same sex
@@ -328,27 +349,27 @@ gc()
 #count prop in legal same-sex state/not:
 count_in_legal <- summary_stats %>%
   group_by(year) %>%
-  summarize(prop_in_legal = survey_mean(legal_state, na.rm = T)) %>%
+  summarize(prop_in_legal = survey_mean(expost_legal_state, na.rm = T)) %>%
   select(-prop_in_legal_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
 
 gc()
 #analyze by what triple diff will ultimately look like
 reg_graph_data <- summary_stats %>%
   filter((in_samesex == 1) | (in_samesex == 0)) %>% #WATCH ADJUSTMENTS HERE FOR BETTER COMPARISON
-  mutate(mig_type = ifelse((migrant == 1) & (old_legal == 1), "to_old_legal", ifelse((migrant == 1) & (old_legal == 0), "to_old_not_legal", "not a migrant"))) %>% #PUT THIS VARIABLE IN FUNCTION ABOVE OI STATA SET UP (issues, watch dynamism, OI LOGIC CHECK)
-  mutate(to_old_legal = ifelse(mig_type == "to_old_legal", 1, 0)) %>% #use pivot wider?
+  mutate(mig_type = ifelse((migrant == 1) & (expost_old_legal == 1), "to_expost_old_legal", ifelse((migrant == 1) & (expost_old_legal == 0), "to_old_not_legal", "not a migrant"))) %>% #PUT THIS VARIABLE IN FUNCTION ABOVE OI STATA SET UP (issues, watch dynamism, OI LOGIC CHECK)
+  mutate(to_expost_old_legal = ifelse(mig_type == "to_expost_old_legal", 1, 0)) %>% #use pivot wider?
   mutate(to_old_not_legal = ifelse(mig_type == "to_old_not_legal", 1, 0)) %>% #use pivot wider?
   group_by(year, in_samesex) %>%
-  summarize(prop_to_old_legal = survey_mean(to_old_legal, na.rm = T),
+  summarize(prop_to_expost_old_legal = survey_mean(to_expost_old_legal, na.rm = T),
             prop_to_old_not_legal = survey_mean(to_old_not_legal, na.rm = T)) %>%
   ungroup()%>%
-  select(-prop_to_old_legal_se, -prop_to_old_not_legal_se) #YAY SO COOL OK THINK GRAPHS
+  select(-prop_to_expost_old_legal_se, -prop_to_old_not_legal_se) #YAY SO COOL OK THINK GRAPHS
 
 #FUNCTIONALIZE BELOW CODE
 gc()
 same_sex_trends <- reg_graph_data %>%
   filter(in_samesex == 1) %>%
-  pivot_longer(cols = c(prop_to_old_legal, prop_to_old_not_legal), names_to = "destination_state") %>%
+  pivot_longer(cols = c(prop_to_expost_old_legal, prop_to_old_not_legal), names_to = "destination_state") %>%
   ggplot(aes(x = year)) +
     geom_line(aes(y = value, color = destination_state)) +
     scale_x_binned() +
@@ -361,17 +382,17 @@ same_sex_trends
 opposite_sex_trends <- reg_graph_data %>%
   filter(in_samesex == 0) %>% #THIS NEEDS ADJUSTMENT
   ggplot(aes(x = year)) +
-    geom_line(aes(y = prop_to_old_legal), color = "blue") +
+    geom_line(aes(y = prop_to_expost_old_legal), color = "blue") +
     geom_line(aes(y = prop_to_old_not_legal), color = "red") #oop add labels etc etc
 opposite_sex_trends
 
 subtracted_trends <- reg_graph_data %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "not_samesex")) %>% #THIS NEEDS ADJUSTMENT FOR RELATIVE COMPARISON BETTER
-  pivot_wider(names_from = in_samesex, values_from = c(prop_to_old_legal, prop_to_old_not_legal)) %>%
-  mutate(diff_old_legal = prop_to_old_legal_samesex - prop_to_old_legal_not_samesex,
+  pivot_wider(names_from = in_samesex, values_from = c(prop_to_expost_old_legal, prop_to_old_not_legal)) %>%
+  mutate(diff_expost_old_legal = prop_to_expost_old_legal_samesex - prop_to_expost_old_legal_not_samesex,
         diff_old_not_legal = prop_to_old_not_legal_samesex - prop_to_old_not_legal_not_samesex ) %>% #oi naming, put some of these in data columns then functionalize
   ggplot(aes(x = year)) +
-    geom_line(aes(y = diff_old_legal), color = "blue") +
+    geom_line(aes(y = diff_expost_old_legal), color = "blue") +
     geom_line(aes(y = diff_old_not_legal), color = "red")
 subtracted_trends #subtract from same-sex
 
@@ -389,11 +410,11 @@ subtracted_trends #subtract from same-sex
 #need make output var, need think more on stata too interaction terms make sure actually have everything
 ```
 
-Make file smaller for more efficient running, export to STATA
+Make file smaller for more efficient running, export to STATA (UPDATE EXPOST EXANTE)
 ```{r, include = F}
 gc()
 selected_data <- stata_analysis %>%
-  select(migrant, in_samesex, old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, inctot, perwt, year, state_name)
+  select(migrant, in_samesex, expost_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, inctot, perwt, year, expost_state)
 rm(F24_pull1, summary_stats, add_context, technical_cleaning)
 
 #Export for STATA analysis (can use other purposes low key too)
@@ -405,19 +426,19 @@ gc()
 
 STATA might be better than code below- still testing
 
-Test build regression in here (note: lot of work needed to clean up variables + understand clustering etc oop SE weights)
+Test build regression in here (note: lot of work needed to clean up variables + understand clustering etc oop SE weights) (UPDATE EXPOST EXANTE)
 ```{r, include = F}
 gc()
 #desired (ish) model - still missing stuff- too big for computer (61gb):
-# full_model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot | year + state_name, weights = perwt, data = selected_data)
+# full_model <- feols(migrant ~ in_samesex * expost_old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot | year + expost_state, weights = perwt, data = selected_data)
 # summary(full_model)
 
 #what computer can handle
-model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex), weights = ~perwt, data = selected_data) #rip cluster, SE, how incl in_samesex, oh my goodness regression way too big, think through fixed effects and clustering where put relative to regression
+model <- feols(migrant ~ in_samesex * expost_old_legal * post_2015 + i(sex), weights = ~perwt, data = selected_data) #rip cluster, SE, how incl in_samesex, oh my goodness regression way too big, think through fixed effects and clustering where put relative to regression
 summary(model)
 
 #mac test
-model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex), weights = ~perwt, data = cleanish) #stil need to cluster
+model <- feols(migrant ~ in_samesex * expost_old_legal * post_2015 + i(sex), weights = ~perwt, data = cleanish) #stil need to cluster
 base_model <- tidy(model)
 base_model
 #watch missing values (like a lot of them need to go back and work thorugh stuff)
@@ -428,16 +449,16 @@ base_model
 
 
 
-Test with sample of data
+Test with sample of data (UPDATE EXPOST EXANTE)
 ```{r, include = F}
 gc()
 set.seed(123)
 data_sample <- slice_sample(selected_data, n = 10000)
-sample_model <- model <- feols(migrant ~ in_samesex * old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot, weights = ~perwt, data = data_sample) #watch still remaining issues, oop removing fixed effects
+sample_model <- model <- feols(migrant ~ in_samesex * expost_old_legal * post_2015 + i(sex) + age + i(race) + i(educ) + i(occ) + i(ind) + i(bpl) + inctot, weights = ~perwt, data = data_sample) #watch still remaining issues, oop removing fixed effects
 summary(sample_model)
 #watch missing values
 #yay collinearity solving my problems ish oop still need solve clustering- hmm how much more to mess with, think what is equivalent treatment ie legalization effect vs post 2015 convergence stuff
-#hmmm... need set old_legal va and post_2015 variable as different than time and year fixed effects... hurt my heart... estimate seem rather high need more here to fully flesh out the model
+#hmmm... need set expost_old_legal va and post_2015 variable as different than time and year fixed effects... hurt my heart... estimate seem rather high need more here to fully flesh out the model
 
 #12/15/24 comments
 #uh oh 1 positive 1 negative, need to keep iterating but suggests maybe just 1 small effect

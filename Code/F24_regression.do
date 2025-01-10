@@ -12,5 +12,5 @@ clear
 * regression
 xi i.sex i.race i.educ i.occ i.ind i.bpl
 
-reghdfe migrant in_samesex##old_legal##post_2015 _I* age inctot [w=perwt], absorb(state_name year) 
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [w=perwt], absorb(expost_state year) 
 *add in cluster later, make clear what variables are continuous need?
