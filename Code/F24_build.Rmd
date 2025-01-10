@@ -70,9 +70,14 @@ gc()
 add_state_labels <- function(df, variable, label) {
 
 #readjustments for function handling
+
+#TESTING  
+print(paste(label, "woo"))
+print(deparse(substitute(variable)))
+###
+  
 df <- df %>%
   rename(variable = {{ variable }})
-
 
 df <- df %>%
   mutate(state = as.character(variable))
@@ -251,12 +256,14 @@ df <- df %>%
   mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to
   mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1)))  %>% #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
 
- 
-if(label == "expost") {
+  
+  
+#NOTE: THIS IS BROKEN DUE TO LIKELY MEMORY ISSUES; BREAK INTO DIFFERENT FUNCTION/KEEP BRAINSTORMING
+if(deparse(substitute(variable)) == "statefip") {
     print("yay")
   df <- df %>%
     rename(expost_state = state, expost_date_legalization = date_legalization, expost_legal_state = legal_state, expost_old_legal = old_legal)
- }  else if(label == "exante") {
+ }  else {
     print("woop")
   df <- df %>%
     rename(exante_state = state, exante_date_legalization = date_legalization, exante_legal_state = legal_state, exante_old_legal = old_legal)
@@ -271,7 +278,9 @@ df_samesex <- df_samesex %>%
   filter(migplac1 < 60) %>%
   mutate(past_state = ifelse(migplac1 == 0, statefip, migplac1)) #for ease of coding above and below bc subtle differences and similarities between statefip1 and migplac1
 
+#TEST
 test <- add_state_labels(stata_analysis, statefip, "expost")
+###
 
 #ex-post (ie look at legal status of state moved to)
 df_samesex <- add_state_labels(df_samesex, statefip, "expost")
