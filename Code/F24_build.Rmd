@@ -36,11 +36,11 @@ Download IPUMS data
 ```{r, include = F}
 gc()
 #mac
-# F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>% 
-#   clean_names()
-#windows
-F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
+F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>%
   clean_names()
+#windows
+# F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
+#   clean_names()
 
 #download cleaned-ish data
 #mac
@@ -278,7 +278,7 @@ df_samesex <- df_samesex %>%
   filter(migplac1 < 60) %>%
   mutate(past_state = ifelse(migplac1 == 0, statefip, migplac1)) #for ease of coding above and below bc subtle differences and similarities between statefip1 and migplac1
 
-#TEST
+#TEST -on mac exhaust memory, windows doesn't say but assume same outcome
 test <- add_state_labels(stata_analysis, statefip, "expost")
 ###
 
