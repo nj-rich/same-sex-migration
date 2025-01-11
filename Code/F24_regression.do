@@ -36,5 +36,8 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 * q: F-tests? other tests?
 * need intercept or ok dropped?
 * hmm summary stats
+* OI NEED FIGURE OUT CONNECT TO OVERLEAF IN NICE WAY AND MAKE PRETTY
 
 *regressions with some controls
+* ex post
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* [w=perwt], absorb(expost_state year) vce(cluster expost_state year)
