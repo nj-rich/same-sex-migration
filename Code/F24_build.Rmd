@@ -67,17 +67,8 @@ gc()
 add_context <- function(df_samesex) {
 gc()
 
-add_state_labels <- function(df, variable, label) {
-
-#readjustments for function handling
-
-#TESTING  
-print(paste(label, "woo"))
-print(deparse(substitute(variable)))
-###
-  
-df <- df %>%
-  rename(variable = {{ variable }})
+#general function to add in state-based labels (for both ex-ante and ex-post states)
+state_labels <- function(df, variable, label) {
 
 df <- df %>%
   mutate(state = as.character(variable))
@@ -250,27 +241,37 @@ gc()
 df <- df %>%
   mutate(date_legalization = as.numeric(date_legalization))
 
-#maybe move what is below
 gc()
 df <- df %>%
   mutate(legal_state = ifelse(year >= date_legalization, 1, 0)) %>% #watch greater than/greater than or equal to
   mutate(old_legal = ifelse(year < 2015, legal_state, if_else(date_legalization == 2015, 0, 1)))  %>% #track states as of 2014 not legal still even if become legal later- note dynamic before 2014 as states become legal, CHECK LOGIC
 
-  
-  
-#NOTE: THIS IS BROKEN DUE TO LIKELY MEMORY ISSUES; BREAK INTO DIFFERENT FUNCTION/KEEP BRAINSTORMING
-if(deparse(substitute(variable)) == "statefip") {
-    print("yay")
-  df <- df %>%
-    rename(expost_state = state, expost_date_legalization = date_legalization, expost_legal_state = legal_state, expost_old_legal = old_legal)
- }  else {
-    print("woop")
-  df <- df %>%
-    rename(exante_state = state, exante_date_legalization = date_legalization, exante_legal_state = legal_state, exante_old_legal = old_legal)
-}
-
 return(df)
 }
+
+#differentiate whether descriptive state characteristics are for the ex-ante or ex-post state
+add_exantepost <- function(df, variable, label) {
+
+  if(label == "expost") {
+  df <- df %>%
+    rename(statefip = variable, expost_state = state, expost_date_legalization = date_legalization, expost_legal_state = legal_state, expost_old_legal = old_legal)
+ }  else {
+  df <- df %>%
+    rename(paststate = variable, exante_state = state, exante_date_legalization = date_legalization, exante_legal_state = legal_state, exante_old_legal = old_legal)
+}
+  return(df)
+}
+
+#bring above 2 functions together- have to be broken up for memory constraints
+add_state_labels <- function(df, variable, label) {
+  df <- df %>%
+  rename(variable = {{ variable }})
+  df <- state_labels(df, variable, label)
+  df <- add_exantepost(df, variable, label)
+  gc()
+  return(df)
+}
+
 
 #prelim filtering for ease of use
 df_samesex <- df_samesex %>%
@@ -278,16 +279,18 @@ df_samesex <- df_samesex %>%
   filter(migplac1 < 60) %>%
   mutate(past_state = ifelse(migplac1 == 0, statefip, migplac1)) #for ease of coding above and below bc subtle differences and similarities between statefip1 and migplac1
 
+<<<<<<< HEAD
 #TEST -on mac exhaust memory, windows doesn't say but assume same outcome
 test <- add_state_labels(stata_analysis, statefip, "expost")
 ###
 
+=======
+>>>>>>> 95fe80554970a8e59dd8a8f795ededbfee018a44
 #ex-post (ie look at legal status of state moved to)
 df_samesex <- add_state_labels(df_samesex, statefip, "expost")
 
 #ex-ante (ie look at legal status of state moved from)
 df_samesex <- add_state_labels(df_samesex, past_state, "exante") #likely more efficient way...
-
 
 #add person labels 
 df_samesex <-df_samesex %>%
@@ -314,6 +317,7 @@ technical_cleaning <- function (data) {
   
   data <- data %>%
     mutate(expost_state = factor(expost_state)) %>%
+    mutate(exante_state = factor(exante_state)) %>%
     filter(sex != 9) %>%
     filter(age != 999) %>%
     mutate(race = factor(race))
@@ -342,7 +346,7 @@ technical_cleaning <- function (data) {
 }
 
 stata_analysis <- technical_cleaning(stata_analysis)
-summary_stats <- technical_cleaning(summary_stats)
+#summary_stats <- technical_cleaning(summary_stats)
 
 #oop works just very slow
 ```
@@ -443,7 +447,7 @@ Make file smaller for more efficient running, export to STATA (UPDATE EXPOST EXA
 ```{r, include = F}
 gc()
 selected_data <- stata_analysis %>%
-  select(migrant, in_samesex, expost_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, inctot, perwt, year, expost_state)
+  select(migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, inctot, perwt, year, expost_state, exante_state)
 rm(F24_pull1, summary_stats, add_context, technical_cleaning)
 
 #Export for STATA analysis (can use other purposes low key too)
