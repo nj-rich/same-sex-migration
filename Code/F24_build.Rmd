@@ -354,15 +354,17 @@ gc()
 count_same_sex <- summary_stats %>%
   group_by(year) %>%
   summarize(prop_samesex = survey_mean(in_samesex, na.rm = T)) %>%
-  select(-prop_samesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+  select(-prop_samesex_se) #THIS IS NOT AS ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
 
 gc()
 #count those in/not in opposite sex
 count_same_sex <- summary_stats %>%
   group_by(year) %>%
   summarize(prop_oppositesex = survey_mean(in_oppositesex, na.rm = T)) %>%
-  select(-prop_oppositesex_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+  select(-prop_oppositesex_se) #THIS IS NOT AS ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
 
+
+#NOTE: ABOVE THIS STEP, I FILTER OUT ALL OF THOSE NOTE IN RELATIONSHIPS, MAKING ABOVE MORE USELESS BAR EDITING
 
 gc()
 #count male/female
@@ -370,7 +372,7 @@ count_male_female <- summary_stats %>%
   group_by(year) %>%
   mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
   summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
-  select(-prop_fem_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+  select(-prop_fem_se) #THIS IS NOT AS ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
 
 gc()
 #count prop in legal same-sex state/not:
