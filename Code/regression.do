@@ -12,6 +12,7 @@ ssc install boottest, replace
 
 *install export
 ssc install outreg2, replace
+ssc install estout, replace
 
 *add labels
 label variable in_samesex "In Same-Sex Relationship"
@@ -27,16 +28,21 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	vce(cluster expost_state year) 
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
-	replace tex ///
+	replace ///
+	tex(pretty) ///
 	title(Ex-Post Model) ///
 	ctitle(Ex-Post Model) ///
 	label ///
 	dec(3) ///
 	se ///
-	coeflabels(1.in_samesex#1.expost_old_legal#1.post_2015 "Same-Sex * Legal Before 2015 * Post 2015") ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015)
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	seeout
 
+*test
+estout using using "C:\Users\njrich\Desktop\same-sex-migration\test.tex", ///
+	replace ///
 
+* 	rename(1.in_samesex#1.expost_old_legal#1.post_2015 "Same-Sex * Legal Before 2015 * Post 2015") ///
 * neg means less moving to prior old legal states by individuals in same-sex post 2015
 
 
