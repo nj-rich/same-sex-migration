@@ -56,7 +56,7 @@ working_df <- F24_pull1
 
 ```
 
-Data labeling and some variable creation
+Data labeling and some variable creation - add var for have kids?
 ```{r, include = F}
 gc()
 #label states using chunking for memory management
