@@ -27,9 +27,15 @@ library(fixest) #for regression - maybe
 library(haven) #for stata data export/import
 
 install.packages("stargazer")
-library(stargazer) #for latex output
+library(stargazer) #for regression latex output
 
 library(broom) #convert fixest outputs to data frames
+
+install.library("xtable") #for export dataframes as (la)tex files
+library(xtable)
+
+install.packages("kableExtra") #to make more complicated output tables for LATEX
+library(kableExtra)
 ```
 
 Download clean data
@@ -53,7 +59,7 @@ summary_stats <- as_survey(clean_df, weights = perwt) #note: exclude rep_wts so 
 
 ```
 
-Make basic tables (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
+Summary stats - general population (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
 ```{r, include = F}
 gc()
 #count those in/not in same sex
@@ -61,25 +67,6 @@ count_same_sex <- summary_stats %>%
   group_by(year) %>%
   summarize(prop_samesex = survey_mean(in_samesex, na.rm = T)) %>%
   select(-prop_samesex_se)
-
-
-
-gc()
-#count male/female
-count_male_female <- summary_stats %>%
-  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
-  group_by(year) %>%
-  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
-  select(-prop_fem_se)
-
-gc()
-#count male/female among those in same-sex relationships
-count_male_female_samesex <- summary_stats %>%
-  filter(in_samesex == 1) %>%
-  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
-  group_by(year) %>%
-  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
-  select(-prop_fem_se)
 
 #need to recreate variables for this
 gc()
@@ -91,6 +78,88 @@ gc()
 
 ###
 
+gc()
+#count male/female - think about if need this
+count_male_female <- summary_stats %>%
+  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
+  group_by(year) %>%
+  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
+  select(-prop_fem_se)
+```
+
+Summary stats - for controls (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
+```{r, include = F}
+
+gc()
+#count male/female among those in same-sex relationships
+prop_fem_samesex <- summary_stats %>%
+  filter(in_samesex == 1) %>%
+  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
+  group_by(year, in_samesex) %>%
+  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
+  select(-prop_fem_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex", "Opposite-Sex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_fem)
+
+gc()
+#fraction with children table
+#need to import variables for this
+
+gc()
+#mean age by same-sex/opposite-sex weighted, by year
+mean_age_samesex <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(mean_age = survey_mean(age, na.rm = T)) %>%
+  select(-mean_age_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex", "Opposite-Sex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = mean_age)
+
+gc()
+#fraction >=4 years college attainment by same-sex/opposite-sex weighted, by year
+frac_college_samesex <- summary_stats %>%
+  mutate(four_years_college = ifelse(educ >= 10, 1, 0)) %>%
+  group_by(year, in_samesex) %>%
+  summarize(frac_college = survey_mean(four_years_college, na.rm = T)) %>%
+  select(-frac_college_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex", "Opposite-Sex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = frac_college)
+
+gc()
+#fraction white by same-sex/opposite-sex weighted, by year
+frac_white_samesex <- summary_stats %>%
+  mutate(white = ifelse(race == 1, 1, 0)) %>%
+  group_by(year, in_samesex) %>%
+  summarize(frac_white = survey_mean(white, na.rm = T)) %>%
+  select(-frac_white_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex", "Opposite-Sex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = frac_white)
+
+gc()
+#mean income by same-sex/opposite-sex weighted, by year
+mean_income_samesex <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(mean_income = survey_mean(inctot, na.rm = T)) %>%
+  select(-mean_income_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex", "Opposite-Sex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = mean_income)
+
+
+gc()
+#create joint table
+joint_control_table <- prop_fem_samesex %>%
+  left_join(mean_age_samesex, by = "year") %>%
+  left_join(frac_college_samesex, by = "year") %>%
+  left_join(frac_white_samesex, by = "year") %>%
+  left_join(mean_income_samesex, by = "year") %>%
+  kable(caption = "Summary Statistics for Proposed Controls", format = "latex") %>%
+  add_header_above(c(" " = 1, "Fraction Female" = 2, "Mean Age" = 2, "Fraction At Least 4 Years College" = 2, "Fraction White" = 2, "Mean Income" = 2)) #%>%
+
+#export joint table
+writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/control_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
+```
+
+Summary stats - for regression storytelling (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
+```{r, include = F}
 gc()
 #count prop in post_old_legal state/not (with old_legal definition):
 count_in_old_legal <- summary_stats %>%
@@ -135,49 +204,6 @@ count_samesex_migrants_from_old_legal <- summary_stats %>%
   select(-prop_from_old_legal_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants from Old Legal", "Opposite-Sex Migrants from Old Legal")) %>%
   pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
-
-
-gc()
-#fraction with children table
-#need to import variables for this
-
-gc()
-#mean age by same-sex/opposite-sex weighted, by year
-mean_age_samesex <- summary_stats %>%
-  group_by(year, in_samesex) %>%
-  summarize(mean_age = survey_mean(age, na.rm = T)) %>%
-  select(-mean_age_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Mean Same-Sex Age", "Mean Opposite-Sex Age")) %>%
-  pivot_wider(names_from = in_samesex, values_from = mean_age)
-
-gc()
-#fraction 4 years college attainment by same-sex/opposite-sex weighted, by year
-frac_college_samesex <- summary_stats %>%
-  mutate(four_years_college = ifelse(educ >= 10, 1, 0)) %>%
-  group_by(year, in_samesex) %>%
-  summarize(frac_college = survey_mean(four_years_college, na.rm = T)) %>%
-  select(-frac_college_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Frac Same-Sex 4 Years College", "Frac Opposite-Sex 4 Years College")) %>%
-  pivot_wider(names_from = in_samesex, values_from = frac_college)
-
-gc()
-#fraction white by same-sex/opposite-sex weighted, by year
-frac_white_samesex <- summary_stats %>%
-  mutate(white = ifelse(race == 1, 1, 0)) %>%
-  group_by(year, in_samesex) %>%
-  summarize(frac_white = survey_mean(white, na.rm = T)) %>%
-  select(-frac_white_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Frac Same-Sex White", "Frac Opposite-Sex White")) %>%
-  pivot_wider(names_from = in_samesex, values_from = frac_white)
-
-gc()
-#mean income by same-sex/opposite-sex weighted, by year
-mean_income_samesex <- summary_stats %>%
-  group_by(year, in_samesex) %>%
-  summarize(mean_income = survey_mean(inctot, na.rm = T)) %>%
-  select(-mean_income_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Mean Same-Sex Income", "Mean Opposite-Sex Income")) %>%
-  pivot_wider(names_from = in_samesex, values_from = mean_income)
 
 ```
 
