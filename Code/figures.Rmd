@@ -151,7 +151,7 @@ joint_control_table <- prop_fem_samesex %>%
   left_join(frac_college_samesex, by = "year") %>%
   left_join(frac_white_samesex, by = "year") %>%
   left_join(mean_income_samesex, by = "year") %>%
-  kable(caption = "Summary Statistics for Proposed Controls", format = "latex") %>%
+  kable(caption = "Summary Statistics for Proposed Controls", format = "latex", booktabs = T, digits = 3) %>%
   add_header_above(c(" " = 1, "Fraction Female" = 2, "Mean Age" = 2, "Fraction At Least 4 Years College" = 2, "Fraction White" = 2, "Mean Income" = 2)) #%>%
 
 #export joint table
