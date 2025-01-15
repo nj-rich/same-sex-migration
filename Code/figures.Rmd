@@ -35,8 +35,12 @@ library(broom) #convert fixest outputs to data frames
 Download clean data
 ```{r, include = F}
 gc()
+#windows
+# clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
+#   clean_names()
 
-clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
+#mac
+clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
   clean_names()
 
 ```
@@ -49,52 +53,139 @@ summary_stats <- as_survey(clean_df, weights = perwt) #note: exclude rep_wts so 
 
 ```
 
-Make summary stats (will need to do a lot of work to functionalize)
+Make basic tables (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
 ```{r, include = F}
 gc()
 #count those in/not in same sex
 count_same_sex <- summary_stats %>%
   group_by(year) %>%
   summarize(prop_samesex = survey_mean(in_samesex, na.rm = T)) %>%
-  select(-prop_samesex_se) #THIS IS NOT AS ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
-
-gc()
-#count those in/not in opposite sex
-count_same_sex <- summary_stats %>%
-  group_by(year) %>%
-  summarize(prop_oppositesex = survey_mean(in_oppositesex, na.rm = T)) %>%
-  select(-prop_oppositesex_se) #THIS IS NOT AS ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+  select(-prop_samesex_se)
 
 
-#NOTE: ABOVE THIS STEP, I FILTER OUT ALL OF THOSE NOTE IN RELATIONSHIPS, MAKING ABOVE MORE USELESS BAR EDITING
 
 gc()
 #count male/female
 count_male_female <- summary_stats %>%
-  group_by(year) %>%
   mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
+  group_by(year) %>%
   summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
-  select(-prop_fem_se) #THIS IS NOT AS ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+  select(-prop_fem_se)
 
+gc()
+#count male/female among those in same-sex relationships
+count_male_female_samesex <- summary_stats %>%
+  filter(in_samesex == 1) %>%
+  mutate(sex = ifelse(sex == 9, NA, sex - 1)) %>%
+  group_by(year) %>%
+  summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
+  select(-prop_fem_se)
+
+#need to recreate variables for this
 gc()
 #count prop in legal same-sex state/not:
-count_in_legal <- summary_stats %>%
-  group_by(year) %>%
-  summarize(prop_in_legal = survey_mean(expost_legal_state, na.rm = T)) %>%
-  select(-prop_in_legal_se) #THIS IS NOT ACCURATE WITHOUT REPWEIGHTS- DO NOT HAVE- numbers look so much better already:)
+# count_in_legal <- summary_stats %>%
+#   group_by(year) %>%
+#   summarize(prop_in_legal = survey_mean(expost_legal_state, na.rm = T)) %>%
+#   select(-prop_in_legal_se) 
+
+###
 
 gc()
-#analyze by what triple diff will ultimately look like
-reg_graph_data <- summary_stats %>%
-  filter((in_samesex == 1) | (in_samesex == 0)) %>% #WATCH ADJUSTMENTS HERE FOR BETTER COMPARISON
-  mutate(mig_type = ifelse((migrant == 1) & (expost_old_legal == 1), "to_expost_old_legal", ifelse((migrant == 1) & (expost_old_legal == 0), "to_old_not_legal", "not a migrant"))) %>% #PUT THIS VARIABLE IN FUNCTION ABOVE OI STATA SET UP (issues, watch dynamism, OI LOGIC CHECK)
-  mutate(to_expost_old_legal = ifelse(mig_type == "to_expost_old_legal", 1, 0)) %>% #use pivot wider?
-  mutate(to_old_not_legal = ifelse(mig_type == "to_old_not_legal", 1, 0)) %>% #use pivot wider?
+#count prop in post_old_legal state/not (with old_legal definition):
+count_in_old_legal <- summary_stats %>%
+  group_by(year) %>%
+  summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
+  select(-prop_in_old_legal_se)
+
+gc()
+#count prop by same_sex in post_old_legal state/not (with old_legal definition):
+count_samesex_in_old_legal <- summary_stats %>%
   group_by(year, in_samesex) %>%
-  summarize(prop_to_expost_old_legal = survey_mean(to_expost_old_legal, na.rm = T),
-            prop_to_old_not_legal = survey_mean(to_old_not_legal, na.rm = T)) %>%
-  ungroup()%>%
-  select(-prop_to_expost_old_legal_se, -prop_to_old_not_legal_se) #YAY SO COOL OK THINK GRAPHS
+  summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
+  select(-prop_in_old_legal_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal)
+
+gc()
+#count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
+count_samesex_migrants_in_old_legal <- summary_stats %>%
+  filter(migrant == 1) %>%
+  group_by(year, in_samesex) %>%
+  summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
+  select(-prop_in_old_legal_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal)
+
+gc()
+#count prop by same_sex from post_old_legal state/not (with old_legal definition):
+count_samesex_from_old_legal <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
+  select(-prop_from_old_legal_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
+
+gc()
+#count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
+count_samesex_migrants_from_old_legal <- summary_stats %>%
+  filter(migrant == 1) %>%
+  group_by(year, in_samesex) %>%
+  summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
+  select(-prop_from_old_legal_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants from Old Legal", "Opposite-Sex Migrants from Old Legal")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
+
+
+gc()
+#fraction with children table
+#need to import variables for this
+
+gc()
+#mean age by same-sex/opposite-sex weighted, by year
+mean_age_samesex <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(mean_age = survey_mean(age, na.rm = T)) %>%
+  select(-mean_age_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Mean Same-Sex Age", "Mean Opposite-Sex Age")) %>%
+  pivot_wider(names_from = in_samesex, values_from = mean_age)
+
+gc()
+#fraction 4 years college attainment by same-sex/opposite-sex weighted, by year
+frac_college_samesex <- summary_stats %>%
+  mutate(four_years_college = ifelse(educ >= 10, 1, 0)) %>%
+  group_by(year, in_samesex) %>%
+  summarize(frac_college = survey_mean(four_years_college, na.rm = T)) %>%
+  select(-frac_college_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Frac Same-Sex 4 Years College", "Frac Opposite-Sex 4 Years College")) %>%
+  pivot_wider(names_from = in_samesex, values_from = frac_college)
+
+gc()
+#fraction white by same-sex/opposite-sex weighted, by year
+frac_white_samesex <- summary_stats %>%
+  mutate(white = ifelse(race == 1, 1, 0)) %>%
+  group_by(year, in_samesex) %>%
+  summarize(frac_white = survey_mean(white, na.rm = T)) %>%
+  select(-frac_white_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Frac Same-Sex White", "Frac Opposite-Sex White")) %>%
+  pivot_wider(names_from = in_samesex, values_from = frac_white)
+
+gc()
+#mean income by same-sex/opposite-sex weighted, by year
+mean_income_samesex <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(mean_income = survey_mean(inctot, na.rm = T)) %>%
+  select(-mean_income_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Mean Same-Sex Income", "Mean Opposite-Sex Income")) %>%
+  pivot_wider(names_from = in_samesex, values_from = mean_income)
+
+```
+
+Make charts to help visualize regression (will need to do a lot of work to functionalize)
+```{r, include = F}
+gc()
+#fraction of migrants to old_legal states
+#oh fun with subtracted trends yayayayayaya:) (hmm also think where need numbers)
 
 #FUNCTIONALIZE BELOW CODE
 gc()
@@ -127,18 +218,6 @@ subtracted_trends <- reg_graph_data %>%
     geom_line(aes(y = diff_old_not_legal), color = "red")
 subtracted_trends #subtract from same-sex
 
-#hmm watch trends and issues with old legal definitions
-#make graphs prettier
-#oopsy functionalize, watch plots + weights
-#WATCH SELECTING AND FILTERING
-#interesting
-#go past 2019? hmm hmm hmm, compare migration rates overall?
-#oi so much more cleaning work left to do need to be systematic
-#watch tech fixes, esp. for opposite sex couples (add indicator function to big cleaning function a few steps up)
-#so much more to adjust and prettify and functionalize here but good spot (oi vey labels)
-#also need smaller random sampled data for break for testing stuff (not final regression)
-#oop standard errors
-#need make output var, need think more on stata too interaction terms make sure actually have everything
 ```
 
 
