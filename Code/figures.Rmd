@@ -17,6 +17,7 @@ install.packages("janitor")
 library(janitor) #for clean_names
 install.packages("srvyr")
 library(srvyr) #for weighting
+library(haven) #for reading in dta
 
 install.packages("kableExtra") #to make more complicated output tables for LATEX
 library(kableExtra)
@@ -135,6 +136,7 @@ joint_control_table <- prop_fem_samesex %>%
   left_join(frac_college_samesex, by = "year") %>%
   left_join(frac_white_samesex, by = "year") %>%
   left_join(mean_income_samesex, by = "year") %>%
+  #colnames(Year, Same-Sex, Opposite-Sex, Same-Sex, Opposite-Sex, Same-Sex, Opposite-Sex, Same-Sex, Opposite-Sex, Same-Sex, Opposite-Sex) %>% #needs work
   kable(caption = "Summary Statistics for Proposed Controls", format = "latex", booktabs = T, digits = 3) %>%
   add_header_above(c(" " = 1, "Fraction Female" = 2, "Mean Age" = 2, "Fraction At Least 4 Years College" = 2, "Fraction White" = 2, "Mean Income" = 2))
 
@@ -191,7 +193,7 @@ count_samesex_migrants_from_old_legal <- summary_stats %>%
 
 ```
 
-Make charts to help visualize regression (will need to do a lot of work to functionalize)
+LIKELY WILL DELETE THIS
 ```{r, include = F}
 gc()
 #fraction of migrants to old_legal states
