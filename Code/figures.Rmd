@@ -12,27 +12,11 @@ Load packages (now many unnecessary)
 ```{r, include = F}
 gc()
 library(data.table) #for data loading
-library(readxl) #for reading in FRED data
 library(tidyverse) #for data work
 install.packages("janitor")
 library(janitor) #for clean_names
 install.packages("srvyr")
 library(srvyr) #for weighting
-
-install.packages("fastDummies")
-library(fastDummies) #for dummies- maybe
-
-install.packages("fixest")
-library(fixest) #for regression - maybe
-library(haven) #for stata data export/import
-
-install.packages("stargazer")
-library(stargazer) #for regression latex output
-
-library(broom) #convert fixest outputs to data frames
-
-install.library("xtable") #for export dataframes as (la)tex files
-library(xtable)
 
 install.packages("kableExtra") #to make more complicated output tables for LATEX
 library(kableExtra)
@@ -152,7 +136,7 @@ joint_control_table <- prop_fem_samesex %>%
   left_join(frac_white_samesex, by = "year") %>%
   left_join(mean_income_samesex, by = "year") %>%
   kable(caption = "Summary Statistics for Proposed Controls", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "Fraction Female" = 2, "Mean Age" = 2, "Fraction At Least 4 Years College" = 2, "Fraction White" = 2, "Mean Income" = 2)) #%>%
+  add_header_above(c(" " = 1, "Fraction Female" = 2, "Mean Age" = 2, "Fraction At Least 4 Years College" = 2, "Fraction White" = 2, "Mean Income" = 2))
 
 #export joint table
 writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/control_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
