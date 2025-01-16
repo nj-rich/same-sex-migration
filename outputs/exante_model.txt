@@ -1,0 +1,18 @@
+Ex-Ante Model			
+		(1)	(2)
+			Sex
+			Race
+			Education
+			Age
+			Income
+VARIABLES	LABELS	Fixed + Interaction Effects Only	Birthstate
+			
+1.in_samesex#1.exante_old_legal#1.post_2015		-0.016	0.009
+		(0.009)	(0.026)
+Constant	Constant	0.106***	3.847***
+		(0.001)	(0.177)
+			
+Observations		956,236,912	956,236,912
+R-squared		0.003	0.914
+Robust standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			

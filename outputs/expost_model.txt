@@ -1,0 +1,18 @@
+Ex-Post Model			
+		(1)	(2)
+			Sex
+			Race
+			Education
+			Age
+			Income
+VARIABLES	LABELS	Fixed + Interaction Effects Only	Birthstate
+			
+1.in_samesex#1.expost_old_legal#1.post_2015		-0.015*	0.008
+		(0.007)	(0.031)
+Constant	Constant	0.106***	3.441***
+		(0.001)	(0.204)
+			
+Observations		956,236,912	956,236,912
+R-squared		0.004	0.922
+Robust standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			

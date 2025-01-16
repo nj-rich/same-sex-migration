@@ -28,7 +28,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", /// *export keep argument maybe broken for some reason
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.tex", ///
 	replace ///
 	tex(pretty) ///
 	title(Ex-Post Model) ///
@@ -41,7 +41,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_mo
 *ex-ante model
 * positive means more moving out of prior old legal states by individuals in same-sex post 2015
 reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.tex", ///
 	replace ///
 	tex(pretty) ///
 	title(Ex-Ante Model) ///
@@ -57,7 +57,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 xi i.sex i.race i.educ i.bpl
 
 *collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
-collapse (mean) _I* age inctot [fweight = perwt] (sum) perwt, by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
+collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
 
 *weight testing still in progress
 * ex post regression
@@ -65,7 +65,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight =
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.tex", ///
 	append ///
 	tex(pretty) ///
 	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
@@ -79,14 +79,14 @@ reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight =
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.tex", ///
 	append ///
 	tex(pretty) ///
 	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1o.in_samesex#1o.exante_old_legal#0b.post_2015) 
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
 
 * q: F-tests? other tests?
 * need intercept or ok dropped?
