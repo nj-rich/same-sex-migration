@@ -51,11 +51,8 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
 	dec(3) ///
-	se 
-	
-*	///
-
-*	keep(1.in_samesex#1.exante_old_legal#1.ante_2015) 
+	se 	///
+	keep(1o.in_samesex#1o.exante_old_legal#0b.post_2015) 
 
 
 *controlled models (note: sex, race, educ, age, inctot work well without collapsing)
@@ -93,7 +90,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.ante_2015) 
+	keep(1o.in_samesex#1o.exante_old_legal#0b.post_2015) 
 
 * q: F-tests? other tests?
 * need intercept or ok dropped?
