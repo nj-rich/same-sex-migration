@@ -21,9 +21,6 @@ label variable exante_old_legal "Origin: Legal Before 2015"
 label variable post_2015 "After 2015"
 *need more later
 
-*add dummy variables (think about bpl)
-*xi i.sex i.race i.educ i.bpl
-
 *base models
 *ex-post model
 * neg means less moving to prior old legal states by individuals in same-sex post 2015
@@ -52,7 +49,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 	label ///
 	dec(3) ///
 	se 	///
-	keep(1o.in_samesex#1o.exante_old_legal#0b.post_2015) 
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
 
 
 *controlled models (note: sex, race, educ, age, inctot work well without collapsing)
