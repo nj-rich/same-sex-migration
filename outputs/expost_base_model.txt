@@ -1,13 +1,17 @@
-Ex-Post Model		
-		(1)
-VARIABLES	LABELS	Ex-Post Model
-		
-1.in_samesex#1.expost_old_legal#1.post_2015		-0.013
-		(0.007)
-Constant	Constant	0.107***
-		(0.001)
-		
-Observations		1189172053
-R-squared		0.004
-Robust standard errors in parentheses		
-*** p<0.01, ** p<0.05, * p<0.1		
+Ex-Post Model			
+		(1)	(2)
+			Sex
+			Race
+			Education
+			Age
+VARIABLES	LABELS	Fixed Effects Only	Income Controls
+			
+1.in_samesex#1.expost_old_legal#1.post_2015		-0.013	-0.011
+		(0.007)	(0.006)
+Constant	Constant	0.107***	0.363***
+		(0.001)	(0.008)
+			
+Observations		1189172053	1189172053
+R-squared		0.004	0.063
+Robust standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			

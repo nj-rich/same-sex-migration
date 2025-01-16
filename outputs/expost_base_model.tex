@@ -2,20 +2,24 @@
 \setlength{\pdfpagewidth}{8.5in} \setlength{\pdfpageheight}{11in}
 \begin{document}
 \begin{center}
-\begin{tabular}{lc}
-\multicolumn{2}{c}{\begin{large}Ex-Post Model\end{large}} \\ \hline
- & (1) \\
-VARIABLES & Ex-Post Model \\ \hline
-\vspace{4pt} & \begin{footnotesize}\end{footnotesize} \\
-1.in\_samesex\#1.expost\_old\_legal\#1.post\_2015 & -0.013 \\
-\vspace{4pt} & \begin{footnotesize}(0.007)\end{footnotesize} \\
-Constant & 0.107*** \\
- & \begin{footnotesize}(0.001)\end{footnotesize} \\
-\vspace{4pt} & \begin{footnotesize}\end{footnotesize} \\
-Observations & 1189172053 \\
- $R^2$ & 0.004 \\ \hline
-\multicolumn{2}{c}{\begin{footnotesize} Robust standard errors in parentheses\end{footnotesize}} \\
-\multicolumn{2}{c}{\begin{footnotesize} *** p$<$0.01, ** p$<$0.05, * p$<$0.1\end{footnotesize}} \\
+\begin{tabular}{lcc}
+\multicolumn{3}{c}{\begin{large}Ex-Post Model\end{large}} \\ \hline
+ & (1) & (2) \\
+ &  & Sex \\
+ &  & Race \\
+ &  & Education \\
+ &  & Age \\
+VARIABLES & Fixed Effects Only & Income Controls \\ \hline
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1.in\_samesex\#1.expost\_old\_legal\#1.post\_2015 & -0.013 & -0.011 \\
+\vspace{4pt} & \begin{footnotesize}(0.007)\end{footnotesize} & \begin{footnotesize}(0.006)\end{footnotesize} \\
+Constant & 0.107*** & 0.363*** \\
+ & \begin{footnotesize}(0.001)\end{footnotesize} & \begin{footnotesize}(0.008)\end{footnotesize} \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+Observations & 1189172053 & 1189172053 \\
+ $R^2$ & 0.004 & 0.063 \\ \hline
+\multicolumn{3}{c}{\begin{footnotesize} Robust standard errors in parentheses\end{footnotesize}} \\
+\multicolumn{3}{c}{\begin{footnotesize} *** p$<$0.01, ** p$<$0.05, * p$<$0.1\end{footnotesize}} \\
 \end{tabular}
 \end{center}
 \end{document}
