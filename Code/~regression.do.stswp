@@ -49,6 +49,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [w=perwt]
 	vce(cluster expost_state year) 
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
+	append //
 	tex(pretty) ///
 	ctitle(Sex, Race, Education, Age, Income Controls) ///
 	label ///
@@ -63,7 +64,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 	replace ///
 	tex(pretty) ///
 	title(Ex-Ante Model) ///
-	ctitle(Ex-Ante Model) ///
+	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -76,12 +77,13 @@ reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [w=perwt]
 	vce(cluster exante_state year) 
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_model.tex", ///
+	append ///
 	tex(pretty) ///
 	ctitle(Sex, Race, Education, Age, Income Controls) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+	keep(1.in_samesex#1.expost_old_legal#1.ante_2015) 
 
 * q: F-tests? other tests?
 * need intercept or ok dropped?
@@ -93,3 +95,4 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 *other variations of the model: census data, with household/children, segmented
 * likely have to do some manual relabeling yay having access to files woop woop more automation would be great think about how many more terms to include/report
 *functionalize?
+* keep thinking distance how to include
