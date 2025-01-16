@@ -31,7 +31,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", /// *export keep argument maybe broken for some reason
 	replace ///
 	tex(pretty) ///
 	title(Ex-Post Model) ///
@@ -60,11 +60,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 xi i.sex i.race i.educ i.bpl
 
 *collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
-collapse (mean) _I* age inctot [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
+collapse (mean) _I* age inctot [fweight = perwt] (sum) perwt, by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
 
-*need add some form of weights back
+*weight testing still in progress
 * ex post regression
-reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot, ///
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
@@ -78,7 +78,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_mo
 	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
 
 * ex ante regression
-reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot, ///
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
 	
@@ -108,3 +108,4 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 *watch tell STATA what type of weights to use- check IPUMS documentation
 *watch many large rooms for error due to duplication and lack of functionalization
 * OH MY GOD COLLAPSE HAS SERIOUS WEIGHTING ISSUES- HAVE TO THINK ABOUT NEW WEIGHTS POST COLLAPSING NOT QUITE SURE HOW TO PROCEED- sum perwt and then use that as a weight in the regression maybe
+*keep function keeps break, very frustrated
