@@ -39,8 +39,8 @@ gc()
 # F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>%
 #   clean_names()
 #windows
-# F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
-#   clean_names()
+F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
+  clean_names()
 
 #download cleaned-ish data
 #mac
@@ -330,7 +330,9 @@ technical_cleaning <- function (data) {
     mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #relabel no have partner, watch placement in code
     filter(!is.na(sex_sp)) %>% #to restrict to only those in relationships (argue more model cleaning than technical cleaning oops)
     mutate(sex_sp = factor(sex_sp))
-  
+  gc()
+  data <- data %>%
+    filter(bpl <= 57) #exclude people born outside of the US/in US territories
   return(data)
 }
 

@@ -21,13 +21,12 @@ label variable exante_old_legal "Origin: Legal Before 2015"
 label variable post_2015 "After 2015"
 *need more later
 
-*add dummy variables (currently not birth state, think if want to segment these more)
-xi i.sex i.race i.educ
+*add dummy variables (think about bpl)
+*xi i.sex i.race i.educ i.bpl
 
-
-* ex post regression
+*base models
+*ex-post model
 * neg means less moving to prior old legal states by individuals in same-sex post 2015
-*base model
 reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
@@ -41,24 +40,9 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_mo
 	dec(3) ///
 	se ///
 	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
-
-
-*model with some controls
-reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [w=perwt], ///
-	absorb(expost_state year) ///
-	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
-	append //
-	tex(pretty) ///
-	ctitle(Sex, Race, Education, Age, Income Controls) ///
-	label ///
-	dec(3) ///
-	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
-
-* ex ante regression
-*base model
+*ex-ante model
+* positive means more moving out of prior old legal states by individuals in same-sex post 2015
 reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_model.tex", ///
 	replace ///
@@ -67,19 +51,45 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
 	dec(3) ///
-	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.ante_2015) 
-* positive means more moving out of prior old legal states by individuals in same-sex post 2015
+	se 
+	
+*	///
 
-*model with controls
-reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [w=perwt], ///
+*	keep(1.in_samesex#1.exante_old_legal#1.ante_2015) 
+
+
+*controlled models (note: sex, race, educ, age, inctot work well without collapsing)
+*add dummy variables
+xi i.sex i.race i.educ i.bpl
+
+*collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
+collapse (mean) _I* age inctot [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
+
+
+***BELOW NEEDS SERIOUS MODIFICATION FOR COLLAPSING PROTOCOL
+* ex post regression
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot, ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
+	append //
+	tex(pretty) ///
+	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+
+* ex ante regression
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot, ///
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_model.tex", ///
 	append ///
 	tex(pretty) ///
-	ctitle(Sex, Race, Education, Age, Income Controls) ///
+	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -96,3 +106,8 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 * likely have to do some manual relabeling yay having access to files woop woop more automation would be great think about how many more terms to include/report
 *functionalize?
 * keep thinking distance how to include
+*watch how I organize code to run most efficiently and accurately
+*other tests to include?
+*think about best way to convey information what is/is not in each model, how much can do in STATA v manual/categories maybe
+*watch tell STATA what type of weights to use- check IPUMS documentation
+*watch many large rooms for error due to duplication and lack of functionalization
