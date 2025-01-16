@@ -1,16 +1,57 @@
-Ex-Ante Model			
-		(1)	(2)
-			Sex
-			Race
-			Education
-			Age
-			Income
-VARIABLES	LABELS	Fixed + Interaction Effects Only	Birthstate
-			
-Constant	Constant	0.106***	1.128***
-		(0.001)	(0.048)
-			
-Observations		956,236,912	19,755
-R-squared		0.003	0.090
-Robust standard errors in parentheses			
-*** p<0.01, ** p<0.05, * p<0.1			
+Ex-Ante Model		
+		(1)
+VARIABLES	LABELS	Fixed + Interaction Effects Only
+		
+1.in_samesex	In Same-Sex Relationship = 1	0.062***
+		(0.004)
+1.exante_old_legal	Origin: Legal Before 2015 = 1	-0.003*
+		(0.001)
+0b.in_samesex#0b.exante_old_legal		0.000
+		(0.000)
+0b.in_samesex#1o.exante_old_legal		0.000
+		(0.000)
+1o.in_samesex#0b.exante_old_legal		0.000
+		(0.000)
+1.in_samesex#1.exante_old_legal		-0.005*
+		(0.002)
+1o.post_2015	After 2015 = 1, omitted	-
+		
+0b.in_samesex#0b.post_2015		0.000
+		(0.000)
+0b.in_samesex#1o.post_2015		0.000
+		(0.000)
+1o.in_samesex#0b.post_2015		0.000
+		(0.000)
+1.in_samesex#1.post_2015		0.020**
+		(0.006)
+0b.exante_old_legal#0b.post_2015		0.000
+		(0.000)
+0b.exante_old_legal#1o.post_2015		0.000
+		(0.000)
+1o.exante_old_legal#0b.post_2015		0.000
+		(0.000)
+1.exante_old_legal#1.post_2015		0.003
+		(0.002)
+0b.in_samesex#0b.exante_old_legal#0b.post_2015		0.000
+		(0.000)
+0b.in_samesex#0b.exante_old_legal#1o.post_2015		0.000
+		(0.000)
+0b.in_samesex#1o.exante_old_legal#0b.post_2015		0.000
+		(0.000)
+0b.in_samesex#1o.exante_old_legal#1o.post_2015		0.000
+		(0.000)
+1o.in_samesex#0b.exante_old_legal#0b.post_2015		0.000
+		(0.000)
+1o.in_samesex#0b.exante_old_legal#1o.post_2015		0.000
+		(0.000)
+1o.in_samesex#1o.exante_old_legal#0b.post_2015		0.000
+		(0.000)
+1.in_samesex#1.exante_old_legal#1.post_2015		-0.016
+		(0.009)
+Constant	Constant	0.106***
+		(0.001)
+		
+Observations		956,236,912
+R-squared		0.003
+Robust standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		

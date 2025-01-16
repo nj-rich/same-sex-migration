@@ -48,7 +48,9 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
 	dec(3) ///
-	se 	///
+	se 	
+	
+	///
 	keep(1o.in_samesex#1o.exante_old_legal#0b.post_2015) 
 
 
