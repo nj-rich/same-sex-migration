@@ -2,20 +2,211 @@
 \setlength{\pdfpagewidth}{8.5in} \setlength{\pdfpageheight}{11in}
 \begin{document}
 \begin{center}
-\begin{tabular}{lc}
-\multicolumn{2}{c}{\begin{large}Ex-Post Model\end{large}} \\ \hline
- & (1) \\
-VARIABLES & Fixed + Interaction Effects Only \\ \hline
-\vspace{4pt} & \begin{footnotesize}\end{footnotesize} \\
-1.in\_samesex\#1.expost\_old\_legal\#1.post\_2015 & -0.015* \\
-\vspace{4pt} & \begin{footnotesize}(0.007)\end{footnotesize} \\
-Constant & 0.106*** \\
- & \begin{footnotesize}(0.001)\end{footnotesize} \\
-\vspace{4pt} & \begin{footnotesize}\end{footnotesize} \\
-Observations & 956,236,912 \\
- $R^2$ & 0.004 \\ \hline
-\multicolumn{2}{c}{\begin{footnotesize} Robust standard errors in parentheses\end{footnotesize}} \\
-\multicolumn{2}{c}{\begin{footnotesize} *** p$<$0.01, ** p$<$0.05, * p$<$0.1\end{footnotesize}} \\
+\begin{tabular}{lcccc}
+\multicolumn{5}{c}{\begin{large}Ex-Post Model\end{large}} \\ \hline
+ & (1) & (2) & (3) & (4) \\
+ &  &  &  & Sex \\
+ &  &  &  & Race \\
+ &  &  &  & Education \\
+ &  &  &  & Age \\
+ &  &  &  & Income \\
+VARIABLES & Fixed + Interaction Effects Only & migrant & migrant & Birthstate \\ \hline
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+In Same-Sex Relationship = 1 &  & -0.142*** & -0.142*** &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0121)\end{footnotesize} & \begin{footnotesize}(0.0121)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+Destination: Legal Before 2015 = 1 &  & -0.00423 & -0.00423 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.00326)\end{footnotesize} & \begin{footnotesize}(0.00326)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#0b.expost\_old\_legal &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#1o.expost\_old\_legal &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1o.in\_samesex\#0b.expost\_old\_legal &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1.in\_samesex\#1.expost\_old\_legal &  & 0.0265* & 0.0265* &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0127)\end{footnotesize} & \begin{footnotesize}(0.0127)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+After 2015 = 1, omitted &  & - & - &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#1o.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1o.in\_samesex\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1.in\_samesex\#1.post\_2015 &  & 0.0345** & 0.0345** &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0124)\end{footnotesize} & \begin{footnotesize}(0.0124)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.expost\_old\_legal\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.expost\_old\_legal\#1o.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1o.expost\_old\_legal\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1.expost\_old\_legal\#1.post\_2015 &  & 0.00616* & 0.00616* &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.00326)\end{footnotesize} & \begin{footnotesize}(0.00326)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#0b.expost\_old\_legal\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#0b.expost\_old\_legal\#1o.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#1o.expost\_old\_legal\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+0b.in\_samesex\#1o.expost\_old\_legal\#1o.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1o.in\_samesex\#0b.expost\_old\_legal\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1o.in\_samesex\#0b.expost\_old\_legal\#1o.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1o.in\_samesex\#1o.expost\_old\_legal\#0b.post\_2015 &  & 0 & 0 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}(0)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1.in\_samesex\#1.expost\_old\_legal\#1.post\_2015 & -0.015* & -0.0259* & -0.0259* & -0.026* \\
+\vspace{4pt} & \begin{footnotesize}(0.007)\end{footnotesize} & \begin{footnotesize}(0.0128)\end{footnotesize} & \begin{footnotesize}(0.0128)\end{footnotesize} & \begin{footnotesize}(0.013)\end{footnotesize} \\
+(mean) \_Isex\_2 &  & -0.0185** & -0.0185** &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.00643)\end{footnotesize} & \begin{footnotesize}(0.00643)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_2 &  & -0.0150* & -0.0150* &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.00719)\end{footnotesize} & \begin{footnotesize}(0.00719)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_3 &  & -0.0397* & -0.0397* &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0196)\end{footnotesize} & \begin{footnotesize}(0.0196)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_4 &  & -0.0134 & -0.0134 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0385)\end{footnotesize} & \begin{footnotesize}(0.0385)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_5 &  & -0.208 & -0.208 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.116)\end{footnotesize} & \begin{footnotesize}(0.116)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_6 &  & 0.00191 & 0.00191 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0122)\end{footnotesize} & \begin{footnotesize}(0.0122)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_7 &  & -0.00417 & -0.00417 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0142)\end{footnotesize} & \begin{footnotesize}(0.0142)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_8 &  & 0.00511 & 0.00511 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0103)\end{footnotesize} & \begin{footnotesize}(0.0103)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Irace\_9 &  & -0.0150 & -0.0150 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0296)\end{footnotesize} & \begin{footnotesize}(0.0296)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_2 &  & -0.0273 & -0.0273 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0545)\end{footnotesize} & \begin{footnotesize}(0.0545)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_3 &  & -0.0578 & -0.0578 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0448)\end{footnotesize} & \begin{footnotesize}(0.0448)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_4 &  & -0.0276 & -0.0276 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0483)\end{footnotesize} & \begin{footnotesize}(0.0483)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_5 &  & -0.0419 & -0.0419 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0360)\end{footnotesize} & \begin{footnotesize}(0.0360)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_6 &  & -0.0415 & -0.0415 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0344)\end{footnotesize} & \begin{footnotesize}(0.0344)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_7 &  & -0.0182 & -0.0182 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0296)\end{footnotesize} & \begin{footnotesize}(0.0296)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_8 &  & -0.00771 & -0.00771 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0312)\end{footnotesize} & \begin{footnotesize}(0.0312)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_9 &  & -0.00996 & -0.00996 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0296)\end{footnotesize} & \begin{footnotesize}(0.0296)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_10 &  & -0.00174 & -0.00174 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0304)\end{footnotesize} & \begin{footnotesize}(0.0304)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ieduc\_11 &  & 0.0217 & 0.0217 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0309)\end{footnotesize} & \begin{footnotesize}(0.0309)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_2 &  & 0.00806 & 0.00806 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0605)\end{footnotesize} & \begin{footnotesize}(0.0605)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_4 &  & 0.00626 & 0.00626 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0534)\end{footnotesize} & \begin{footnotesize}(0.0534)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_5 &  & -0.00196 & -0.00196 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0548)\end{footnotesize} & \begin{footnotesize}(0.0548)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_6 &  & 0.0319 & 0.0319 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0441)\end{footnotesize} & \begin{footnotesize}(0.0441)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_8 &  & 0.0267 & 0.0267 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0442)\end{footnotesize} & \begin{footnotesize}(0.0442)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_9 &  & 0.0220 & 0.0220 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0491)\end{footnotesize} & \begin{footnotesize}(0.0491)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_10 &  & -0.0104 & -0.0104 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0563)\end{footnotesize} & \begin{footnotesize}(0.0563)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_11 &  & -0.00405 & -0.00405 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0551)\end{footnotesize} & \begin{footnotesize}(0.0551)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_12 &  & 0.0381 & 0.0381 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0449)\end{footnotesize} & \begin{footnotesize}(0.0449)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_13 &  & 0.00281 & 0.00281 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0592)\end{footnotesize} & \begin{footnotesize}(0.0592)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_15 &  & -0.0457 & -0.0457 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0719)\end{footnotesize} & \begin{footnotesize}(0.0719)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_16 &  & 0.00659 & 0.00659 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0517)\end{footnotesize} & \begin{footnotesize}(0.0517)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_17 &  & 0.0395 & 0.0395 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0451)\end{footnotesize} & \begin{footnotesize}(0.0451)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_18 &  & 0.0282 & 0.0282 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0471)\end{footnotesize} & \begin{footnotesize}(0.0471)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_19 &  & 0.00617 & 0.00617 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0513)\end{footnotesize} & \begin{footnotesize}(0.0513)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_20 &  & 0.00805 & 0.00805 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0541)\end{footnotesize} & \begin{footnotesize}(0.0541)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_21 &  & 0.00107 & 0.00107 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0590)\end{footnotesize} & \begin{footnotesize}(0.0590)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_22 &  & -0.000626 & -0.000626 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0518)\end{footnotesize} & \begin{footnotesize}(0.0518)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_23 &  & -0.000123 & -0.000123 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0552)\end{footnotesize} & \begin{footnotesize}(0.0552)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_24 &  & 0.0258 & 0.0258 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0477)\end{footnotesize} & \begin{footnotesize}(0.0477)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_25 &  & 0.0213 & 0.0213 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0453)\end{footnotesize} & \begin{footnotesize}(0.0453)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_26 &  & 0.0392 & 0.0392 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0445)\end{footnotesize} & \begin{footnotesize}(0.0445)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_27 &  & 0.0218 & 0.0218 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0459)\end{footnotesize} & \begin{footnotesize}(0.0459)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_28 &  & 0.00176 & 0.00176 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0518)\end{footnotesize} & \begin{footnotesize}(0.0518)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_29 &  & 0.0182 & 0.0182 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0498)\end{footnotesize} & \begin{footnotesize}(0.0498)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_30 &  & -0.0194 & -0.0194 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0636)\end{footnotesize} & \begin{footnotesize}(0.0636)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_31 &  & 0.00979 & 0.00979 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0512)\end{footnotesize} & \begin{footnotesize}(0.0512)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_32 &  & 0.0199 & 0.0199 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0517)\end{footnotesize} & \begin{footnotesize}(0.0517)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_33 &  & 0.0120 & 0.0120 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0548)\end{footnotesize} & \begin{footnotesize}(0.0548)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_34 &  & 0.0309 & 0.0309 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0449)\end{footnotesize} & \begin{footnotesize}(0.0449)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_35 &  & -0.0217 & -0.0217 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0671)\end{footnotesize} & \begin{footnotesize}(0.0671)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_36 &  & 0.0454 & 0.0454 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0436)\end{footnotesize} & \begin{footnotesize}(0.0436)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_37 &  & 0.0195 & 0.0195 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0507)\end{footnotesize} & \begin{footnotesize}(0.0507)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_38 &  & -0.00911 & -0.00911 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0610)\end{footnotesize} & \begin{footnotesize}(0.0610)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_39 &  & 0.0495 & 0.0495 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0451)\end{footnotesize} & \begin{footnotesize}(0.0451)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_40 &  & 0.00189 & 0.00189 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0527)\end{footnotesize} & \begin{footnotesize}(0.0527)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_41 &  & 0.0240 & 0.0240 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0508)\end{footnotesize} & \begin{footnotesize}(0.0508)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_42 &  & 0.0334 & 0.0334 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0452)\end{footnotesize} & \begin{footnotesize}(0.0452)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_44 &  & -0.0145 & -0.0145 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0677)\end{footnotesize} & \begin{footnotesize}(0.0677)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_45 &  & -0.0190 & -0.0190 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0656)\end{footnotesize} & \begin{footnotesize}(0.0656)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_46 &  & -0.0240 & -0.0240 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0680)\end{footnotesize} & \begin{footnotesize}(0.0680)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_47 &  & 0.00364 & 0.00364 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0559)\end{footnotesize} & \begin{footnotesize}(0.0559)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_48 &  & 0.0371 & 0.0371 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0446)\end{footnotesize} & \begin{footnotesize}(0.0446)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_49 &  & -0.00107 & -0.00107 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0462)\end{footnotesize} & \begin{footnotesize}(0.0462)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_50 &  & -0.0148 & -0.0148 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0582)\end{footnotesize} & \begin{footnotesize}(0.0582)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_51 &  & 0.0170 & 0.0170 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0482)\end{footnotesize} & \begin{footnotesize}(0.0482)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_53 &  & 0.0243 & 0.0243 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0480)\end{footnotesize} & \begin{footnotesize}(0.0480)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_54 &  & 0.0181 & 0.0181 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0526)\end{footnotesize} & \begin{footnotesize}(0.0526)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_55 &  & 0.0218 & 0.0218 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0505)\end{footnotesize} & \begin{footnotesize}(0.0505)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) \_Ibpl\_56 &  & -0.0242 & -0.0242 &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.0562)\end{footnotesize} & \begin{footnotesize}(0.0562)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) age &  & -0.00368*** & -0.00368*** &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(0.000189)\end{footnotesize} & \begin{footnotesize}(0.000189)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+(mean) inctot &  & -1.18e-07** & -1.18e-07** &  \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}(5.00e-08)\end{footnotesize} & \begin{footnotesize}(5.00e-08)\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+Constant & 0.106*** & 1.123*** & 1.123*** & 1.123*** \\
+ & \begin{footnotesize}(0.001)\end{footnotesize} & \begin{footnotesize}(0.0501)\end{footnotesize} & \begin{footnotesize}(0.0501)\end{footnotesize} & \begin{footnotesize}(0.050)\end{footnotesize} \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+Observations & 956,236,912 & 19,755 & 19,755 & 19,755 \\
+ $R^2$ & 0.004 & 0.093 & 0.093 & 0.093 \\ \hline
+\multicolumn{5}{c}{\begin{footnotesize} Robust standard errors in parentheses\end{footnotesize}} \\
+\multicolumn{5}{c}{\begin{footnotesize} *** p$<$0.01, ** p$<$0.05, * p$<$0.1\end{footnotesize}} \\
 \end{tabular}
 \end{center}
 \end{document}

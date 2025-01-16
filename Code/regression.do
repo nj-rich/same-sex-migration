@@ -62,15 +62,14 @@ xi i.sex i.race i.educ i.bpl
 *collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
 collapse (mean) _I* age inctot [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
 
-
-***BELOW NEEDS SERIOUS MODIFICATION FOR COLLAPSING PROTOCOL
+*need add some form of weights back
 * ex post regression
 reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot, ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_base_model.tex", ///
-	append //
+	append ///
 	tex(pretty) ///
 	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
 	label ///
@@ -108,3 +107,4 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_base_mo
 *think about best way to convey information what is/is not in each model, how much can do in STATA v manual/categories maybe
 *watch tell STATA what type of weights to use- check IPUMS documentation
 *watch many large rooms for error due to duplication and lack of functionalization
+* OH MY GOD COLLAPSE HAS SERIOUS WEIGHTING ISSUES- HAVE TO THINK ABOUT NEW WEIGHTS POST COLLAPSING NOT QUITE SURE HOW TO PROCEED- sum perwt and then use that as a weight in the regression maybe
