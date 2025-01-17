@@ -1,0 +1,26 @@
+\documentclass[]{article}
+\setlength{\pdfpagewidth}{8.5in} \setlength{\pdfpageheight}{11in}
+\begin{document}
+\begin{center}
+\begin{tabular}{lcc}
+\multicolumn{3}{c}{\begin{large}Ex-Ante Model\end{large}} \\ \hline
+ & (1) & (2) \\
+ &  & Sex \\
+ &  & Race \\
+ &  & Education \\
+ &  & Age \\
+ &  & Income \\
+VARIABLES & Fixed + Interaction Effects Only & Birthstate \\ \hline
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+1.in\_samesex\#1.exante\_old\_legal\#1.post\_2015 & -0.016 & 0.009 \\
+\vspace{4pt} & \begin{footnotesize}(0.009)\end{footnotesize} & \begin{footnotesize}(0.026)\end{footnotesize} \\
+Constant & 0.106*** & 3.847*** \\
+ & \begin{footnotesize}(0.001)\end{footnotesize} & \begin{footnotesize}(0.177)\end{footnotesize} \\
+\vspace{4pt} & \begin{footnotesize}\end{footnotesize} & \begin{footnotesize}\end{footnotesize} \\
+Observations & 956,236,912 & 956,236,912 \\
+ $R^2$ & 0.003 & 0.914 \\ \hline
+\multicolumn{3}{c}{\begin{footnotesize} Robust standard errors in parentheses\end{footnotesize}} \\
+\multicolumn{3}{c}{\begin{footnotesize} *** p$<$0.01, ** p$<$0.05, * p$<$0.1\end{footnotesize}} \\
+\end{tabular}
+\end{center}
+\end{document}
