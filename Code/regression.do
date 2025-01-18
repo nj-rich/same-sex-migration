@@ -28,7 +28,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regression\expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	replace ///
 	tex(fragment) ///
 	title(Ex-Post Model) ///
@@ -49,8 +49,8 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	dec(3) ///
 	se 	///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
-	addnote("Model 1 includes interaction terms and fixed effects only. Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income. Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate. Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
-
+	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
+	
 
 *Models 2 (controls for sex, race, educ, age, inctot)
 

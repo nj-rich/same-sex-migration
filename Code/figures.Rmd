@@ -154,13 +154,13 @@ joint_control_table <- prop_fem_samesex %>%
   left_join(mean_income_samesex, by = "year") %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
   kable(caption = "Summary Statistics for Proposed Controls", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "Fraction Female" = 2, "Mean Age" = 2, "Fraction At Least 4 Years College" = 2, "Fraction White" = 2, "Mean Income" = 2))
+  add_header_above(c(" " = 1, "%/100 Female" = 2, "Mean Age" = 2, "%/100 >=4 Years College" = 2, "%/100 White" = 2, "Mean Income" = 2))
 
 #export joint table
 writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/control_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
 ```
 
-Summary stats - for regression storytelling (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
+Summary stats - for regression storytelling (might need to adjust these to better match triple difference regression)
 ```{r, include = F}
 #oop count labeling not super accurate
 
@@ -224,7 +224,7 @@ joint_differences_table <- count_samesex_in_old_legal %>%
   left_join(subtracted_trends_ante, by = "year") %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference")) %>% #needs work
   kable(caption = "Summary Statistics for Migration Decisions", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "Fraction in States Legal Before 2015" = 2, "Migrants in States Legal Before 2015" = 2, " " = 1, "Fraction from States Legal Before 2015" = 2, "Migrants from States Legal Before 2015" = 2, " " = 1)) 
+  add_header_above(c(" " = 1, "%/100 in Prior-Legal States" = 2, "Migrants in Prior-Legal States" = 2, " " = 1, "%/100 from Prior-Legal States" = 2, "Migrants from Prior-Legal States" = 2, " " = 1)) 
 
 #export joint table
 writeLines(joint_differences_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/differences_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
