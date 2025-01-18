@@ -141,4 +141,4 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 *think how to make notes prettier
 *watch updated formatting issues
 
-**OK: in good spot, notes need some work works comes to worst can edit manually but feel half decent about things
+**OK: in good spot, notes need some work works comes to worst can edit manually but feel half decent about things, MAYBE ADD CTITLES BACK OTHERWISE VARIABLES ANNOYING
