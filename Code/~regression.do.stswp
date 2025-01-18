@@ -30,7 +30,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.tex", ///
 	replace ///
-	tex(pretty) ///
+	tex(fragment) ///
 	title(Ex-Post Model) ///
 	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
@@ -43,7 +43,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.t
 reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.tex", ///
 	replace ///
-	tex(pretty) ///
+	tex(fragment) ///
 	title(Ex-Ante Model) ///
 	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
@@ -67,7 +67,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight =
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.tex", ///
 	append ///
-	tex(pretty) ///
+	tex(fragment) ///
 	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
 	label ///
 	dec(3) ///
@@ -81,7 +81,7 @@ reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight =
 	
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.tex", ///
 	append ///
-	tex(pretty) ///
+	tex(fragment) ///
 	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
 	label ///
 	dec(3) ///
