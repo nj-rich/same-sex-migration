@@ -21,54 +21,50 @@ label variable exante_old_legal "Origin: Legal Before 2015"
 label variable post_2015 "After 2015"
 *need more later
 
-*base models
+*Models 1 (fixed effects only)
 *ex-post model
 * neg means less moving to prior old legal states by individuals in same-sex post 2015
 reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	replace ///
-	tex(pretty) ///
+	tex(fragment) ///
 	title(Ex-Post Model) ///
-	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
 	
 *ex-ante model
 * positive means more moving out of prior old legal states by individuals in same-sex post 2015
 reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	replace ///
-	tex(pretty) ///
+	tex(fragment) ///
 	title(Ex-Ante Model) ///
-	ctitle(Fixed + Interaction Effects Only) ///
 	label ///
 	dec(3) ///
 	se 	///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
+	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
+	
 
+*Models 2 (controls for sex, race, educ, age, inctot)
 
-*controlled models (note: sex, race, educ, age, inctot work well without collapsing)
-*add dummy variables
-xi i.sex i.race i.educ i.bpl
+*add dummy variables (excluding birthstate)
+xi i.sex i.race i.educ
 
-*collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
-collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
-
-*weight testing still in progress
 * ex post regression
 reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
-	tex(pretty) ///
-	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
+	tex(fragment) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -79,10 +75,44 @@ reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight =
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	append ///
-	tex(pretty) ///
-	ctitle(Sex, Race, Education, Age, Income, Birthstate) ///
+	tex(fragment) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
+
+*Models 3 (controls for sex, race, educ, age, inctot, birth state)
+
+*add dummy variables (excluding birthstate)
+xi i.bpl
+
+*collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
+collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
+
+*weight testing still in progress
+* ex post regression
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
+	append ///
+	tex(fragment) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+
+* ex ante regression
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+	absorb(exante_state year) ///
+	vce(cluster exante_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+	append ///
+	tex(fragment) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -106,3 +136,9 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\exante_model.t
 *watch many large rooms for error due to duplication and lack of functionalization
 * OH MY GOD COLLAPSE HAS SERIOUS WEIGHTING ISSUES- HAVE TO THINK ABOUT NEW WEIGHTS POST COLLAPSING NOT QUITE SURE HOW TO PROCEED- sum perwt and then use that as a weight in the regression maybe
 *keep function keeps break, very frustrated
+
+*need have children control, occupation control, etc etc
+*think how to make notes prettier
+*watch updated formatting issues
+
+**OK: in good spot, notes need some work works comes to worst can edit manually but feel half decent about things, MAYBE ADD CTITLES BACK OTHERWISE VARIABLES ANNOYING

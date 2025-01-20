@@ -1,0 +1,18 @@
+Ex-Ante Model				
+		(1)	(2)	(3)
+VARIABLES	LABELS	migrant	migrant	migrant
+				
+1.in_samesex#1.exante_old_legal#1.post_2015		-0.016	-0.014	0.014
+		(0.009)	(0.008)	(0.030)
+Constant	Constant	0.106***	0.394***	3.757***
+		(0.001)	(0.007)	(0.123)
+				
+Observations		956,236,912	956,236,912	956,236,912
+R-squared		0.003	0.069	0.912
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+Model 1 includes interaction terms and fixed effects only.				
+)				
+)				
+)				
+)				
