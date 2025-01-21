@@ -136,7 +136,7 @@ frac_white_samesex <- summary_stats %>%
   summarize(frac_white = survey_mean(white, na.rm = T)) %>%
   select(-frac_white_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex White", "Opposite-Sex White")) %>%
-  pivot_wider(names_from = in_samesex, values_from = frac_white)
+  pivot_wider(names_from = in_samesex, values_from = frac_white) #potentially issues here
 
 gc()
 #mean income by same-sex/opposite-sex weighted, by year
@@ -219,7 +219,7 @@ subtracted_trends_ante <- count_samesex_migrants_from_old_legal %>%
 
 gc()
 #create joint table
-joint_differences_table <- count_samesex_in_old_legal %>%
+joint_location_table <- count_samesex_in_old_legal %>%
   left_join(count_samesex_migrants_in_old_legal, by = "year") %>%
   left_join(subtracted_trends_post, by = "year") %>%
   left_join(count_samesex_from_old_legal, by = "year") %>%
@@ -230,7 +230,7 @@ joint_differences_table <- count_samesex_in_old_legal %>%
   add_header_above(c(" " = 1, "%/100 in Prior-Legal States" = 2, "Migrants in Prior-Legal States" = 2, " " = 1, "%/100 from Prior-Legal States" = 2, "Migrants from Prior-Legal States" = 2, " " = 1)) 
 
 #export joint table
-writeLines(joint_differences_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
+writeLines(joint_location_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
 ```
 
 Summary statistics/trends table for regression storytelling
@@ -303,17 +303,29 @@ ante_migrant_trends_table <- ante_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate)
 
 
-#export everything
+#export charts
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/post_trends.png", plot = post_migrant_trends_chart)
 
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ante_trends.png", plot = ante_migrant_trends_chart)
 
-#oop functionalize, be more creative with colors, need to export
+#export joint table
+joint_trends_table <- post_migrant_trends_table %>%
+  left_join(ante_migrant_trends_table, by = "year")%>% 
+  setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>%
+  kable(caption = "Migration Trends Data", format = "latex", booktabs = T, digits = 3) %>%
+  add_header_above(c(" " = 1, "Locally Legalized" = 2, "Federally Legalized" = 2, "Locally Legalized" = 2, "Federally Legalized" = 2))  %>% #hmm reorganize to make more sense?
+  add_header_above(c(" " = 1, "Fraction Moving To" = 4, "Fraction Moving From" = 4))
+
+writeLines(joint_trends_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/trends_table.tex")
+
+#oop functionalize
+#watch issues with code, better labeling and organization
+#separate these boxes?
 ```
 
 
-Export charts
+Code
 ```{r, include = F}
 gc()
 #code
-```
-
 ```
