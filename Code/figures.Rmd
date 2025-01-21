@@ -234,6 +234,8 @@ joint_location_table <- count_samesex_in_old_legal %>%
 
 #export joint table
 writeLines(joint_location_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
+
+#need to abbreviate some titles
 ```
 
 Summary statistics/trends table for regression storytelling
@@ -264,21 +266,8 @@ post_migrant_trends_chart <- post_migrant_trends_df %>%
     geom_vline(xintercept = factor(2015), color = "black", linetype = "dashed") + #bc factor issues
     scale_color_manual(values = c("samesex_oldlegal" = "#EECC66", "opppositesex_oldlegal" = "#EE99AA", "samesex_newlegal" = "#6699CC", "oppositesex_newlegal" = "#997700"),
                      labels = c("samesex_oldlegal" = "Same-Sex Individuals in Locally Legalized States", "opppositesex_oldlegal" = "Opposite-Sex Individuals in Locally Legalized States", "samesex_newlegal" = "Same-Sex Individuals in Federally Legalized States", "oppositesex_newlegal" = "Opposite-Sex Individuals in Federally Legalized States")) +
-    theme(
-  plot.title = element_text(hjust = 0.5),
-  legend.position = "right",
-  legend.title = element_blank(),
-  legend.text = element_text(size = 12),
-  axis.text.x = element_text(size = 12),
-  axis.text.y = element_text(size = 12),
-  strip.text = element_text(size = 12),
-  panel.grid.major.x = element_blank(),
-  panel.grid.major.y = element_blank(),
-  panel.grid.minor = element_blank()
-  #gets everything except white background, see panel background, see ,
-  #legend.key.width = unit(2, "cm") to maybe fix legend wrapping
-    )
-  #theme_apa
+  theme_apa() #can always go back to theme
+
 post_migrant_trends_chart
 
 #table for export
@@ -320,9 +309,9 @@ ante_migrant_trends_table <- ante_migrant_trends_df %>%
 
 
 #export charts
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/post_trends.png", plot = post_migrant_trends_chart, scale = 4)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/post_trends.png", plot = post_migrant_trends_chart)
 
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ante_trends.png", plot = ante_migrant_trends_chart, scale = 4)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ante_trends.png", plot = ante_migrant_trends_chart)
 
 #export joint table
 joint_trends_table <- post_migrant_trends_table %>%
@@ -338,6 +327,8 @@ writeLines(joint_trends_table, "/Users/njrich/Desktop/same-sex-migration/outputs
 #watch issues with code, better labeling and organization
 #separate these boxes?
 #discrepancies in plots to test
+
+#for charts to look good, just take screenshots at the moment
 ```
 
 
