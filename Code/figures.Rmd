@@ -92,7 +92,7 @@ joint_overall_table <- count_male_female %>%
 #export joint table
 writeLines(joint_overall_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/overall_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
 
-*note frac v percent
+#note frac v percent
 ```
 
 Summary stats - for controls (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types)
@@ -106,7 +106,8 @@ prop_fem_samesex <- summary_stats %>%
   summarize(prop_fem = survey_mean(sex, na.rm = T)) %>%
   select(-prop_fem_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Sex", "Opposite-Sex Sex")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_fem)
+  pivot_wider(names_from = in_samesex, values_from = prop_fem) %>%
+  select(year, "Same-Sex Sex", "Opposite-Sex Sex")
 
 gc()
 #fraction with children table
@@ -119,7 +120,8 @@ mean_age_samesex <- summary_stats %>%
   summarize(mean_age = survey_mean(age, na.rm = T)) %>%
   select(-mean_age_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Age", "Opposite-Sex Age")) %>%
-  pivot_wider(names_from = in_samesex, values_from = mean_age)
+  pivot_wider(names_from = in_samesex, values_from = mean_age) %>%
+  select(year, "Same-Sex Age", "Opposite-Sex Age")
 
 gc()
 #fraction >=4 years college attainment by same-sex/opposite-sex weighted, by year
@@ -129,7 +131,8 @@ frac_college_samesex <- summary_stats %>%
   summarize(frac_college = survey_mean(four_years_college, na.rm = T)) %>%
   select(-frac_college_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex College", "Opposite-Sex College")) %>%
-  pivot_wider(names_from = in_samesex, values_from = frac_college)
+  pivot_wider(names_from = in_samesex, values_from = frac_college) %>%
+  select(year, "Same-Sex College", "Opposite-Sex College")
 
 gc()
 #fraction white by same-sex/opposite-sex weighted, by year
@@ -139,7 +142,8 @@ frac_white_samesex <- summary_stats %>%
   summarize(frac_white = survey_mean(white, na.rm = T)) %>%
   select(-frac_white_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex White", "Opposite-Sex White")) %>%
-  pivot_wider(names_from = in_samesex, values_from = frac_white) 
+  pivot_wider(names_from = in_samesex, values_from = frac_white)  %>%
+  select(year, "Same-Sex White", "Opposite-Sex White")
 
 gc()
 #mean income by same-sex/opposite-sex weighted, by year
@@ -148,7 +152,8 @@ mean_income_samesex <- summary_stats %>%
   summarize(mean_income = survey_mean(inctot, na.rm = T)) %>%
   select(-mean_income_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Inc", "Opposite-Sex Inc")) %>%
-  pivot_wider(names_from = in_samesex, values_from = mean_income)
+  pivot_wider(names_from = in_samesex, values_from = mean_income) %>%
+  select(year, "Same-Sex Inc", "Opposite-Sex Inc")
 
 
 gc()
@@ -160,10 +165,12 @@ joint_control_table <- prop_fem_samesex %>%
   left_join(mean_income_samesex, by = "year") %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
   kable(caption = "Summary Statistics for Proposed Controls", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "%/100 Female" = 2, "Mean Age" = 2, "%/100 >=4 Years College" = 2, "%/100 White" = 2, "Mean Income" = 2))
+  add_header_above(c(" " = 1, "%/100 Female" = 2, "Mean Age" = 2, "%/100 College" = 2, "%/100 White" = 2, "Mean Income" = 2))
 
 #export joint table
 writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/control_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
+
+#watch column arranging
 ```
 
 Summary stats - stock migrants/general pops. in certain state categories
@@ -177,7 +184,8 @@ count_samesex_in_old_legal <- summary_stats %>%
   summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
   select(-prop_in_old_legal_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal)
+  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
+  select(year, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")
 
 gc()
 #count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
@@ -187,7 +195,8 @@ count_samesex_migrants_in_old_legal <- summary_stats %>%
   summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
   select(-prop_in_old_legal_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal)
+  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
+  select(year, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")
 
 gc()
 #subtracted expost trends table
@@ -202,7 +211,8 @@ count_samesex_from_old_legal <- summary_stats %>%
   summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
   select(-prop_from_old_legal_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
+  pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal) %>%
+  select(year, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")
 
 gc()
 #count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
@@ -230,7 +240,7 @@ joint_location_table <- count_samesex_in_old_legal %>%
   left_join(subtracted_trends_ante, by = "year") %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference")) %>% #needs work
   kable(caption = "Individuals by Location", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "%/100 in Locally Legalized" = 2, "Migrants in Locally Legalized" = 2, " " = 1, "%/100 from Locally Legalized" = 2, "Migrants from Locally Legalized" = 2, " " = 1)) 
+  add_header_above(c(" " = 1, "In Locally Legalized" = 2, "Migrants in Locally Legalized" = 2, " " = 1, "In from Locally Legalized" = 2, "Migrants from Locally Legalized" = 2, " " = 1)) 
 
 #export joint table
 writeLines(joint_location_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
@@ -246,7 +256,7 @@ gc()
 post_migrant_trends_df <- summary_stats %>%
   mutate(subgroup = case_when(
     in_samesex == 1 & expost_old_legal == 1 ~ "samesex_oldlegal",
-    in_samesex == 0 & expost_old_legal == 1 ~ "opppositesex_oldlegal",
+    in_samesex == 0 & expost_old_legal == 1 ~ "oppositesex_oldlegal",
     in_samesex == 1 & expost_old_legal == 0 ~ "samesex_newlegal",
     in_samesex == 0 & expost_old_legal == 0 ~ "oppositesex_newlegal"
   )) %>%
@@ -272,14 +282,15 @@ post_migrant_trends_chart
 
 #table for export
 post_migrant_trends_table <- post_migrant_trends_df %>%
-  pivot_wider(names_from = subgroup, values_from = frac_migrate)
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  select(year, samesex_newlegal, oppositesex_newlegal, samesex_oldlegal, oppositesex_oldlegal)
 
 #ante
 #df
 ante_migrant_trends_df <- summary_stats %>%
   mutate(subgroup = case_when(
     in_samesex == 1 & exante_old_legal == 1 ~ "samesex_oldlegal",
-    in_samesex == 0 & exante_old_legal == 1 ~ "opppositesex_oldlegal",
+    in_samesex == 0 & exante_old_legal == 1 ~ "oppositesex_oldlegal",
     in_samesex == 1 & exante_old_legal == 0 ~ "samesex_newlegal",
     in_samesex == 0 & exante_old_legal == 0 ~ "oppositesex_newlegal"
   )) %>%
@@ -305,7 +316,8 @@ ante_migrant_trends_chart
 
 #table for export
 ante_migrant_trends_table <- ante_migrant_trends_df %>%
-  pivot_wider(names_from = subgroup, values_from = frac_migrate)
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  select(year, samesex_newlegal, oppositesex_newlegal, samesex_oldlegal, oppositesex_oldlegal)
 
 
 #export charts
