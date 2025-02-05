@@ -47,7 +47,7 @@ W25_pull1 <- fread("C:\\Users\\njrich\\Downloads\\W25_pull1.csv") %>%
 Make working_df dataframe to preserve original pull
 ```{r, include = F}
 gc()
-working_df <- F25_pull1
+working_df <- W25_pull1
 
 ```
 
@@ -305,7 +305,9 @@ return(df_samesex)
 #summary_stats <- add_context(summary_stats)
 working_df <- add_context(working_df)
 
-#check ex-post ex-ante labeling- test by unique-ing
+#check ex-post ex-ante labeling- test by unique-ing- seems to work
+#test <- working_df %>%
+#  distinct(exante_state, expost_state)
 ```
 
 Data cleaning (mostly technical and resolving missing occurrences)
