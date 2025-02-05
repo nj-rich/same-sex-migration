@@ -1,14 +1,19 @@
 ---
-title: "F24_build"
+title: "W25_build"
 output: html_document
 date: "2024-12-11"
 ---
+```{r}
+#NOTE: ADDED EMBRACING add_exantepost function; don't know if it works yet
+#NOTE: critically think through all labeling decisions
+```
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Load packages (now: many unnecessary)
+Load packages
 ```{r, include = F}
 gc()
 library(data.table) #for data loading
@@ -16,30 +21,20 @@ library(readxl) #for reading in FRED data
 library(tidyverse) #for data work
 install.packages("janitor")
 library(janitor) #for clean_names
-install.packages("srvyr")
-library(srvyr) #for weighting
 
-install.packages("fastDummies")
-library(fastDummies) #for dummies- maybe
-
-install.packages("fixest")
-library(fixest) #for regression - maybe
 library(haven) #for stata data export/import
 
-install.packages("stargazer")
-library(stargazer) #for latex output
 
-library(broom) #convert fixest outputs to data frames
 ```
 
 Download raw file
 ```{r, include = F}
 gc()
 #mac
-# F24_pull1 <- fread("/Users/njrich/Downloads/F24_pull1.csv") %>%
+# W25_pull1 <- fread("/Users/njrich/Downloads/W25_pull1.csv") %>%
 #   clean_names()
 #windows
-F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
+W25_pull1 <- fread("C:\\Users\\njrich\\Downloads\\W25_pull1.csv") %>%
   clean_names()
 
 #download cleaned-ish data
@@ -52,18 +47,18 @@ F24_pull1 <- fread("C:\\Users\\njrich\\Downloads\\F24_pull1.csv") %>%
 Make working_df dataframe to preserve original pull
 ```{r, include = F}
 gc()
-working_df <- F24_pull1
+working_df <- F25_pull1
 
 ```
 
-Data labeling and some variable creation - add var for have kids?
+Data labeling, variable creation- watch if function is too heavy
 ```{r, include = F}
 gc()
-#label states using chunking for memory management
+#overall function
 add_context <- function(df_samesex) {
 gc()
 
-#general function to add in state-based labels (for both ex-ante and ex-post states)
+#add in state-based labels (for both ex-ante and ex-post states)
 state_labels <- function(df, variable, label) {
 
 df <- df %>%
@@ -245,20 +240,20 @@ df <- df %>%
 return(df)
 }
 
-#differentiate whether descriptive state characteristics are for the ex-ante or ex-post state
+#label ex-ante ex-post- make sure comprehensive with all variables created above
 add_exantepost <- function(df, variable, label) {
 
   if(label == "expost") {
   df <- df %>%
-    rename(statefip = variable, expost_state = state, expost_date_legalization = date_legalization, expost_legal_state = legal_state, expost_old_legal = old_legal)
+    rename(statefip = {{ variable }}, expost_state = state, expost_date_legalization = date_legalization, expost_legal_state = legal_state, expost_old_legal = old_legal) #hmm does this variable relabeling make sense need {{ variable }}?
  }  else {
   df <- df %>%
-    rename(paststate = variable, exante_state = state, exante_date_legalization = date_legalization, exante_legal_state = legal_state, exante_old_legal = old_legal)
+    rename(paststate = {{ variable }}, exante_state = state, exante_date_legalization = date_legalization, exante_legal_state = legal_state, exante_old_legal = old_legal) #hmm does this variable relabeling make sense need {{ variable }}?
 }
   return(df)
 }
 
-#bring above 2 functions together- have to be broken up for memory constraints
+#run state label and ex-ante ex-post labeling functions
 add_state_labels <- function(df, variable, label) {
   df <- df %>%
   rename(variable = {{ variable }})
@@ -269,25 +264,40 @@ add_state_labels <- function(df, variable, label) {
 }
 
 
-#prelim filtering for ease of use
+#filter + add useful past_state variable
 df_samesex <- df_samesex %>%
-  filter(statefip < 60) %>%
-  filter(migplac1 < 60) %>%
-  mutate(past_state = ifelse(migplac1 == 0, statefip, migplac1)) #for ease of coding above and below bc subtle differences and similarities between statefip1 and migplac1
+  filter(statefip < 60) %>% #restrict to within 50 states
+  filter(migplac1 < 60) %>% #restrict to within 50 states
+  mutate(past_state = ifelse(migplac1 == 0, statefip, migplac1))
 
+
+
+
+#RUN TWO MAJOR FUNCTIONS
 #ex-post (ie look at legal status of state moved to)
 df_samesex <- add_state_labels(df_samesex, statefip, "expost")
 
 #ex-ante (ie look at legal status of state moved from)
-df_samesex <- add_state_labels(df_samesex, past_state, "exante") #likely more efficient way...
+df_samesex <- add_state_labels(df_samesex, past_state, "exante")
 
-#add person labels 
+
+
+
+#add output labels incl. for heterogeneity tests
 df_samesex <-df_samesex %>%
-  mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #watch techdef here
-  mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% #this is also inputted later, for sanity add this here too (make more efficient later)
+  mutate(migrant = ifelse(migplac1 == 0, 0, 1)) %>% #think if can use logic statement/past_state var
+  mutate(localtofed_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 0, 0, ifelse(expost_old_legal == 0, 1, 0)))) %>% #note: indpt. expost/exante analysis
+  mutate(localtolocal_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 0, 0, ifelse(expost_old_legal == 1, 1, 0)))) %>%
+  mutate(fedtofed_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 1, 0, ifelse(expost_old_legal == 0, 1, 0)))) %>%
+  mutate(fedtolocal_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 1, 0, ifelse(expost_old_legal == 1, 1, 0))))
+  
+#add person-level input labels
+df_samesex <-df_samesex %>%
+  mutate(sex_sp = ifelse(sex_sp == 9, NA, sex_sp)) %>% 
   mutate(in_samesex = ifelse(sex_sp == sex, 1, 0)) %>% #watch techdef here/coding issues
   mutate(in_oppositesex = ifelse((sex_sp != sex) & !is.na(sex_sp), 1, 0)) %>% #watch techdef here
-  mutate(post_2015 = ifelse(year >= 2015, 1, 0))
+  mutate(post_2015 = ifelse(year >= 2015, 1, 0)) %>%
+  mutate(has_child = ifelse(nchild > 0, 1, 0)) #think: want to include if partner has child?
 return(df_samesex)
 
 #collapse for readability/organization above?
@@ -295,7 +305,7 @@ return(df_samesex)
 #summary_stats <- add_context(summary_stats)
 working_df <- add_context(working_df)
 
-#oop watch expost v exante labeling (destination v origin state difference)
+#check ex-post ex-ante labeling- test by unique-ing
 ```
 
 Data cleaning (mostly technical and resolving missing occurrences)
@@ -345,8 +355,8 @@ Export build
 ```{r, include = F}
 gc()
 selected_data <- working_df %>%
-  select(migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, inctot, perwt, year, expost_state, exante_state)
-rm(F24_pull1, summary_stats, add_context, technical_cleaning)
+  select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state)
+rm(W25_pull1, summary_stats, add_context, technical_cleaning)
 
 #Export for STATA analysis (can use other purposes low key too)
 write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
