@@ -7,7 +7,7 @@
 \setlength{\pdfpagewidth}{8.5in} \setlength{\pdfpageheight}{11in}
 
 \begin{document}
-
+***back to being too big
 \begin{landscape}
 \begin{center}
 \input{outputs/summary_stats/control_table}
@@ -33,7 +33,7 @@ some size issues but could be worse
 
 \begin{landscape}
 \begin{center}
-\input{outputs/summary_stats/trends_table}
+\input{outputs/summary_stats/trendsdiffs_table}
 \end{center}
 \end{landscape}
 PERFECT
@@ -49,11 +49,24 @@ PERFECT
 
 \begin{figure}
     \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/ante_trends.png}
     \caption{Enter Caption}
     \label{fig:enter-label}
 \end{figure}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
 Ok some squashing, formatting consistency issues but can work with
 
 
@@ -69,9 +82,10 @@ Model 1 includes interaction terms and fixed effects only. Model 2 includes inte
 \input{outputs/regressions/exante_model}
 temporary place for description of models:
 Model 1 includes interaction terms and fixed effects only. Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income. Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate. Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.
+\clearpage
+\input{outputs/regressions/expost_dif_outcomes}
 
-
-
+\input{outputs/regressions/exante_dif_outcomes}
 
 \end{document}
 
