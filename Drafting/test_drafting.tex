@@ -8,11 +8,11 @@
 
 \begin{document}
 ***back to being too big
-\begin{landscape}
-\begin{center}
-\input{outputs/summary_stats/control_table}
-\end{center}
-\end{landscape}
+%\begin{landscape}
+%    \begin{center}
+        \scalebox{1}{\input{outputs/summary_stats/control_table}}
+%    \end{center}
+%\end{landscape}
 pretty darn good
 WATCH TABLES HAVE BACKWARDS OUTPUT BE CAREFUL
 \clearpage
@@ -83,8 +83,10 @@ Model 1 includes interaction terms and fixed effects only. Model 2 includes inte
 temporary place for description of models:
 Model 1 includes interaction terms and fixed effects only. Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income. Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate. Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.
 \clearpage
+\hspace{-4cm}
 \input{outputs/regressions/expost_dif_outcomes}
 
+\hspace{-4cm}
 \input{outputs/regressions/exante_dif_outcomes}
 
 \end{document}
