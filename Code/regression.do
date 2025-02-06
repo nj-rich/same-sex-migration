@@ -36,7 +36,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	dec(3) ///
 	se ///
 	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
-	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
+	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age, having a child in the household, and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
 	
 *ex-ante model
 * positive means more moving out of prior old legal states by individuals in same-sex post 2015
@@ -49,7 +49,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	dec(3) ///
 	se 	///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
-	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
+	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age, having a child in the household, and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
 	
 
 *Models 2 (controls for sex, race, educ, age, inctot, has_child)
@@ -194,7 +194,7 @@ reghdfe localtolocal_migrant in_samesex##exante_old_legal##post_2015 [w=perwt], 
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_dif_outcomes.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Post Model) ///
+	title(Ex-Ante Model) ///
 	ctitle(Local To Local) ///
 	label ///
 	dec(3) ///
