@@ -1,0 +1,14 @@
+Ex-Post Model					
+		(1)	(2)	(3)	(4)
+VARIABLES	LABELS	Local To Local	Local To Federal	Federal To Local	Federal To Federal
+					
+1.in_samesex#1.exante_old_legal#1.post_2015		0.006	-0.003	-0.003**	-0.016**
+		(0.004)	(0.003)	(0.001)	(0.006)
+Constant	Constant	-0.000	-0.001*	0.008***	0.100***
+		(0.002)	(0.000)	(0.000)	(0.002)
+					
+Observations		956,236,912	956,236,912	956,236,912	956,236,912
+R-squared		0.053	0.005	0.006	0.057
+Robust standard errors in parentheses					
+*** p<0.01, ** p<0.05, * p<0.1					
+Only has state and year fixed effects.					
