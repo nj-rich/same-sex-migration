@@ -21,6 +21,8 @@ label variable exante_old_legal "Origin: Legal Before 2015"
 label variable post_2015 "After 2015"
 *need more later
 
+///////////////////////// MAIN REGRESSIONS ////////////////////////////
+
 *Models 1 (fixed effects only)
 *ex-post model
 * neg means less moving to prior old legal states by individuals in same-sex post 2015
@@ -119,7 +121,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
 
 	
-*Heterogeneity/Robustness tests, tentative just model1 format
+	
+	
+
+///////////////////////// FLOW REGRESSIONS ////////////////////////////
+	
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
 
@@ -246,6 +252,12 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	se ///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
 	addnote("test.")
+
+	
+	
+///////////////////////// HET/SPLIT SAMPLE REGRESSIONS ////////////////////////////
+	
+	
 
 * q: F-tests? other tests?
 * need intercept or ok dropped?
