@@ -254,9 +254,128 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 
 	
 	
-///////////////////////// HET/SPLIT SAMPLE REGRESSIONS ////////////////////////////
+///////////////////////// HET/SPLIT SAMPLE REGRESSIONS //////////////////////////// *ifs seem to work!
+*gender
+clear
+use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
+
+*Models 1 (fixed effects only)
+*ex-post model
+*Men
+reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt] if sex == 2, ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
 	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+	replace ///
+	tex(fragment) ///
+	title(Ex-Post Model) ///
+	ctitle(Model 1: Men) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F)) ///
+	addnote("See below.")
+*Women
+reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt] if sex == 1, ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
 	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+	replace ///
+	tex(fragment) ///
+	title(Ex-Post Model) ///
+	ctitle(Model 1: Women) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
+
+*ex-ante model
+* positive means more moving out of prior old legal states by individuals in same-sex post 2015
+reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+	replace ///
+	tex(fragment) ///
+	title(Ex-Ante Model) ///
+	ctitle(Model 1) ///
+	label ///
+	dec(3) ///
+	se 	///
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
+	addnote("See below.")
+
+*Models 2 (controls for sex, race, educ, age, inctot, has_child)
+
+*add dummy variables (excluding birthstate)
+xi i.sex i.race i.educ i.has_child
+
+* ex post regression
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 2) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+
+* ex ante regression
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+	absorb(exante_state year) ///
+	vce(cluster exante_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 2) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
+
+*Models 3 (controls for sex, race, educ, age, inctot, has_child, birth state)
+
+*add birthstate dummy
+xi i.bpl
+
+*collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
+collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
+
+*weight testing still in progress
+* ex post regression
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 3) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+
+* ex ante regression
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+	absorb(exante_state year) ///
+	vce(cluster exante_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 3) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 	
 
 * q: F-tests? other tests?
 * need intercept or ok dropped?
@@ -282,5 +401,6 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 *watch updated formatting issues
 
 **OK: in good spot, notes need some work works comes to worst can edit manually but feel half decent about things, MAYBE ADD CTITLES BACK OTHERWISE VARIABLES ANNOYING
+*output adjusted R^2
 *output adjusted R^2
 *oi run all 3 models always
