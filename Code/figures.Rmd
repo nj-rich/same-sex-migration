@@ -185,77 +185,77 @@ writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/output
 
 Summary stats - stock migrants/general pops. in certain state categories (deprecate)
 ```{r, include = F}
-#oop count labeling not super accurate
-
-gc()
-#count prop by same_sex in post_old_legal state/not (with old_legal definition):
-count_samesex_in_old_legal <- summary_stats %>%
-  group_by(year, in_samesex) %>%
-  summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
-  select(-prop_in_old_legal_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
-  select(year, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")
-
-gc()
-#count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
-count_samesex_migrants_in_old_legal <- summary_stats %>%
-  filter(migrant == 1) %>%
-  group_by(year, in_samesex) %>%
-  summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
-  select(-prop_in_old_legal_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
-  select(year, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")
-
-gc()
-#subtracted expost trends table
-subtracted_trends_post <- count_samesex_migrants_in_old_legal %>%
-  mutate(subtracted_trends_post = `Same-Sex Migrants in Old Legal` - `Opposite-Sex Migrants in Old Legal`) %>%
-  select(year, subtracted_trends_post)
-
-gc()
-#count prop by same_sex from post_old_legal state/not (with old_legal definition):
-count_samesex_from_old_legal <- summary_stats %>%
-  group_by(year, in_samesex) %>%
-  summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
-  select(-prop_from_old_legal_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal) %>%
-  select(year, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")
-
-gc()
-#count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
-count_samesex_migrants_from_old_legal <- summary_stats %>%
-  filter(migrant == 1) %>%
-  group_by(year, in_samesex) %>%
-  summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
-  select(-prop_from_old_legal_se) %>%
-  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants from Old Legal", "Opposite-Sex Migrants from Old Legal")) %>%
-  pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
-
-gc()
-#subtracted exante trends table
-subtracted_trends_ante <- count_samesex_migrants_from_old_legal %>%
-  mutate(subtracted_trends_ante = `Same-Sex Migrants from Old Legal` - `Opposite-Sex Migrants from Old Legal`) %>%
-  select(year, subtracted_trends_ante)
-
-gc()
-#create joint table
-joint_location_table <- count_samesex_in_old_legal %>%
-  left_join(count_samesex_migrants_in_old_legal, by = "year") %>%
-  left_join(subtracted_trends_post, by = "year") %>%
-  left_join(count_samesex_from_old_legal, by = "year") %>%
-  left_join(count_samesex_migrants_from_old_legal, by = "year") %>%
-  left_join(subtracted_trends_ante, by = "year") %>%
-  setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference")) %>% #needs work
-  kable(caption = "Individuals by Location", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "In Locally Legalized" = 2, "Migrants in Locally Legalized" = 2, " " = 1, "In from Locally Legalized" = 2, "Migrants from Locally Legalized" = 2, " " = 1)) 
-
-#export joint table
-writeLines(joint_location_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
-
-#need to abbreviate some titles
+# #oop count labeling not super accurate
+# 
+# gc()
+# #count prop by same_sex in post_old_legal state/not (with old_legal definition):
+# count_samesex_in_old_legal <- summary_stats %>%
+#   group_by(year, in_samesex) %>%
+#   summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
+#   select(-prop_in_old_legal_se) %>%
+#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")) %>%
+#   pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
+#   select(year, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")
+# 
+# gc()
+# #count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
+# count_samesex_migrants_in_old_legal <- summary_stats %>%
+#   filter(migrant == 1) %>%
+#   group_by(year, in_samesex) %>%
+#   summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
+#   select(-prop_in_old_legal_se) %>%
+#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")) %>%
+#   pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
+#   select(year, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")
+# 
+# gc()
+# #subtracted expost trends table
+# subtracted_trends_post <- count_samesex_migrants_in_old_legal %>%
+#   mutate(subtracted_trends_post = `Same-Sex Migrants in Old Legal` - `Opposite-Sex Migrants in Old Legal`) %>%
+#   select(year, subtracted_trends_post)
+# 
+# gc()
+# #count prop by same_sex from post_old_legal state/not (with old_legal definition):
+# count_samesex_from_old_legal <- summary_stats %>%
+#   group_by(year, in_samesex) %>%
+#   summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
+#   select(-prop_from_old_legal_se) %>%
+#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")) %>%
+#   pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal) %>%
+#   select(year, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")
+# 
+# gc()
+# #count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
+# count_samesex_migrants_from_old_legal <- summary_stats %>%
+#   filter(migrant == 1) %>%
+#   group_by(year, in_samesex) %>%
+#   summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
+#   select(-prop_from_old_legal_se) %>%
+#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants from Old Legal", "Opposite-Sex Migrants from Old Legal")) %>%
+#   pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
+# 
+# gc()
+# #subtracted exante trends table
+# subtracted_trends_ante <- count_samesex_migrants_from_old_legal %>%
+#   mutate(subtracted_trends_ante = `Same-Sex Migrants from Old Legal` - `Opposite-Sex Migrants from Old Legal`) %>%
+#   select(year, subtracted_trends_ante)
+# 
+# gc()
+# #create joint table
+# joint_location_table <- count_samesex_in_old_legal %>%
+#   left_join(count_samesex_migrants_in_old_legal, by = "year") %>%
+#   left_join(subtracted_trends_post, by = "year") %>%
+#   left_join(count_samesex_from_old_legal, by = "year") %>%
+#   left_join(count_samesex_migrants_from_old_legal, by = "year") %>%
+#   left_join(subtracted_trends_ante, by = "year") %>%
+#   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference")) %>% #needs work
+#   kable(caption = "Individuals by Location", format = "latex", booktabs = T, digits = 3) %>%
+#   add_header_above(c(" " = 1, "In Locally Legalized" = 2, "Migrants in Locally Legalized" = 2, " " = 1, "In from Locally Legalized" = 2, "Migrants from Locally Legalized" = 2, " " = 1)) 
+# 
+# #export joint table
+# writeLines(joint_location_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
+# 
+# #need to abbreviate some titles
 ```
 
 Summary statistics/trends table for regression storytelling
@@ -529,12 +529,6 @@ post_migrant_trends_df <- summary_stats %>%
     in_samesex == 0 & expost_old_legal == 0 ~ "oppositesex_newlegal"
   ))
 
-#dang it maybe can't use these
-post_migrant_diffs_table <- post_migrant_trends_df %>%
-  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
-  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
-  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal)
-
 ante_migrant_trends_df <- summary_stats %>%
   mutate(subgroup = case_when(
     in_samesex == 1 & exante_old_legal == 1 ~ "samesex_oldlegal",
@@ -542,12 +536,6 @@ ante_migrant_trends_df <- summary_stats %>%
     in_samesex == 1 & exante_old_legal == 0 ~ "samesex_newlegal",
     in_samesex == 0 & exante_old_legal == 0 ~ "oppositesex_newlegal"
   )) 
-
-#dang it maybe can't use these
-# ante_migrant_diffs_table <- ante_migrant_trends_df %>%
-#   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
-#   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
-#   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal)
 
 #make functions to make charts
 
@@ -577,7 +565,7 @@ make_diffs_chart <- function(df, sel_title, group, facet, facet_titles) {
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = sel_title,
          x = "Year",
-         y = "Migration Locally - Federally Legalized States", #ambiguous for purposes of from v. to
+         y = "Migration Locally - Not/Federally Legalized States", #ambiguous for purposes of from v. to
          linetype = "Subgroup") + 
     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
     scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
@@ -692,8 +680,153 @@ age_ante_diffs_chart <- post_migrant_trends_df %>%
 
 #takeaways: minimal meaning, area most of interest is 23-32 (most mobile, period most likely to marry)
 
+###Split by Educ
 gc()
-###Export
+#Post
+educ_post_trends_chart <- post_migrant_trends_df %>%
+  mutate(college = ifelse(educ >= 10, "college", "notcollege")) %>%
+  group_by(year, college, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Post Trends by Education", facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
+
+educ_post_diffs_chart <- post_migrant_trends_df %>%
+  mutate(college = ifelse(educ >= 10, "college", "notcollege")) %>%
+  group_by(year, college, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Post Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
+
+#Ante
+educ_ante_trends_chart <- ante_migrant_trends_df %>%
+  mutate(college = ifelse(educ >= 10, "college", "notcollege")) %>%
+  group_by(year, college, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Ante Trends by Education", facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
+
+educ_ante_diffs_chart <- post_migrant_trends_df %>%
+  mutate(college = ifelse(educ >= 10, "college", "notcollege")) %>%
+  group_by(year, college, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Ante Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
+
+#takeaways: kind of noisy, doesn't seem to follow predicted (post) trend
+
+###Split by Children
+gc()
+#Post
+child_post_trends_chart <- post_migrant_trends_df %>%
+  mutate(child = ifelse(has_child ==1, "yes", "no")) %>%
+  group_by(year, child, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Post Trends by Presence of Children", facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
+
+child_post_diffs_chart <- post_migrant_trends_df %>%
+  mutate(child = ifelse(has_child ==1, "yes", "no")) %>%
+  group_by(year, child, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Post Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
+
+#Ante
+child_ante_trends_chart <- ante_migrant_trends_df %>%
+  mutate(child = ifelse(has_child ==1, "yes", "no")) %>%
+  group_by(year, child, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Ante Trends by Presence of Children", facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
+
+child_ante_diffs_chart <- post_migrant_trends_df %>%
+  mutate(child = ifelse(has_child ==1, "yes", "no")) %>%
+  group_by(year, child, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Ante Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
+
+#takeaways: noisy; no child post chart kind of interesting/follows predictions (ante looks similar)
+
+###Split by Income
+gc()
+#Post
+inc_post_trends_chart <- post_migrant_trends_df %>%
+  group_by(year) %>%
+  mutate(mean_income = sum(perwt * inctot, na.rm = T) / sum(perwt, na.rm = T)) %>% #note: applies to whole year population, not separated, watch mean v median, own bootleg weight calculations
+  ungroup() %>%
+  mutate(income_group = ifelse(inctot < mean_income, "below", "above")) %>%
+  group_by(year, income_group, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Post Trends by Income", facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
+
+inc_post_diffs_chart <- post_migrant_trends_df %>%
+    group_by(year) %>%
+  mutate(mean_income = sum(perwt * inctot, na.rm = T) / sum(perwt, na.rm = T)) %>% #note: applies to whole year population, not separated, watch mean v median, own bootleg weight calculations
+  ungroup() %>%
+  mutate(income_group = ifelse(inctot < mean_income, "below", "above")) %>%
+  group_by(year, income_group, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Post Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
+
+#Ante
+inc_ante_trends_chart <- ante_migrant_trends_df %>%
+    group_by(year) %>%
+  mutate(mean_income = sum(perwt * inctot, na.rm = T) / sum(perwt, na.rm = T)) %>% #note: applies to whole year population, not separated, watch mean v median, own bootleg weight calculations
+  ungroup() %>%
+  mutate(income_group = ifelse(inctot < mean_income, "below", "above")) %>%
+  group_by(year, income_group, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Ante Trends by Income", facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
+
+inc_ante_diffs_chart <- post_migrant_trends_df %>%
+    group_by(year) %>%
+  mutate(mean_income = sum(perwt * inctot, na.rm = T) / sum(perwt, na.rm = T)) %>% #note: applies to whole year population, not separated, watch mean v median, own bootleg weight calculations
+  ungroup() %>%
+  mutate(income_group = ifelse(inctot < mean_income, "below", "above")) %>%
+  group_by(year, income_group, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Ante Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
+
+#takeaways: noisy, (post) kind of follows hypothesis
+
+
+gc()
+###Export (oi map)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_trends.png", plot = sex_post_trends_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_diffs.png", plot = sex_post_diffs_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_trends.png", plot = sex_ante_trends_chart)
@@ -702,7 +835,18 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_post_
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_post_diffs.png", plot = age_post_diffs_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_ante_trends.png", plot = age_ante_trends_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_ante_diffs.png", plot = age_ante_diffs_chart)
-
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/educ_post_trends.png", plot = educ_post_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/educ_post_diffs.png", plot = educ_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/educ_ante_trends.png", plot = educ_ante_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/educ_ante_diffs.png", plot = educ_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/child_post_trends.png", plot = child_post_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/child_post_diffs.png", plot = child_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/child_ante_trends.png", plot = child_ante_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/child_ante_diffs.png", plot = child_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_post_trends.png", plot = inc_post_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_post_diffs.png", plot = inc_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_ante_trends.png", plot = inc_ante_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_ante_diffs.png", plot = inc_ante_diffs_chart)
 #more slicing and dicing to do
 
 #more functions?
@@ -713,6 +857,8 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_ante_
 #hmm wonder how much fixed effects would absorbr
 #can totally functionalize/map all of this
 #for triple diff charts makes sense to add another layer of difference?
+#watch rename axes (Not/Federally)
+#really wonder how much is motivated by noise/migration levels overall
 ```
 
 Code

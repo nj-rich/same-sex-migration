@@ -23,7 +23,7 @@ label variable post_2015 "After 2015"
 
 ///////////////////////// MAIN REGRESSIONS ////////////////////////////
 
-//MODELS 1 (fixed effects only)
+*Models 1 (fixed effects only)
 *ex-post model
 * neg means less moving to prior old legal states by individuals in same-sex post 2015
 reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
@@ -34,11 +34,12 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	replace ///
 	tex(fragment) ///
 	title(Ex-Post Model) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
 	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
-	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age, having a child in the household, and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
+	addnote("See below.")
 	
 *ex-ante model
 * positive means more moving out of prior old legal states by individuals in same-sex post 2015
@@ -47,14 +48,14 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	replace ///
 	tex(fragment) ///
 	title(Ex-Ante Model) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se 	///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
-	addnote("Model 1 includes interaction terms and fixed effects only." + char(10) + "Model 2 includes interaction terms, fixed effects, and controls for sex, race, education, age, having a child in the household, and income." + char(10) + "Model 3 includes interaction terms, fixed effects, and controls for sex, race, education, age, income, and birthstate." + char(10) + "Models 1 and 2 use a weighted sample. Model 3 uses a weighted and collapsed sample.")
+	addnote("See below.")
 
-
-//MODELS 2 (controls for sex, race, educ, age, inctot, has_child)
+*Models 2 (controls for sex, race, educ, age, inctot, has_child)
 
 *add dummy variables (excluding birthstate)
 xi i.sex i.race i.educ i.has_child
@@ -67,6 +68,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight =
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
 	tex(fragment) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -80,12 +82,13 @@ reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight =
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	append ///
 	tex(fragment) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
 
-//MODELS 3 (controls for sex, race, educ, age, inctot, has_child, birth state)
+*Models 3 (controls for sex, race, educ, age, inctot, has_child, birth state)
 
 *add birthstate dummy
 xi i.bpl
@@ -102,6 +105,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight =
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
 	tex(fragment) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -115,6 +119,7 @@ reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight =
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	append ///
 	tex(fragment) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -129,7 +134,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
 
-//EX-POST FRAME
+*ex-post frame
 *local to local
 reghdfe localtolocal_migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
 	absorb(expost_state year) ///
@@ -158,8 +163,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
-	addnote("test.")
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
 	
 *fed to local
 reghdfe fedtolocal_migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
@@ -173,8 +177,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
-	addnote("test.")
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
 
 *fed to fed
 reghdfe fedtofed_migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
@@ -188,10 +191,9 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
-	addnote("test.")
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
 	
-//EX-ANTE FRAME
+*ex-ante frame
 *local to local
 reghdfe localtolocal_migrant in_samesex##exante_old_legal##post_2015 [w=perwt], ///
 	absorb(exante_state year) ///
@@ -220,8 +222,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
-	addnote("test.")
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015)
 	
 *fed to local
 reghdfe fedtolocal_migrant in_samesex##exante_old_legal##post_2015 [w=perwt], ///
@@ -235,8 +236,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
-	addnote("test.")
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015)
 
 *fed to fed
 reghdfe fedtofed_migrant in_samesex##exante_old_legal##post_2015 [w=perwt], ///
@@ -250,8 +250,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
-	addnote("test.")
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015)
 
 	
 	
@@ -283,3 +282,5 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 *watch updated formatting issues
 
 **OK: in good spot, notes need some work works comes to worst can edit manually but feel half decent about things, MAYBE ADD CTITLES BACK OTHERWISE VARIABLES ANNOYING
+*output adjusted R^2
+*oi run all 3 models always
