@@ -1,16 +1,14 @@
-Ex-Post Model		
+Ex-Post Model by Sex		
 		(1)
 VARIABLES	LABELS	Model 1: Men
 		
-1.in_samesex#1.expost_old_legal#1.post_2015		-0.022
-		(0.015)
+1.in_samesex#1.expost_old_legal#1.post_2015		-0.005***
+		(0.001)
 Constant	Constant	0.106***
 		(0.001)
 		
-Observations		474,321,020
-R-squared		0.005
-Adjusted R^2		0.00469
-F-statistic		127.3
+Observations		481,915,892
+R-squared		0.004
 Robust standard errors in parentheses		
 *** p<0.01, ** p<0.05, * p<0.1		
 See below.		

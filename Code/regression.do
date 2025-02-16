@@ -96,7 +96,6 @@ xi i.bpl
 *collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
 collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
 
-*weight testing still in progress
 * ex post regression
 reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
 	absorb(expost_state year) ///
@@ -254,14 +253,32 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 
 	
 	
-///////////////////////// HET/SPLIT SAMPLE REGRESSIONS //////////////////////////// *ifs seem to work!
-*gender
+///////////////////////// HET/SPLIT SAMPLE REGRESSIONS //////////////////////////// *addstat now seems broken
+
+////GENDER
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
 
 *Models 1 (fixed effects only)
 *ex-post model
 *Men
+reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt] if sex == 1, ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+        replace ///
+		tex(fragment) ///
+        title(Ex-Post Model) ///
+        ctitle(Model 1: Men) ///
+        label ///
+        dec(3) ///
+        se ///
+        keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+        addstat(Adjusted R^2, e(r2_a), F-statistic, e(F)) ///
+        addnote("See below.")
+
+*Women
 reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt] if sex == 2, ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
@@ -269,23 +286,7 @@ reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt] if sex == 2, /
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Post Model) ///
-	ctitle(Model 1: Men) ///
-	label ///
-	dec(3) ///
-	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
-	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F)) ///
-	addnote("See below.")
-*Women
-reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt] if sex == 1, ///
-	absorb(expost_state year) ///
-	vce(cluster expost_state year) 
-	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
-	replace ///
-	tex(fragment) ///
-	title(Ex-Post Model) ///
+	title(Ex-Post Model by Sex) ///
 	ctitle(Model 1: Women) ///
 	label ///
 	dec(3) ///
@@ -294,53 +295,107 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
 
 *ex-ante model
-* positive means more moving out of prior old legal states by individuals in same-sex post 2015
-reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+*Men
+reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt] if sex == 1, ///
+	absorb(exante_state year) ///
+	vce(cluster exante_state year)
+
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Ante Model) ///
+	title(Ex-Ante Model by Sex) ///
 	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se 	///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F)) ///
 	addnote("See below.")
 
-*Models 2 (controls for sex, race, educ, age, inctot, has_child)
+*Women
+reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt] if sex == 2, ///
+	absorb(exante_state year) ///
+	vce(cluster exante_state year)
+
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+	replace ///
+	tex(fragment) ///
+	title(Ex-Ante Model by Sex) ///
+	ctitle(Model 1: Women) ///
+	label ///
+	dec(3) ///
+	se 	///
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
+
+*Models 2 (controls for race, educ, age, inctot, has_child) - no sex here
 
 *add dummy variables (excluding birthstate)
-xi i.sex i.race i.educ i.has_child
+xi i.race i.educ i.has_child
 
 * ex post regression
-reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+*Men
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 1, ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2) ///
+	ctitle(Model 2: Men) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
+
+*Women
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 2, ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 2: Women) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
 
 * ex ante regression
-reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+*Men
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 1, ///
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2) ///
+	ctitle(Model 2: Men) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
 
-*Models 3 (controls for sex, race, educ, age, inctot, has_child, birth state)
+*Women
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 2, ///
+	absorb(exante_state year) ///
+	vce(cluster exante_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 2: Women) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
+	
+*Models 3 (controls for race, educ, age, inctot, has_child, birth state)
 
 *add birthstate dummy
 xi i.bpl
@@ -348,34 +403,52 @@ xi i.bpl
 *collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
 collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
 
-*weight testing still in progress
 * ex post regression
-reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+*Men
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 1, ///
 	absorb(expost_state year) ///
 	vce(cluster expost_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3) ///
+	ctitle(Model 3: Men) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
 
+*Women
+reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 2, ///
+	absorb(expost_state year) ///
+	vce(cluster expost_state year) 
+	
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+	append ///
+	tex(fragment) ///
+	ctitle(Model 3: Women) ///
+	label ///
+	dec(3) ///
+	se ///
+	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F))
+	
 * ex ante regression
-reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
+*Men
+reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 1, ///
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
 	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex" if sex == 1, ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3) ///
+	ctitle(Model 3: Women) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 	
+	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
+	addstat(Adjusted R^2, e(r2_a), F-statistic, e(F)) 	
 
 * q: F-tests? other tests?
 * need intercept or ok dropped?
@@ -404,3 +477,6 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 *output adjusted R^2
 *output adjusted R^2
 *oi run all 3 models always
+*oop how to use loops
+*watch sex v gender
+*watch typos
