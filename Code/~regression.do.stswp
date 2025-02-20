@@ -133,6 +133,12 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
 
+*add labels
+label variable in_samesex "In Same-Sex Relationship"
+label variable expost_old_legal "Destination: Legal Before 2015"
+label variable exante_old_legal "Origin: Legal Before 2015"
+label variable post_2015 "After 2015"
+
 *ex-post frame
 *local to local
 reghdfe localtolocal_migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
