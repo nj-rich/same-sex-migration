@@ -497,6 +497,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *watch many large rooms for error due to duplication and lack of functionalization
 * OH MY GOD COLLAPSE HAS SERIOUS WEIGHTING ISSUES- HAVE TO THINK ABOUT NEW WEIGHTS POST COLLAPSING NOT QUITE SURE HOW TO PROCEED- sum perwt and then use that as a weight in the regression maybe
 *keep function keeps break, very frustrated
+*watch square terms
 
 *need have children control, occupation control, etc etc
 *think how to make notes prettier
@@ -512,3 +513,6 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *add stat code: addstat(Adjusted R^2, e(r2_a), F-statistic, e(F)) /// 
 *maybe get rid of dec(3) and se command see if it balances out, maybe it has to do with certain statistics not existing
 *outreg 2 documentation disappeared lovely
+*some errors seen frequently: note: 1bn.post_2015 is probably collinear with the fixed effects (all partialled-out values are close to zero; tol = 1.0e-09)
+*Warning: VCV matrix was non-positive semi-definite; adjustment from Cameron, Gelbach & Miller applied.
+*warning: missing F statistic; dropped variables due to collinearity or too few clusters
