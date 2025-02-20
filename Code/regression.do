@@ -321,7 +321,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	replace ///
 	tex(fragment) ///
 	title(Ex-Ante Model by Sex) ///
-	ctitle(Model 1) ///
+	ctitle(Model 1: Men) ///
 	label ///
 	dec(3) ///
 	se 	///
@@ -465,7 +465,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	se ///
 	keep(1.in_samesex#1.exante_old_legal#1.post_2015) ///
 
-*Women
+*Women (not outputting for some reason)
 reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt] if sex == 2, ///
 	absorb(exante_state year) ///
 	vce(cluster exante_state year) 
