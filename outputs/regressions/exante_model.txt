@@ -12,7 +12,3 @@ R-squared		0.003	0.080	0.912
 Robust standard errors in parentheses				
 *** p<0.01, ** p<0.05, * p<0.1				
 Model 1 includes interaction terms and fixed effects only.				
-)				
-)				
-)				
-)				
