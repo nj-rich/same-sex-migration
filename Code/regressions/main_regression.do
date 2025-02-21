@@ -44,6 +44,12 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 *ex-ante model
 * positive means more moving out of prior old legal states by individuals in same-sex post 2015
 reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
+
+///Mueller-Smith see
+gen treatment = in_samesex*exante_old_legal*post_2015
+reg migrant treatment  i.in_samesex##i.exante_state i.in_samesex##i.year i.exante_state##i.year [w=perwt], vce(cluster exante_state year)
+
+///
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	replace ///
 	tex(fragment) ///
