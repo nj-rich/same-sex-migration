@@ -120,6 +120,7 @@ To better isolate the relationships I care about, I impose a series of restricti
 I also apply several restrictions for technical reasons. I exclude observations in which the ACS has identified errors in coding an individual’s sex or has identified an individual’s sex as missing. While researchers have noted that ACS more reliably identifies individuals in same-sex relationships after 2012, other researchers have noted that before this there were sex-coding reliability issues before this (3, 5, 7, 12). Dropping these observations ensures more reliable identification of individuals in same-sex relationships. I also drop observations with missing age, education, and race information and unknown employment status and income status. I do this because all of these variables are used as controls in my model.
 
 \begin{landscape}
+\tiny
 \input{outputs/summary_stats/control_table}
 \end{landscape}
 
@@ -182,6 +183,22 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 
 \subsection{Migration Flows in More Detail}
 \clearpage
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/from_fed_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/from_local_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\input{outputs/regressions/expost_dif_outcomes}
+\input{outputs/regressions/exante_dif_outcomes}
 
 %\subsection{State Comparisons- ie something like CA v TX}
 
