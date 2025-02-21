@@ -1,0 +1,84 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{datetime} %maybe don't need
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{graphicx} %I added this, we'll see
+
+% Adjust margins to fit the AER style
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+% Title setup
+\title{Title of the Paper}
+\author{Noah Rich\footnote{University of Michigan, njrich@umich.edu.}}
+\date{\today}
+
+% Start the document
+\begin{document}
+
+\maketitle
+\footnote{Acknowledgements:}
+
+% Abstract section
+\begin{abstract}
+    Your abstract goes here. Keep it concise, summarizing the key contributions of the paper in no more than 150 words.
+\end{abstract}
+
+\newpage
+
+% Main content section
+\section{Introduction}
+
+Write the introduction here, explaining the problem, significance, and structure of the paper.
+
+\section{Literature Review}
+Discuss relevant literature and establish the gap your paper addresses.
+
+\section{Model Setup or Theoretical Framework}
+Explain any models, theories, or key ideas here. You can use equations like the following example:
+
+\begin{equation}
+    y = \beta_0 + \beta_1 x + \epsilon
+\end{equation}
+
+\section{Empirical Analysis}
+Provide any empirical analysis or methodology. Use tables and figures here, for example:
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Variable & Coefficient & Std. Error \\
+        \hline
+        $x_1$ & 1.23 & 0.45 \\
+        $x_2$ & 0.67 & 0.12 \\
+        \hline
+    \end{tabular}
+    \caption{Regression Results}
+\end{table}
+
+\section{Results}
+Present and interpret the results. Include tables, graphs, or any statistical outputs.
+
+\section{Conclusion}
+Summarize the findings, implications, and suggest possible directions for future research.
+
+\newpage
+
+% References section
+\begin{thebibliography}{99}
+
+\bibitem{key1}
+Author, A. (Year). \textit{Title of the Book or Paper}. Journal Name, Volume(Issue), Pages.
+
+\bibitem{key2}
+Author, B., & Author, C. (Year). \textit{Title of Another Paper}. Another Journal, Volume(Issue), Pages.
+
+\end{thebibliography}
+
+\end{document}
