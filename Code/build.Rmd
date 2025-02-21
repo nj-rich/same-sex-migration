@@ -289,7 +289,11 @@ df_samesex <-df_samesex %>%
   mutate(localtofed_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 0, 0, ifelse(expost_old_legal == 0, 1, 0)))) %>% #note: indpt. expost/exante analysis
   mutate(localtolocal_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 0, 0, ifelse(expost_old_legal == 1, 1, 0)))) %>%
   mutate(fedtofed_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 1, 0, ifelse(expost_old_legal == 0, 1, 0)))) %>%
-  mutate(fedtolocal_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 1, 0, ifelse(expost_old_legal == 1, 1, 0))))
+  mutate(fedtolocal_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 1, 0, ifelse(expost_old_legal == 1, 1, 0)))) %>%
+  mutate(tofed_migrant = ifelse(migrant == 0, 0, ifelse(expost_old_legal == 0, 1, 0))) %>%
+  mutate(tolocal_migrant = ifelse(migrant == 0, 0, ifelse(expost_old_legal == 0, 0, 1))) %>% #for purposes of ex-ante regression breakdown, this is most useful
+  mutate(fromfed_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 0, 1, 0))) %>%
+  mutate(fromlocal_migrant = ifelse(migrant == 0, 0, ifelse(exante_old_legal == 0, 0, 1))) #for purposes of ex-post regression breakdown, this is most useful
   
 #add person-level input labels
 df_samesex <-df_samesex %>%
@@ -358,7 +362,7 @@ Export build
 gc()
 selected_data <- working_df %>%
   select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state)
-rm(W25_pull1, summary_stats, add_context, technical_cleaning)
+rm(W25_pull1, add_context, technical_cleaning)
 
 #Export for STATA analysis (can use other purposes low key too)
 write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
