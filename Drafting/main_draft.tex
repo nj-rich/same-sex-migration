@@ -8,7 +8,15 @@
 \usepackage{url}
 \usepackage{setspace}
 \usepackage{geometry}
-\usepackage{graphicx} %I added this, we'll see
+
+%I added the following
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref} %for text hyperlinks
+\usepackage{graphicx}
+\usepackage{longtable} %for Gerstmann
+\usepackage{booktabs}  %for pretty tables
+\usepackage{lscape} %forget where horizontal comes from
+\usepackage{rotating} %forget where horizontal comes from
+\usepackage{tabularx}  %to help format tables
 
 % Adjust margins to fit the AER style
 \geometry{top=1in, bottom=1in, left=1in, right=1in}
@@ -26,7 +34,7 @@
 
 % Abstract section
 \begin{abstract}
-    Your abstract goes here. Keep it concise, summarizing the key contributions of the paper in no more than 150 words.
+    tbd
 \end{abstract}
 
 \newpage
@@ -34,51 +42,98 @@
 % Main content section
 \section{Introduction}
 
-Write the introduction here, explaining the problem, significance, and structure of the paper.
+tbd
 
 \section{Literature Review}
-Discuss relevant literature and establish the gap your paper addresses.
+Over the past 30 years, the legal landscape for individuals in same-sex relationships has changed dramatically in the United States. In 1996, Congress passed the Defense of Marriage Act (DOMA), which defined marriage as being strictly between a man and a woman \citep{5}. Seven short years later, Massachusetts became the first state to legalize same-sex marriage \citep{1, 3, 5}. Between then and 2015, more than half of all U.S. states followed \citep{12}. In 2013, the Supreme Court invalidated DOMA’s definition of marriage, and in 2015, legalized same-sex marriage outright \citep{1, 3, 5, 12}. This incredible period of flux has brought many questions: how might those in same-sex and opposite-sex relationships respond differently to marriage access? Might this impact interstate migration? Many researchers have attempted to answer these questions, at least in part.
 
-\section{Model Setup or Theoretical Framework}
-Explain any models, theories, or key ideas here. You can use equations like the following example:
+Economists have been interested in marriage since at least the 1970s. In a landmark series of papers, \citet{9} described how marriage can be understood in a traditional cost-benefit choice utility framework. Specifically, two people enter a marriage if, and only if, it increases both of their lifetime utility \citep{9}. Many unique benefits can be ascribed to marriage in the US. Legally, there are at least 1,138 benefits listed in federal law, including rights related to citizenship, taxes, benefits, healthcare, and parenthood \citep{1, 8}. Non-legal benefits include social status and a concrete symbol of commitment \citep{8}. On the other hand, costs include legal fees, and partner searching and marriage consideration costs \citep{9}. As marriage can then be understood as a good with costs and benefits, it can be understood as something that many people might pay to obtain. 
+
+These people, notably, include both those who would want to marry someone of the same or opposite sex. However, as stated above, individuals in same-sex relationships could not marry anywhere in the US until 2003 \citep{1, 3, 5, 12}. This follows a general trend defining the differences between those in same-sex and opposite-sex relationships: while there might be many similarities between those in same-sex and opposite sex relationships: outside social and legal factors, unrelated to sexuality, often determine differences \citep{2}. Researchers have noted these differences in education level, relationship structure, income, likelihood to have children, and importantly, living location \citep{2, 11, 6, 7, 8, 10, 7}. Gay men and lesbian women tend to be more highly educated than heterosexual people \citep{2, 7, 11}. Same-sex cohabiting relationships tend to form at a lower rate than opposite-sex cohabiting relationships; however, same-sex relationships tend to be less homogenous across age and racial lines \citep{2, 7}. Gay men tend to earn less than straight men, while lesbian women tend to earn more than straight women \citep{6}. Those in same-sex relationships face higher costs to raising children, and tend to have children at lower rates than those in opposite sex relationships \citep{8, 10, 11}. Finally, gay men and lesbian women tend to live in different places than their heterosexual counterparts: gay men, similar to straight men without children, often choose to live in expensive, high-amenity places like San Francisco \citep{7, 10, 11, 13}. Again crucially, this follows the pattern described above by (2): sexuality might play some role in this difference, but another factor- likelihood to have children- can also plays a role.
+
+Understanding this, that many of these differences might not be attributable purely to sexuality but other outside factors, researchers have studied how marriage legalization differences on a statewide basis impacted those in same-sex relationships relative to those in opposite-sex relationships. Overall, researchers have found some convergence in outcomes between those in same-sex and opposite-sex relationships in states where same-sex marriage was legalized. \citep{3} found some evidence that the legalization of same-sex marriage led to the better integration of those in same-sex relationships into the labor market and thus higher employment. With the tax, health insurance, and adoption rights allowed by legal marriage, same-sex spouses began to specialize more in paid work or unpaid housework and childcare \citep{3, 4, 6}. Further, legal same-sex marriage brought a degree of social acceptance: there is some evidence that same-sex marriage legalization led to more popular support for same-sex marriage \citep{3, 21}. When more outside factors were similar, individuals in same-sex and opposite-sex relationships began to share more similarities.
+
+Above, I discuss ways same-sex marriage increased similarities between those in same-sex and opposite-sex relationships. However, there are areas where it would make sense that state-by-state legalization might bring more differences. Namely, interstate migration. Below, I discuss how economists understand migration, and how it connects to same-sex marriage legalization.
+
+Economists also understand migration in a traditional cost-benefit framework \citep{12, 8}. When the utility of a different state is greater than the utility of one’s current state and costs of moving, an individual might want to move to a new state. Monetary costs and benefits include state-related income differences and moving costs \citep{1, 15, 16, 17}. Non-monetary costs and benefits might include distance from family, place attachment, and general satisfaction \citep{1, 15}. Crucially, individuals in same-sex relationships might have also considered the legal status of same-sex marriage before 2015. As these costs and benefits vary across different people with different preferences, this model then predicts different migration decisions for different people. Younger and more educated people- those potentially less place-attached- might be more likely to move \citep{17}. Those in a household with other family members- all attached to each other yet all with non-identical preferences- might be less likely to move \citep{16}. It is important to note, however, that none of these groups are monoliths, which can have significant implications for their migration outcomes \citep{20}. 
+
+In addition to age, education, and family, researchers have studied the migration impacts of same-sex marriage legalization for those in same-sex relationships. Using an events study empirical framework, \citet{1} found that states with legal same-sex marriage pulled individuals in same-sex relationships. Using a probit model, \cite{12} found that states without legal same-sex marriage pushed out household heads in same-sex relationships. This follows the logic that individuals in same-sex relationship would see same-sex marriage as a factor in migration decisions in a way that individuals in opposite-sex relationships would not. There is an endogeneity concern that other factors that impact same-sex marriage legalization also impact same-sex migration, but these can be controlled for using state and time fixed effects \citep{5}. 
+
+After 2015, same-sex marriage ceased to be a differentiating factor between states for individuals in same-sex relationships. Like how same-sex marriage conveyed a certain level of convergence between same-sex and opposite-sex individuals within legalized states, federal same-sex marriage could convey a certain level of convergence for state-by-state migration. Unlike the questions discussed above, this has not been studied as extensively. This is what the rest of this paper will be about. 
+
+
+
+
+\section{Model}
+\subsection{Theoretical Framework}
+Following \citet{1, 12, 18}, I state that an individual moves from their current state to another state when the utility of moving is positive, does not move when the utility of moving is negative, and is indifferent when the utility of moving is zero. In this framework, the utility of moving is a function of the utility to individual i of the possible new state n, the utility to individual i of the current state c, and moving costs m. Utilities of a given place are themselves functions of the characteristics of a given place and the characteristics of individual i. This can be seen in the following equation: 
 
 \begin{equation}
-    y = \beta_0 + \beta_1 x + \epsilon
+U(\text{moving}) = U(\text{new place}_i) - U(\text{current place}) - C(\text{moving})
 \end{equation}
 
-\section{Empirical Analysis}
-Provide any empirical analysis or methodology. Use tables and figures here, for example:
+\begin{equation}
+U(\text{place}_i \text{ for person}_j) = F(\text{characteristics of person}_j, \text{characteristics of place}_i)
+\end{equation}
 
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{|c|c|c|}
-        \hline
-        Variable & Coefficient & Std. Error \\
-        \hline
-        $x_1$ & 1.23 & 0.45 \\
-        $x_2$ & 0.67 & 0.12 \\
-        \hline
-    \end{tabular}
-    \caption{Regression Results}
-\end{table}
+
+In between 2003 and 2015, I argue that for same-sex individuals, legalized same-sex marriage is a relevant state characteristic when making migration decisions. For opposite-sex individuals, I argue that it isn’t. This is because in this period, opposite-sex individuals had access to marriage in all states, while same-sex individuals only had access to marriage in some states. This would make same-sex marriage a differentiator for same-sex individuals, if not opposite-sex individuals. As marriage conveys numerous benefits, same-sex individuals should see access to marriage as a benefit, and lack of marriage as a cost. It is also important to note that locally legalized same-sex marriage might convey other benefits for same-sex individuals, such as social acceptance \citep{12}. However, I argue that after 2015, this difference for same-sex and opposite-sex people should begin to decrease. Under Obergefell v Hodges, marriage is equally accessible across the US for same-sex individuals, just as for opposite-sex people. 
+
+\subsection{Empirical Framework}
+
+To test this theory, I use a triple differences specification \citep{23, 24, 25}. This model exploits my prediction that I expect same-sex marriage to affect same-sex individuals but not opposite-sex individuals, different states that locally legalized same-sex marriage did so at different times, and that Obergefell v Hodges impacted every state in the US at the same time. To get at any asymmetric effects of locally legalized same-sex marriage as a pull factor to a state or as a push factor from a state, I run two parallel specifications. They are as follows:
+
+%<pull eqn>
+In-Migration:
+\begin{equation}
+\text{migrate}_{i,t} = \alpha \cdot (\text{interactions})_{i,t} 
++ \beta \cdot (\text{samesex} \times \text{post2015} \times \text{locally legalized})_{i,t} 
++ \text{FE}_{i,t} + X_{i,t} + \epsilon_{i,t}
+\end{equation}
+
+Out-Migration:
+\begin{equation}
+\text{migrate}_{i,t} = 
+\alpha \cdot (\text{interactions})_{i,t,t-1} + \beta \cdot (\text{samesex} \times \text{post2015} \times \text{locally legalized})_{i,t,t-1} + \text{FE}_{i,t,t-1} + X_{i,t} + \epsilon_{i,t}
+\end{equation}
+
+In both, the outcome variable is if individual i migrated from state c to a different state state n in year t. In both, the main interaction term crosses a dummy variable for whether individual i is same-sex or not, whether year t is past 2015 or not, and whether the state of interest has locally legalized same-sex marriage or not in year t. In the pull model, the state of interest is the state individual i is in at time t. In the push model, the state of interest is the state individual i is in at time t - 1. In both, (FE) refers to time and state fixed effects for the state of interest. This captures any state and time-specific factors that might impact same-sex migration, such as state population, income, and attitude differences across states and time. (X) is a vector of controls, which depending on specification can include sex, race, education, age, income, parenthood, and birth state. Designed to support the parallel trends assumptions needed in a triple difference specification, these follow similar controls used in similar studies by citep{1, 3, 5, 7, 12}. Frequency weights are used.
+
+In both models, the coefficient of interest is (beta). When (beta) is negative in the pull model, that can be interpreted as there being a decrease in same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When (beta) is zero in the pull model, that can be interpreted as there being no change in the amount of same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When (beta) is positive in the pull model, that can be interpreted as there being an increase in the amount of same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When (beta) is negative in the push model, that can be interpreted as there being a decrease in same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is zero in the push model, that can be interpreted as there being no change in the amount of same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is positive in the push model, that can be interpreted as there being an increase in the amount of same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. I would expect $\beta$ to be symmetrically negative in the pull model and positive in the push model.
+
+To further isolate any relationships, I run heterogeneity tests across age groups and state legalization type. While all the individuals in my sample are in relationships, they are not all of the same age nor from states of the same legalization type. Individuals of different ages have different propensities to move, meaning that same-sex legalization could have differences across age groups \citep{1, 17}.  I expect opposite results for individuals originating from states locally legalized and not, so it can be helpful to run separate regressions on each group.
+
+The code and data I use can be found here: https://github.com/nj-rich/same-sex-migration. This excludes the raw Census data I downloaded from IPUMS.
+
+\section{Data}
+
+The main dataset used in this paper covers all 50 U.S. states and Washington D.C. in the period 2011 − 2019. It comes from the American Community Survey (ACS) compiled in the Integrated Public Use Microdata Series (28). The ACS is an annual nationwide survey with observations at the individual level. The only other data I use includes the years that same-sex marriage was announced as legalized in each state. This comes from (27). Massachusetts was the first state to legalize same-sex marriage in 2003; by 2015, 37 total states had legal same-sex marriage.
+
+\input{outputs/summary_stats/state_year_legalizations_gerstmann}
+
+The ACS dataset allows for the indirect identification of an individual’s relationship type and migration status. The (27) dataset allows for the identification of a state’s same-sex marriage legalization status. The ACS records if an individual is in a relationship with someone that lives in their household, and if they are, whether their partner has their same gender or not. This enables the identification of individuals in same-sex and opposite-sex relationships. It is important to note that this means individuals in same-sex or opposite-sex relationships with partners that live in a different household will be classified as partnerless. Further, this means I do not directly identify individuals who identify as homosexual or heterosexual. However, this is the highest level of detail afforded in this survey. Ultimately, this comes out to about 1 percent of survey respondents per year (28). The ACS also records an individual’s current state of residence and which state they lived in the year prior. This allows for the direct identification of interstate migrants. In both the push and pull model, I attribute a state’s legalization status to the current year, not the prior year. I justify this on the grounds that this promotes consistency and it is not always clear if an individual’s move occurred in the prior or current year. I determine whether a state locally legalized same-sex marriage or not by whether in a current year they have legal same-sex marriage, and if they do, if the legalization occurred before the Supreme Court legalized same-sex marriage at the federal level in 2015. About 67 percent percent of the country lived in locally-legalized states in 2014. 
+
+\input{outputs/summary_stats/overall_table}
+
+To better isolate the relationships I care about, I impose a series of restrictions on the ACS sample. While the ACS includes information on residents of US territories and US residents who did not live in a US state in the prior year, I exclude those from my sample. I do this to restrict my sample to regions for which I have data on legal same-sex marriage and to all potential inter-state migrants. Someone who moves from Argentina to Colorado can never qualify as an interstate mover. I also restrict my sample to those identified as being in a same-sex or opposite-sex relationship. (1, 16) have noted that those in relationships often behave differently than those not in relationships, meaning this restriction allows for more plausible comparison across groups. Finally, I exclude individuals born out of the US. One of the controls I include in my empirical specification is birth state, with the understanding that if someone lives in a state that is not their birth state they are more likely to move back to their birth state (12). This control will affect those not born in a US state differently than those born in a US state in the context of my inter-state migration model, justifying the exclusion of those non-US born.
+
+I also apply several restrictions for technical reasons. I exclude observations in which the ACS has identified errors in coding an individual’s sex or has identified an individual’s sex as missing. While researchers have noted that ACS more reliably identifies individuals in same-sex relationships after 2012, other researchers have noted that before this there were sex-coding reliability issues before this (3, 5, 7, 12). Dropping these observations ensures more reliable identification of individuals in same-sex relationships. I also drop observations with missing age, education, and race information and unknown employment status and income status. I do this because all of these variables are used as controls in my model.
+
+\begin{landscape}
+\input{outputs/summary_stats/control_table}
+\end{landscape}
+
+In further robustness checks and heterogeneity analyses, I restrict the sample further in different ways. These are discussed in other sections. 
+
 
 \section{Results}
-Present and interpret the results. Include tables, graphs, or any statistical outputs.
-
+tbd
 \section{Conclusion}
-Summarize the findings, implications, and suggest possible directions for future research.
+tbd
 
 \newpage
-
 % References section
-\begin{thebibliography}{99}
-
-\bibitem{key1}
-Author, A. (Year). \textit{Title of the Book or Paper}. Journal Name, Volume(Issue), Pages.
-
-\bibitem{key2}
-Author, B., & Author, C. (Year). \textit{Title of Another Paper}. Another Journal, Volume(Issue), Pages.
-
-\end{thebibliography}
-
+\bibliographystyle{chicago}
+\bibliography{Drafting/thesis_bibliography}
+watch output everything even if not in text citations above
 \end{document}
