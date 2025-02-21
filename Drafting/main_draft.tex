@@ -22,7 +22,7 @@
 \geometry{top=1in, bottom=1in, left=1in, right=1in}
 
 % Title setup
-\title{Title of the Paper}
+\title{Implications of the Federal Legalization of Same-Sex Marriage on Interstate Migration in the US}
 \author{Noah Rich\footnote{University of Michigan, njrich@umich.edu.}}
 \date{\today}
 
@@ -69,7 +69,7 @@ After 2015, same-sex marriage ceased to be a differentiating factor between stat
 Following \citet{1, 12, 18}, I state that an individual moves from their current state to another state when the utility of moving is positive, does not move when the utility of moving is negative, and is indifferent when the utility of moving is zero. In this framework, the utility of moving is a function of the utility to individual i of the possible new state n, the utility to individual i of the current state c, and moving costs m. Utilities of a given place are themselves functions of the characteristics of a given place and the characteristics of individual i. This can be seen in the following equation: 
 
 \begin{equation}
-U(\text{moving}) = U(\text{new place}_i) - U(\text{current place}) - C(\text{moving})
+U(\text{moving to place}_i) = U(\text{new place}_i) - U(\text{current place}) - C(\text{moving})
 \end{equation}
 
 \begin{equation}
@@ -125,9 +125,66 @@ I also apply several restrictions for technical reasons. I exclude observations 
 
 In further robustness checks and heterogeneity analyses, I restrict the sample further in different ways. These are discussed in other sections. 
 
+\clearpage
 
 \section{Results}
-tbd
+
+
+\subsection{Main Model}
+\clearpage
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/post_diffs.png}
+    \label{fig:enter-label}
+\end{figure}
+
+\input{outputs/regressions/expost_model}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/ante_diffs.png}
+    \label{fig:enter-label}
+\end{figure}
+
+\input{outputs/regressions/exante_model}
+
+%subsubsections for flow directions?
+
+\subsection{Heterogeneity Test: Gender Split Sample}
+\clearpage
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_post_diffs.png}
+    \label{fig:enter-label}
+\end{figure}
+
+%\begin{landscape}
+\centering
+\tiny
+\input{outputs/regressions/sex_expost_model}
+%\end{landscape}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_ante_diffs.png}
+    \label{fig:enter-label}
+\end{figure}
+
+%\begin{landscape}
+\centering
+\tiny
+\input{outputs/regressions/sex_exante_model}
+%\end{landscape}
+
+%\subsection{Other Heterogeneity Tests}
+
+
+\subsection{Migration Flows in More Detail}
+\clearpage
+
+%\subsection{State Comparisons- ie something like CA v TX}
+
 \section{Conclusion}
 tbd
 
