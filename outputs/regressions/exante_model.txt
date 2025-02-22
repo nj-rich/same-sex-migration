@@ -1,14 +1,14 @@
-Ex-Ante Model		
-		(1)
-VARIABLES	LABELS	Model 1
-		
-ante_treatment	ante_treatment	-0.008
-		(0.012)
-Constant	Constant	0.186***
-		(0.000)
-		
-Observations		956,236,912
-R-squared		0.004
-Robust standard errors in parentheses		
-*** p<0.01, ** p<0.05, * p<0.1		
-See below.		
+Ex-Ante Model				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+ante_treatment	ante_treatment	-0.008	0.000	0.003
+		(0.012)	(0.024)	(0.025)
+Constant	Constant	0.186***	3.927***	4.059***
+		(0.000)	(0.189)	(0.226)
+				
+Observations		956,236,912	956,236,912	956,236,912
+R-squared		0.004	0.919	0.921
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+See below.				

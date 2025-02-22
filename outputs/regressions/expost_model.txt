@@ -1,16 +1,14 @@
-Ex-Post Model						
-		(1)	(2)	(3)	(4)	(5)
-VARIABLES	LABELS	Model 1	Model 2	Model 2	Model 3	Model 3
-						
-post_treatment	post_treatment	-0.009	0.006		0.007	
-		(0.011)	(0.027)		(0.030)	
-ante_treatment	ante_treatment			0.000		0.003
-				(0.024)		(0.025)
-Constant	Constant	0.141***	3.646***	3.927***	3.418***	4.059***
-		(0.000)	(0.251)	(0.189)	(0.213)	(0.226)
-						
-Observations		956,236,912	956,236,912	956,236,912	956,236,912	956,236,912
-R-squared		0.005	0.922	0.919	0.927	0.921
-Robust standard errors in parentheses						
-*** p<0.01, ** p<0.05, * p<0.1						
-See below.						
+Ex-Post Model				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+post_treatment	post_treatment	-0.009	0.006	0.007
+		(0.011)	(0.027)	(0.030)
+Constant	Constant	0.141***	3.646***	3.418***
+		(0.000)	(0.251)	(0.213)
+				
+Observations		956,236,912	956,236,912	956,236,912
+R-squared		0.005	0.922	0.927
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+See below.				
