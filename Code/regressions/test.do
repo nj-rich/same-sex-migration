@@ -8,10 +8,9 @@ ssc install outreg2, replace
 
 ///////////////////////// FLOW REGRESSIONS ////////////////////////////
 
-* Define paths to avoid repetition
-local output_path "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\"
+*rip functions
 
-///Models 1 and 2 inputs
+////Models 1 and 2 inputs
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 
@@ -23,34 +22,84 @@ xi i.sex i.race i.educ i.has_child
 collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year stay tofed_migrant fromfed_migrant tolocal_migrant fromlocal_migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
 
 ///Model 1
-* Function for running model 1 and saving results
-macro define run_model1(model_type, treatment_var, state_var, outcome, col_name, append_replace) {
-    reg `outcome' `treatment_var' i.`state_var'##i.year `state_var'##in_samesex i.year##in_samesex [w=perwt], vce(cluster `state_var' year)
-    if "`append_replace'" == "replace" {
-	outreg2 using "`output_path'flow_`model_type'_model.tex", replace tex(fragment) ctitle(`col_name') label dec(3) se keep(`treatment_var') addnote("See below.")
-	}
-	else {
-	outreg2 using "`output_path'flow_`model_type'_model.tex", append tex(fragment) ctitle(`col_name') label dec(3) se keep(`treatment_var') addnote("See below.")
-	}
-}
-
 //Post
 *from fed (of interest)
-run_model1(model_type = "expost", treatment_var = post_treatment, state_var = expost_state, outcome = fromfed_migrant, col_name = "From Fed/Not", append_replace = "replace")
+reg fromfed_migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", replace tex(fragment) ctitle(M1: From Fed/Not) label dec(3) se keep(post_treatment) addnote("See below.")
+
 *from local
-run_model1(model_type = "expost", treatment_var = post_treatment, state_var = expost_state, outcome = fromlocal_migrant, col_name = "From Local", append_replace = "append")
+reg fromlocal_migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M1: From Local) label dec(3) se keep(post_treatment)
 *from stay
-run_model1(model_type = "expost", treatment_var = post_treatment, state_var = expost_state, outcome = stay, col_name = "From Same State", append_replace = "append")
+reg stay post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M1: Stay) label dec(3) se keep(post_treatment)
 //Ante
 *to fed (of interest)
-run_model1(model_type = "exante", treatment_var = ante_treatment, state_var = exante_state, outcome = tofed_migrant, col_name = "To Fed/Not", append_replace = "replace")
+reg tofed_migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", replace tex(fragment) ctitle(M1: To Fed/Not) label dec(3) se keep(ante_treatment) addnote("See below.")
 *to local
-run_model1(model_type = "exante", treatment_var = ante_treatment, state_var = exante_state, outcome = tolocal_migrant, col_name = "To Local", append_replace = "append")
+reg tolocal_migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M1: To Local) label dec(3) se keep(ante_treatment)
 *to stay
-run_model1(model_type = "exante", treatment_var = ante_treatment, state_var = exante_state, outcome = stay, col_name = "To Same State", append_replace = "append")
+reg stay ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M1: Stay) label dec(3) se keep(ante_treatment)
 
+///Model 2
+//Post
+*from fed (of interest)
+reg fromfed_migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M2: From Fed/Not) label dec(3) se keep(post_treatment)
 
+*from local
+reg fromlocal_migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M2: From Local) label dec(3) se keep(post_treatment)
+*from stay
+reg stay post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M2: Stay) label dec(3) se keep(post_treatment)
+//Ante
+*to fed (of interest)
+reg tofed_migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M2: To Fed/Not) label dec(3) se keep(ante_treatment)
+*to local
+reg tolocal_migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M2: To Local) label dec(3) se keep(ante_treatment)
+*to stay
+reg stay ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M2: Stay) label dec(3) se keep(ante_treatment)
 
+////Models 3 inputs
+clear
+use "C:\Users\njrich\Downloads\clean_dataframe.dta"
+
+gen post_treatment = in_samesex * expost_old_legal * post_2015
+gen ante_treatment = in_samesex * exante_old_legal * post_2015
+gen stay = 1 - migrant
+
+xi i.sex i.race i.educ i.has_child i.bpl
+collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year stay tofed_migrant fromfed_migrant tolocal_migrant fromlocal_migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
+
+///Model 2
+//Post
+*from fed (of interest)
+reg fromfed_migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M3: From Fed/Not) label dec(3) se keep(post_treatment)
+
+*from local
+reg fromlocal_migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M3: From Local) label dec(3) se keep(post_treatment)
+*from stay
+reg stay post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster expost_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_expost_model.tex", append tex(fragment) ctitle(M3: Stay) label dec(3) se keep(post_treatment)
+//Ante
+*to fed (of interest)
+reg tofed_migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M3: To Fed/Not) label dec(3) se keep(ante_treatment)
+*to local
+reg tolocal_migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M3: To Local) label dec(3) se keep(ante_treatment)
+*to stay
+reg stay ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\flow_exante_model.tex", append tex(fragment) ctitle(M3: Stay) label dec(3) se keep(ante_treatment)
 
 *UM WHERE DID 2011 GO? DROPPED?
 *why do my P values change so m
