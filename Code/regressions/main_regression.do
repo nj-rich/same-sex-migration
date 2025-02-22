@@ -1,35 +1,24 @@
 /* */
 pause off
-clear
-
-* Windows
- use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
-
-*install reghdfe
-ssc install reghdfe, replace
-ssc install ftools, replace
-ssc install boottest, replace
 
 *install export
 ssc install outreg2, replace
-ssc install estout, replace
 
-*add labels
-label variable in_samesex "In Same-Sex Relationship"
-label variable expost_old_legal "Destination: Legal Before 2015"
-label variable exante_old_legal "Origin: Legal Before 2015"
-label variable post_2015 "After 2015"
-*need more later
+
 
 ///////////////////////// MAIN REGRESSIONS ////////////////////////////
+///Models 1 and 2 inputs
+clear
+use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
+gen post_treatment = in_samesex*expost_old_legal*post_2015
+gen ante_treatment = in_samesex*exante_old_legal*post_2015
+xi i.sex i.race i.educ i.has_child
+collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
 
-*Models 1 (fixed effects only)
-*ex-post model
-* neg means less moving to prior old legal states by individuals in same-sex post 2015
-reghdfe migrant in_samesex##expost_old_legal##post_2015 [w=perwt], ///
-	absorb(expost_state year) ///
-	vce(cluster expost_state year) 
-	
+//Model 1
+*ex-post
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt], ///
+	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	replace ///
 	tex(fragment) ///
@@ -38,18 +27,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) ///
+	keep(post_treatment) ///
 	addnote("See below.")
-	
-*ex-ante model
-* positive means more moving out of prior old legal states by individuals in same-sex post 2015
-reghdfe migrant in_samesex##exante_old_legal##post_2015 [w=perwt], absorb(exante_state year) vce(cluster exante_state year)
-
-///Mueller-Smith see
-gen treatment = in_samesex*exante_old_legal*post_2015
-reg migrant treatment  i.in_samesex##i.exante_state i.in_samesex##i.year i.exante_state##i.year [w=perwt], vce(cluster exante_state year)
-
-///
+*ex-ante
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt], ///
+	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	replace ///
 	tex(fragment) ///
@@ -57,20 +39,14 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
-	se 	///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015)  ///
+	se ///
+	keep(ante_treatment) ///
 	addnote("See below.")
 
-*Models 2 (controls for sex, race, educ, age, inctot, has_child)
-
-*add dummy variables (excluding birthstate)
-xi i.sex i.race i.educ i.has_child
-
-* ex post regression
-reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
-	absorb(expost_state year) ///
-	vce(cluster expost_state year) 
-	
+//Model 2
+*ex-post
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
 	tex(fragment) ///
@@ -78,35 +54,31 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
-
-* ex ante regression
-reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
-	absorb(exante_state year) ///
-	vce(cluster exante_state year) 
-	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+	keep(post_treatment) 
+*ex-ante
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+	vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
 	tex(fragment) ///
 	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
+	keep(ante_treatment) 
 
-*Models 3 (controls for sex, race, educ, age, inctot, has_child, birth state)
+///Models 3 inputs
+clear
+use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
+gen post_treatment = in_samesex*expost_old_legal*post_2015
+gen ante_treatment = in_samesex*exante_old_legal*post_2015
+xi i.sex i.race i.educ i.has_child i.bpl
+collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
 
-*add birthstate dummy
-xi i.bpl
-
-*collapse variables for efficiency, serious concerns over expost and exante groupings if that will make any issues (still need to think about ind/occ, weighting)
-collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015)
-
-* ex post regression
-reghdfe migrant in_samesex##expost_old_legal##post_2015 _I* age inctot [weight = perwt], ///
-	absorb(expost_state year) ///
-	vce(cluster expost_state year) 
-	
+//Model 3
+*ex-post
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
 	tex(fragment) ///
@@ -114,25 +86,26 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.expost_old_legal#1.post_2015) 
-
-* ex ante regression
-reghdfe migrant in_samesex##exante_old_legal##post_2015 _I* age inctot [weight = perwt], ///
-	absorb(exante_state year) ///
-	vce(cluster exante_state year) 
-	
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
+	keep(post_treatment) 
+*ex-ante
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+	vce(cluster exante_state year)
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
 	tex(fragment) ///
 	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
-	keep(1.in_samesex#1.exante_old_legal#1.post_2015) 
+	keep(ante_treatment) 
+	
+*end test regressions
 
-	
-	
-	
+
+*UM WHERE DID 2011 GO? DROPPED?
+*why do my P values change so m
+*doing things the ugly way time
+*WATCH WEIGHTS
 * q: F-tests? other tests?
 * need intercept or ok dropped?
 * hmm summary stats
@@ -170,3 +143,4 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 *some errors seen frequently: note: 1bn.post_2015 is probably collinear with the fixed effects (all partialled-out values are close to zero; tol = 1.0e-09)
 *Warning: VCV matrix was non-positive semi-definite; adjustment from Cameron, Gelbach & Miller applied.
 *warning: missing F statistic; dropped variables due to collinearity or too few clusters
+*WATCH WEIGHTS

@@ -11,7 +11,7 @@ ssc install outreg2, replace
 * Define paths to avoid repetition
 local output_path "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\"
 
-///Models 1 and 2 inputs
+////Models 1 and 2 inputs
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 

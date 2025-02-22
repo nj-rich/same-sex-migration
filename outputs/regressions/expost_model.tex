@@ -1,16 +1,18 @@
-\begin{tabular}{lccc}
-\multicolumn{4}{c}{Ex-Post Model} \\ \hline
- & (1) & (2) & (3) \\
-VARIABLES & migrant & migrant & migrant \\ \hline
- &  &  &  \\
-1.in\_samesex\#1.expost\_old\_legal\#1.post\_2015 & -0.015* & -0.012* & 0.013 \\
- & (0.007) & (0.006) & (0.033) \\
-Constant & 0.106*** & 0.479*** & 3.356*** \\
- & (0.001) & (0.008) & (0.080) \\
- &  &  &  \\
-Observations & 956,236,912 & 956,236,912 & 956,236,912 \\
- R-squared & 0.004 & 0.081 & 0.921 \\ \hline
-\multicolumn{4}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{4}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\multicolumn{4}{c}{ Model 1 includes interaction terms and fixed effects only.} \\
+\begin{tabular}{lccccc}
+\multicolumn{6}{c}{Ex-Post Model} \\ \hline
+ & (1) & (2) & (3) & (4) & (5) \\
+VARIABLES & Model 1 & Model 2 & Model 2 & Model 3 & Model 3 \\ \hline
+ &  &  &  &  &  \\
+post\_treatment & -0.009 & 0.006 &  & 0.007 &  \\
+ & (0.011) & (0.027) &  & (0.030) &  \\
+ante\_treatment &  &  & 0.000 &  & 0.003 \\
+ &  &  & (0.024) &  & (0.025) \\
+Constant & 0.141*** & 3.646*** & 3.927*** & 3.418*** & 4.059*** \\
+ & (0.000) & (0.251) & (0.189) & (0.213) & (0.226) \\
+ &  &  &  &  &  \\
+Observations & 956,236,912 & 956,236,912 & 956,236,912 & 956,236,912 & 956,236,912 \\
+ R-squared & 0.005 & 0.922 & 0.919 & 0.927 & 0.921 \\ \hline
+\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
+\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
+\multicolumn{6}{c}{ See below.} \\
 \end{tabular}

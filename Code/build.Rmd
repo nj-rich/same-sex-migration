@@ -361,7 +361,7 @@ Export build
 ```{r, include = F}
 gc()
 selected_data <- working_df %>%
-  select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state)
+  select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state, tofed_migrant, fromfed_migrant, tolocal_migrant, fromlocal_migrant)
 rm(W25_pull1, add_context, technical_cleaning)
 
 #Export for STATA analysis (can use other purposes low key too)
@@ -369,6 +369,7 @@ write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
 
 gc()
 
+#more than one way to generate variables of interest welp (like could do stata way)
 ```
 
 R regression (outdated)
