@@ -13,11 +13,11 @@ use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 gen post_treatment = in_samesex*expost_old_legal*post_2015
 gen ante_treatment = in_samesex*exante_old_legal*post_2015
 xi i.sex i.race i.educ i.has_child
-collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
+collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
 
 //Model 1
 *ex-post
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt], ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt], ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	replace ///
@@ -30,7 +30,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	keep(post_treatment) ///
 	addnote("See below.")
 *ex-ante
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt], ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt], ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	replace ///
@@ -45,7 +45,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 
 //Model 2
 *ex-post
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt], ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
@@ -56,7 +56,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	se ///
 	keep(post_treatment) 
 *ex-ante
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt], ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	append ///
@@ -73,11 +73,11 @@ use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 gen post_treatment = in_samesex*expost_old_legal*post_2015
 gen ante_treatment = in_samesex*exante_old_legal*post_2015
 xi i.sex i.race i.educ i.has_child i.bpl
-collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
+collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment)
 
 //Model 3
 *ex-post
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt], ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\expost_model.tex", ///
 	append ///
@@ -88,7 +88,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ex
 	se ///
 	keep(post_treatment) 
 *ex-ante
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt], ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt], ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\exante_model.tex", ///
 	append ///

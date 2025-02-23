@@ -13,12 +13,12 @@ use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 gen post_treatment = in_samesex*expost_old_legal*post_2015
 gen ante_treatment = in_samesex*exante_old_legal*post_2015
 xi i.race i.educ i.has_child
-collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment sex)
+collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment sex)
 
 ///Model 1
 //ex-post
 *Male
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt] if sex == 1, ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 1, ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	replace ///
@@ -31,7 +31,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	keep(post_treatment) ///
 	addnote("See below.")
 *Female
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [w=perwt] if sex == 2, ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 2, ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
@@ -43,7 +43,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	keep(post_treatment)
 //ex-ante
 *Male
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt] if sex == 1, ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 1, ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	replace ///
@@ -56,7 +56,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	keep(ante_treatment) ///
 	addnote("See below.")
 *Female
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [w=perwt] if sex == 2, ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 2, ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	append ///
@@ -69,7 +69,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 ///Model 2
 //ex-post
 *Male
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 1, ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
@@ -80,7 +80,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	se ///
 	keep(post_treatment) 
 *Female
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 2, ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
@@ -92,7 +92,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	keep(post_treatment) 
 //ex-ante
 *Male
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 1, ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	append ///
@@ -103,7 +103,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	se ///
 	keep(ante_treatment) 
 *Female
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 2, ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	append ///
@@ -120,12 +120,12 @@ use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 gen post_treatment = in_samesex*expost_old_legal*post_2015
 gen ante_treatment = in_samesex*exante_old_legal*post_2015
 xi i.race i.educ i.has_child i.bpl
-collapse (mean) _I* age inctot (rawsum) perwt [fweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment sex)
+collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment sex)
 
 ///Model 3
 //ex-post
 *Male
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 1, ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
@@ -136,7 +136,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	se ///
 	keep(post_treatment) 
 *Female
-reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 2, ///
+reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster expost_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
 	append ///
@@ -148,7 +148,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	keep(post_treatment) 
 //ex-ante
 *Male
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 1, ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	append ///
@@ -159,7 +159,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 	se ///
 	keep(ante_treatment) 
 *Female
-reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [w=perwt] if sex == 2, ///
+reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster exante_state year)
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
 	append ///
@@ -208,3 +208,4 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *some errors seen frequently: note: 1bn.post_2015 is probably collinear with the fixed effects (all partialled-out values are close to zero; tol = 1.0e-09)
 *Warning: VCV matrix was non-positive semi-definite; adjustment from Cameron, Gelbach & Miller applied.
 *warning: missing F statistic; dropped variables due to collinearity or too few clusters
+*check use of probability weights

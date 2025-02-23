@@ -3,11 +3,11 @@ Ex-Post Model
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
 post_treatment	post_treatment	-0.009	0.006	0.007
-		(0.011)	(0.027)	(0.030)
+		(0.012)	(0.027)	(0.030)
 Constant	Constant	0.141***	3.646***	3.418***
-		(0.000)	(0.251)	(0.213)
+		(0.000)	(0.255)	(0.217)
 				
-Observations		956,236,912	956,236,912	956,236,912
+Observations		19,755	19,755	19,755
 R-squared		0.005	0.922	0.927
 Robust standard errors in parentheses				
 *** p<0.01, ** p<0.05, * p<0.1				
