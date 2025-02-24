@@ -94,10 +94,10 @@ df <- df %>%
   mutate(state = case_when(
     state == "21" ~ "KY",
     state == "22" ~ "LA",
-    state == "23" ~ "MI",
+    state == "23" ~ "ME",
     state == "24" ~ "MD",
     state == "25" ~ "MA",
-    state == "26" ~ "ME",
+    state == "26" ~ "MI",
     state == "27" ~ "MN",
     state == "28" ~ "MS",
     state == "29" ~ "MO",

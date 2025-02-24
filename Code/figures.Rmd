@@ -31,8 +31,8 @@ Download clean data
 gc()
 #windows
 clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
-  clean_names()
-
+  clean_names() %>% 
+  mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
 #mac
 # clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
 #   clean_names()
@@ -869,7 +869,7 @@ region_ante_diffs_chart <- post_migrant_trends_df %>%
   make_diffs_chart(sel_title = "Ex-Ante Diffs by Region", group = exante_region, facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
 
 #takeaways: 
-
+#watch missing issues
 
 
 gc()
@@ -916,4 +916,14 @@ Code
 ```{r, include = F}
 gc()
 #code
+```
+
+Code
+```{r, include = F}
+test <- clean_df %>%
+  filter(expost_region == "Northeast") %>%
+  select(year, expost_state, expost_old_legal) %>%
+  distinct() %>%
+  filter(expost_old_legal == 0)
+#hmm MI coded as Northeast
 ```

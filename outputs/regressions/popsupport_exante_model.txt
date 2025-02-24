@@ -1,9 +1,9 @@
-Ex-Ante Model - Inverse Popular Support				
+Ex-Ante Model - Anti Popular Support				
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
-ante_treatment	ante_treatment	-0.016	-0.046	-0.040
-		(0.018)	(0.050)	(0.056)
+ante_treatment	ante_treatment	-0.011	-0.060	-0.057
+		(0.022)	(0.048)	(0.054)
 Constant	Constant	0.100***	4.142***	4.087***
 		(0.000)	(0.084)	(0.108)
 				

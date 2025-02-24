@@ -95,10 +95,10 @@ df <- df %>%
   mutate(state = case_when(
     state == "21" ~ "KY",
     state == "22" ~ "LA",
-    state == "23" ~ "MI",
+    state == "23" ~ "ME",
     state == "24" ~ "MD",
     state == "25" ~ "MA",
-    state == "26" ~ "ME",
+    state == "26" ~ "MI",
     state == "27" ~ "MN",
     state == "28" ~ "MS",
     state == "29" ~ "MO",
@@ -394,7 +394,7 @@ rm(W25_pull1, add_context, technical_cleaning, regions)
 write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\base_df.dta")
 
 gc()
-
+rm(list = ls())
 #more than one way to generate variables of interest welp (like could do stata way)
 ```
 
@@ -438,10 +438,7 @@ Test r regression (outdated)
 #REALLY DO NEED TO THINK IF NEED SEPARATE STATE/YEAR FIXED EFFECTS (do not believe need to use i() function)
 ```
 
-Export R regression (outdated)
+Test
 ```{r, include = F}
-# gc()
-# write.csv(base_model, file = "/Users/njrich/Desktop/same-sex-migration/outputs/base_model.csv")
-
-#keep things cleaner:)
+#oi been coding states wrong fix
 ```
