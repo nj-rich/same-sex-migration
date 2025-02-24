@@ -8,7 +8,7 @@ ssc install outreg2, replace
 
 ///////////////////////// FLOW REGRESSIONS ////////////////////////////
 
-*rip functions
+*ADD TITLES
 
 ////Models 1 and 2 inputs
 clear
