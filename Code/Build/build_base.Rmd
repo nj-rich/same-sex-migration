@@ -357,7 +357,7 @@ working_df <- technical_cleaning(working_df)
 #oop works just very slow
 ```
 
-Export build
+Export build excluding ANES pop support controls
 ```{r, include = F}
 gc()
 selected_data <- working_df %>%
@@ -365,7 +365,7 @@ selected_data <- working_df %>%
 rm(W25_pull1, add_context, technical_cleaning)
 
 #Export for STATA analysis (can use other purposes low key too)
-write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
+write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\base_df.dta")
 
 gc()
 

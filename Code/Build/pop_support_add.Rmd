@@ -21,7 +21,7 @@ library(haven) #for stata data export/import
 
 ```
 
-Download raw file (actually should also import clean here too or give new name so breaks as appropriate)
+Download data
 ```{r, include = F}
 gc()
 
@@ -32,6 +32,8 @@ pop_support <- read_dta("C:\\Users\\njrich\\Downloads\\anes_timeseries_2016.dta"
   rename(sweight = v160102, fipstate = v163001a, lgbt_support = v162103) %>% #note: I use FIP codes for IPUMS so carries over
   filter(lgbt_support != -9 & lgbt_support != -7 & lgbt_support != -6 & lgbt_support != 998 & lgbt_support != 999) #watch survey issues
 
+base_df <- read_dta("C:\\Users\\njrich\\Downloads\\base_df.dta") %>%
+  mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #get state names as characters
 ```
 
 Make survey object
@@ -152,19 +154,18 @@ state_support_2016 <- state_labels(working_df) %>%
 ```
 
 
-Attach and export
+Attach and export (think if want to invert here)
 ```{r, include = F}
-gc()
-selected_data <- working_df %>%
-  select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state, tofed_migrant, fromfed_migrant, tolocal_migrant, fromlocal_migrant)
-rm(W25_pull1, add_context, technical_cleaning)
+combined_df <- base_df %>%
+  left_join(state_support_2016, by = join_by(expost_state == state)) %>% #update to join_by eventually
+  rename("expost_support" = mean_support) %>%
+  left_join(state_support_2016, by = join_by(exante_state == state)) %>%
+  rename("exante_support" = mean_support)
+  
 
-#Export for STATA analysis (can use other purposes low key too)
-write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
+#Export for STATA analysis
+write_dta(working_df, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
 
-gc()
-
-#more than one way to generate variables of interest welp (like could do stata way)
 ```
 
 NOTE: Idea: use 2016 support levels for all years, do not know relative stability
