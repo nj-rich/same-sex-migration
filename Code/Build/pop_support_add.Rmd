@@ -160,11 +160,12 @@ combined_df <- base_df %>%
   left_join(state_support_2016, by = join_by(expost_state == state)) %>% #update to join_by eventually
   rename("expost_support" = mean_support) %>%
   left_join(state_support_2016, by = join_by(exante_state == state)) %>%
-  rename("exante_support" = mean_support)
+  rename("exante_support" = mean_support) %>%
+mutate(across(where(is.character), ~ as_factor(.))) #convert back to factors to make STATA happy
   
 
 #Export for STATA analysis
-write_dta(working_df, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
+write_dta(combined_df, "C:\\Users\\njrich\\Downloads\\clean_dataframe.dta")
 
 ```
 

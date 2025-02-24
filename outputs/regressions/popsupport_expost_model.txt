@@ -1,0 +1,14 @@
+Ex-Post Model - Inverse Popular Support				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+post_treatment	post_treatment	-0.024	-0.032	-0.030
+		(0.017)	(0.054)	(0.068)
+Constant	Constant	0.103***	4.063***	3.913***
+		(0.000)	(0.131)	(0.108)
+				
+Observations		19,755	19,755	19,755
+R-squared		0.005	0.922	0.927
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+See below.				
