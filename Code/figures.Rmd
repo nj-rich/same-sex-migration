@@ -824,6 +824,53 @@ inc_ante_diffs_chart <- post_migrant_trends_df %>%
 
 #takeaways: noisy, (post) kind of follows hypothesis
 
+#Race
+
+gc()
+###Split by Region
+#Post
+gc()
+region_post_trends_chart <- post_migrant_trends_df %>%
+  group_by(year, expost_region, subgroup) %>% #be careful
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Post Trends by Region", facet = "expost_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
+
+gc()
+region_post_diffs_chart <- post_migrant_trends_df %>%
+  group_by(year, expost_region, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Post Diffs by Region", group = expost_region, facet = "expost_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
+
+gc()
+#Ante
+region_ante_trends_chart <- ante_migrant_trends_df %>%
+  group_by(year, exante_region, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  make_trend_chart(sel_title = "Ex-Ante Trends by Region", facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast")) #use male/female?
+
+gc()
+region_ante_diffs_chart <- post_migrant_trends_df %>%
+  group_by(year, exante_region, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se) %>%
+  ungroup %>%
+  pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_diffs_chart(sel_title = "Ex-Ante Diffs by Region", group = exante_region, facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
+
+#takeaways: 
+
+
 
 gc()
 ###Export (oi map)
@@ -847,6 +894,10 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_post_
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_post_diffs.png", plot = inc_post_diffs_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_ante_trends.png", plot = inc_ante_trends_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_ante_diffs.png", plot = inc_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_post_trends.png", plot = region_post_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_post_diffs.png", plot = region_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_ante_trends.png", plot = region_ante_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_ante_diffs.png", plot = region_ante_diffs_chart)
 #more slicing and dicing to do
 
 #more functions?
