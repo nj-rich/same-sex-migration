@@ -923,5 +923,5 @@ gc()
 
 Code
 ```{r, include = F}
-#hmm smushed graphs issue again
+#hmm smushed graphs issue again- when in doubt adjust viewing window, print, and it'll save to that viewing specification
 ```
