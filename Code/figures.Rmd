@@ -30,12 +30,13 @@ Download clean data
 ```{r, include = F}
 gc()
 #windows
-clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
-  clean_names() %>% 
-  mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
+# clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
+#   clean_names() %>% 
+#   mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
 #mac
-# clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
-#   clean_names()
+clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
+  clean_names() %>% 
+  mutate(across(where(is.labelled), ~ as.character(as_factor(.))))
 
 ```
 
@@ -415,7 +416,7 @@ from_local_df <- summary_stats %>%
   mutate(samesex_group = if_else(in_samesex == 1, "same_sex", "opposite_sex")) %>%
   ungroup()
    
-
+gc()
 from_local_trends_chart <- from_local_df %>%  
   pivot_longer(frac_to_diff_local:frac_stay, names_to = "category", values_to = "values") %>%
     ggplot() +
@@ -430,7 +431,7 @@ from_local_trends_chart <- from_local_df %>%
   scale_x_continuous(breaks = 2011:2019) +
   facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_local" = "To Other Locally Legalized State", "frac_to_fed" = "To Not/Fed Legalized State", "frac_stay" = "To Same State"))) +
   theme_apa() #can always go back to theme
-
+gc()
 from_local_diffs_chart <- from_local_df %>%
   pivot_longer(frac_to_diff_local:frac_stay, names_to = "category", values_to = "values") %>%
   select(-in_samesex) %>%
@@ -458,7 +459,7 @@ from_fed_df <- summary_stats %>%
   mutate(samesex_group = if_else(in_samesex == 1, "same_sex", "opposite_sex")) %>%
   ungroup()
    
-
+gc()
 from_fed_trends_chart <- from_fed_df %>%  
   pivot_longer(frac_to_diff_fed:frac_stay, names_to = "category", values_to = "values") %>%
     ggplot() +
@@ -473,7 +474,7 @@ from_fed_trends_chart <- from_fed_df %>%
   scale_x_continuous(breaks = 2011:2019) +
   facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_fed" = "To Other Not/Federally Legalized State", "frac_to_local" = "To Locally Legalized State", "frac_stay" = "To Same State"))) +
   theme_apa() #can always go back to theme
-
+gc()
 from_fed_diffs_chart <- from_fed_df %>%
   pivot_longer(frac_to_diff_fed:frac_stay, names_to = "category", values_to = "values") %>%
   select(-in_samesex) %>%
@@ -597,7 +598,7 @@ sex_post_diffs_chart <- post_migrant_trends_df %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
   mutate(sex_label = if_else(sex == 1, "male", "female")) %>%
   make_diffs_chart(sel_title = "Ex-Post Diffs by Gender", group = sex_label, facet = "sex_label", facet_titles = c("male" = "Men", "female" = "Women")) #use male/female?
-
+gc()
 #Ante
 sex_ante_trends_chart <- ante_migrant_trends_df %>%
   group_by(year, sex, subgroup) %>%
@@ -649,7 +650,7 @@ age_post_diffs_chart <- post_migrant_trends_df %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
   make_diffs_chart(sel_title = "Ex-Post Diffs by Age", group = age_groups, facet = "age_groups", c("<23" = "<23", "23-32" = "23-32", "33-62" = "33-62", ">62" = ">62"))
-
+gc()
 #Ante
 age_ante_trends_chart <- ante_migrant_trends_df %>%
   mutate(age_groups = case_when(
@@ -701,7 +702,7 @@ educ_post_diffs_chart <- post_migrant_trends_df %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
   make_diffs_chart(sel_title = "Ex-Post Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
-
+gc()
 #Ante
 educ_ante_trends_chart <- ante_migrant_trends_df %>%
   mutate(college = ifelse(educ >= 10, "college", "notcollege")) %>%
@@ -745,7 +746,7 @@ child_post_diffs_chart <- post_migrant_trends_df %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
   make_diffs_chart(sel_title = "Ex-Post Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
-
+gc()
 #Ante
 child_ante_trends_chart <- ante_migrant_trends_df %>%
   mutate(child = ifelse(has_child ==1, "yes", "no")) %>%
@@ -795,7 +796,7 @@ inc_post_diffs_chart <- post_migrant_trends_df %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
   make_diffs_chart(sel_title = "Ex-Post Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
-
+gc()
 #Ante
 inc_ante_trends_chart <- ante_migrant_trends_df %>%
     group_by(year) %>%
