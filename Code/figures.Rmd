@@ -30,14 +30,16 @@ Download clean data
 ```{r, include = F}
 gc()
 #windows
-# clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
-#   clean_names() %>% 
-#   mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
+clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
+  clean_names() %>%
+  mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
 #mac
-clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
-  clean_names() %>% 
-  mutate(across(where(is.labelled), ~ as.character(as_factor(.))))
+# clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
+#   clean_names() %>% 
+#   mutate(across(where(is.labelled), ~ as.character(as_factor(.))))
 
+
+#oop get rid of variables not using
 ```
 
 Make survey object
@@ -401,7 +403,7 @@ gc()
 #for charts to look good, just take screenshots at the moment
 ```
 
-Flow tables (oop ig should do diffs)/functionalize
+Flow tables (oop ig should do diffs)/functionalize (OUT OF DATE)
 ```{r, include = F}
 gc()
 
@@ -921,10 +923,5 @@ gc()
 
 Code
 ```{r, include = F}
-test <- clean_df %>%
-  filter(expost_region == "Northeast") %>%
-  select(year, expost_state, expost_old_legal) %>%
-  distinct() %>%
-  filter(expost_old_legal == 0)
-#hmm MI coded as Northeast
+#hmm smushed graphs issue again
 ```
