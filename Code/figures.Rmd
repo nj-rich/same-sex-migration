@@ -827,8 +827,6 @@ inc_ante_diffs_chart <- post_migrant_trends_df %>%
 
 #takeaways: noisy, (post) kind of follows hypothesis
 
-#Race
-
 gc()
 ###Split by Region
 #Post
@@ -871,9 +869,10 @@ region_ante_diffs_chart <- post_migrant_trends_df %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
   make_diffs_chart(sel_title = "Ex-Ante Diffs by Region", group = exante_region, facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
 
-#takeaways: 
+#takeaways: South/Midwest very interesting, some logic issues, surprisng stability/clean trends
 #watch missing issues
 
+#Race
 
 gc()
 ###Export (oi map)
@@ -913,6 +912,7 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_an
 #for triple diff charts makes sense to add another layer of difference?
 #watch rename axes (Not/Federally)
 #really wonder how much is motivated by noise/migration levels overall
+#only look at region ante? still closed loop issue
 ```
 
 Code
