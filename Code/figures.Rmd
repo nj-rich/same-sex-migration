@@ -24,6 +24,9 @@ library(kableExtra)
 
 install.packages("jtools") #for ggplot visualization
 library(jtools)
+
+install.packages("ggpubr")
+library(ggpubr) #to arrange plots together
 ```
 
 Download clean data
@@ -186,7 +189,7 @@ writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/output
 #watch column arranging
 ```
 
-Summary stats - stock migrants/general pops. in certain state categories (deprecate)
+(Deprecated) stats - stock migrants/general pops. in certain state categories
 ```{r, include = F}
 # #oop count labeling not super accurate
 # 
@@ -403,102 +406,102 @@ gc()
 #for charts to look good, just take screenshots at the moment
 ```
 
-Flow tables (oop ig should do diffs)/functionalize (OUT OF DATE)
+(DEPRECATED) Flow charts
 ```{r, include = F}
-gc()
-
-#from locally legalized same-sex sample
-from_local_df <- summary_stats %>%
-  filter(exante_old_legal == 1) %>%
-  group_by(year, in_samesex) %>%
-  summarize(frac_to_diff_local = survey_mean(localtolocal_migrant, na.rm = T),
-            frac_to_fed = survey_mean(localtofed_migrant, na.rm = T),
-            frac_stay = 1 - survey_mean(migrant, na.rm = T)) %>% #watch how filtering impacts mean-ing here
-  select(-frac_to_diff_local_se, -frac_to_fed_se, -frac_stay_se) %>%
-  mutate(samesex_group = if_else(in_samesex == 1, "same_sex", "opposite_sex")) %>%
-  ungroup()
-   
-gc()
-from_local_trends_chart <- from_local_df %>%  
-  pivot_longer(frac_to_diff_local:frac_stay, names_to = "category", values_to = "values") %>%
-    ggplot() +
-    geom_line(aes(x = year, y = values, linetype = samesex_group)) + 
-    labs(title = "From Locally Legalized Trends Visualized",
-         x = "Year",
-         y = "Fraction of Population",
-         linetype = "Relationship Type") + #maybe move title to plot itself
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
-    scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "dashed"),
-                     labels = c("same_sex" = "In Same-Sex Relationship", "opposite_sex" = "In Opposite-Sex Relationship")) +
-  scale_x_continuous(breaks = 2011:2019) +
-  facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_local" = "To Other Locally Legalized State", "frac_to_fed" = "To Not/Fed Legalized State", "frac_stay" = "To Same State"))) +
-  theme_apa() #can always go back to theme
-gc()
-from_local_diffs_chart <- from_local_df %>%
-  pivot_longer(frac_to_diff_local:frac_stay, names_to = "category", values_to = "values") %>%
-  select(-in_samesex) %>%
-  pivot_wider(names_from = samesex_group, values_from = values) %>%
-  mutate(ss_os = same_sex - opposite_sex) %>%
-  ggplot() +
-    geom_line(aes(x = year, y = ss_os)) + 
-    labs(title = "From Locally Legalized Diffs Visualized",
-         x = "Year",
-         y = "Fraction Same-Sex - Opposite-Sex") + #NOTE HOW THIS INTERPRETATION LINES UP WITH ABOVE INTERPRETATION OOPS- actually might be good just take it another step further
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") +
-  scale_x_continuous(breaks = 2011:2019) +
-  facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_local" = "To Other Locally Legalized State", "frac_to_fed" = "To Not/Fed Legalized State", "frac_stay" = "To Same State"))) +
-  theme_apa() #can always go back to theme
-
-gc()
-#from not/federally legalized same-sex sample
-from_fed_df <- summary_stats %>%
-  filter(exante_old_legal == 0) %>%
-  group_by(year, in_samesex) %>%
-  summarize(frac_to_diff_fed = survey_mean(fedtofed_migrant, na.rm = T),
-            frac_to_local = survey_mean(fedtolocal_migrant, na.rm = T),
-            frac_stay = 1 - survey_mean(migrant, na.rm = T)) %>% #watch how filtering impacts mean-ing here
-  select(-frac_to_diff_fed_se, -frac_to_local_se, -frac_stay_se) %>%
-  mutate(samesex_group = if_else(in_samesex == 1, "same_sex", "opposite_sex")) %>%
-  ungroup()
-   
-gc()
-from_fed_trends_chart <- from_fed_df %>%  
-  pivot_longer(frac_to_diff_fed:frac_stay, names_to = "category", values_to = "values") %>%
-    ggplot() +
-    geom_line(aes(x = year, y = values, linetype = samesex_group)) + 
-    labs(title = "From Not/Federally Legalized Trends Visualized",
-         x = "Year",
-         y = "Fraction of Population",
-         linetype = "Relationship Type") + #maybe move title to plot itself
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
-    scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "dashed"),
-                     labels = c("same_sex" = "In Same-Sex Relationship", "opposite_sex" = "In Opposite-Sex Relationship")) +
-  scale_x_continuous(breaks = 2011:2019) +
-  facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_fed" = "To Other Not/Federally Legalized State", "frac_to_local" = "To Locally Legalized State", "frac_stay" = "To Same State"))) +
-  theme_apa() #can always go back to theme
-gc()
-from_fed_diffs_chart <- from_fed_df %>%
-  pivot_longer(frac_to_diff_fed:frac_stay, names_to = "category", values_to = "values") %>%
-  select(-in_samesex) %>%
-  pivot_wider(names_from = samesex_group, values_from = values) %>%
-  mutate(ss_os = same_sex - opposite_sex) %>%
-  ggplot() +
-    geom_line(aes(x = year, y = ss_os)) + 
-    labs(title = "From Not/Federally Legalized Diffs Visualized",
-         x = "Year",
-         y = "Fraction Same-Sex - Opposite-Sex") + #NOTE HOW THIS INTERPRETATION LINES UP WITH ABOVE INTERPRETATION OOPS- actually might be good just take it another step further
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") +
-  scale_x_continuous(breaks = 2011:2019) +
-  facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_fed" = "To Other Not/Federally Legalized State", "frac_to_local" = "To Locally Legalized State", "frac_stay" = "To Same State"))) +
-  theme_apa() #can always go back to theme
-
-gc()
-#export
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_local_trends.png", plot = from_local_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_local_diffs.png", plot = from_local_diffs_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_fed_trends.png", plot = from_fed_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_fed_diffs.png", plot = from_fed_diffs_chart)
-
+# gc()
+# 
+# #from locally legalized same-sex sample
+# from_local_df <- summary_stats %>%
+#   filter(exante_old_legal == 1) %>%
+#   group_by(year, in_samesex) %>%
+#   summarize(frac_to_diff_local = survey_mean(localtolocal_migrant, na.rm = T),
+#             frac_to_fed = survey_mean(localtofed_migrant, na.rm = T),
+#             frac_stay = 1 - survey_mean(migrant, na.rm = T)) %>% #watch how filtering impacts mean-ing here
+#   select(-frac_to_diff_local_se, -frac_to_fed_se, -frac_stay_se) %>%
+#   mutate(samesex_group = if_else(in_samesex == 1, "same_sex", "opposite_sex")) %>%
+#   ungroup()
+#    
+# gc()
+# from_local_trends_chart <- from_local_df %>%  
+#   pivot_longer(frac_to_diff_local:frac_stay, names_to = "category", values_to = "values") %>%
+#     ggplot() +
+#     geom_line(aes(x = year, y = values, linetype = samesex_group)) + 
+#     labs(title = "From Locally Legalized Trends Visualized",
+#          x = "Year",
+#          y = "Fraction of Population",
+#          linetype = "Relationship Type") + #maybe move title to plot itself
+#     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
+#     scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "dashed"),
+#                      labels = c("same_sex" = "In Same-Sex Relationship", "opposite_sex" = "In Opposite-Sex Relationship")) +
+#   scale_x_continuous(breaks = 2011:2019) +
+#   facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_local" = "To Other Locally Legalized State", "frac_to_fed" = "To Not/Fed Legalized State", "frac_stay" = "To Same State"))) +
+#   theme_apa() #can always go back to theme
+# gc()
+# from_local_diffs_chart <- from_local_df %>%
+#   pivot_longer(frac_to_diff_local:frac_stay, names_to = "category", values_to = "values") %>%
+#   select(-in_samesex) %>%
+#   pivot_wider(names_from = samesex_group, values_from = values) %>%
+#   mutate(ss_os = same_sex - opposite_sex) %>%
+#   ggplot() +
+#     geom_line(aes(x = year, y = ss_os)) + 
+#     labs(title = "From Locally Legalized Diffs Visualized",
+#          x = "Year",
+#          y = "Fraction Same-Sex - Opposite-Sex") + #NOTE HOW THIS INTERPRETATION LINES UP WITH ABOVE INTERPRETATION OOPS- actually might be good just take it another step further
+#     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") +
+#   scale_x_continuous(breaks = 2011:2019) +
+#   facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_local" = "To Other Locally Legalized State", "frac_to_fed" = "To Not/Fed Legalized State", "frac_stay" = "To Same State"))) +
+#   theme_apa() #can always go back to theme
+# 
+# gc()
+# #from not/federally legalized same-sex sample
+# from_fed_df <- summary_stats %>%
+#   filter(exante_old_legal == 0) %>%
+#   group_by(year, in_samesex) %>%
+#   summarize(frac_to_diff_fed = survey_mean(fedtofed_migrant, na.rm = T),
+#             frac_to_local = survey_mean(fedtolocal_migrant, na.rm = T),
+#             frac_stay = 1 - survey_mean(migrant, na.rm = T)) %>% #watch how filtering impacts mean-ing here
+#   select(-frac_to_diff_fed_se, -frac_to_local_se, -frac_stay_se) %>%
+#   mutate(samesex_group = if_else(in_samesex == 1, "same_sex", "opposite_sex")) %>%
+#   ungroup()
+#    
+# gc()
+# from_fed_trends_chart <- from_fed_df %>%  
+#   pivot_longer(frac_to_diff_fed:frac_stay, names_to = "category", values_to = "values") %>%
+#     ggplot() +
+#     geom_line(aes(x = year, y = values, linetype = samesex_group)) + 
+#     labs(title = "From Not/Federally Legalized Trends Visualized",
+#          x = "Year",
+#          y = "Fraction of Population",
+#          linetype = "Relationship Type") + #maybe move title to plot itself
+#     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
+#     scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "dashed"),
+#                      labels = c("same_sex" = "In Same-Sex Relationship", "opposite_sex" = "In Opposite-Sex Relationship")) +
+#   scale_x_continuous(breaks = 2011:2019) +
+#   facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_fed" = "To Other Not/Federally Legalized State", "frac_to_local" = "To Locally Legalized State", "frac_stay" = "To Same State"))) +
+#   theme_apa() #can always go back to theme
+# gc()
+# from_fed_diffs_chart <- from_fed_df %>%
+#   pivot_longer(frac_to_diff_fed:frac_stay, names_to = "category", values_to = "values") %>%
+#   select(-in_samesex) %>%
+#   pivot_wider(names_from = samesex_group, values_from = values) %>%
+#   mutate(ss_os = same_sex - opposite_sex) %>%
+#   ggplot() +
+#     geom_line(aes(x = year, y = ss_os)) + 
+#     labs(title = "From Not/Federally Legalized Diffs Visualized",
+#          x = "Year",
+#          y = "Fraction Same-Sex - Opposite-Sex") + #NOTE HOW THIS INTERPRETATION LINES UP WITH ABOVE INTERPRETATION OOPS- actually might be good just take it another step further
+#     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") +
+#   scale_x_continuous(breaks = 2011:2019) +
+#   facet_wrap(~ category, labeller = as_labeller(c("frac_to_diff_fed" = "To Other Not/Federally Legalized State", "frac_to_local" = "To Locally Legalized State", "frac_stay" = "To Same State"))) +
+#   theme_apa() #can always go back to theme
+# 
+# gc()
+# #export
+# ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_local_trends.png", plot = from_local_trends_chart)
+# ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_local_diffs.png", plot = from_local_diffs_chart)
+# ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_fed_trends.png", plot = from_fed_trends_chart)
+# ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_fed_diffs.png", plot = from_fed_diffs_chart)
+# 
 
 #watch diffs v general flows oi vey
 #oop functionalize
@@ -520,7 +523,184 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/from_fed_
 #some impact fed to fed in direction that makes sense
 ```
 
-Other Heterogeneity Charts (Think about if want tables)... sigh functionalizing
+Main Flow Charts
+```{r, include = F}
+gc()
+gc()
+#make dfs
+post_migrant_trends_df <- summary_stats %>%
+  mutate(subgroup = case_when(
+    in_samesex == 1 & expost_old_legal == 1 ~ "samesex_oldlegal",
+    in_samesex == 0 & expost_old_legal == 1 ~ "oppositesex_oldlegal",
+    in_samesex == 1 & expost_old_legal == 0 ~ "samesex_newlegal",
+    in_samesex == 0 & expost_old_legal == 0 ~ "oppositesex_newlegal"
+  ))
+
+ante_migrant_trends_df <- summary_stats %>%
+  mutate(subgroup = case_when(
+    in_samesex == 1 & exante_old_legal == 1 ~ "samesex_oldlegal",
+    in_samesex == 0 & exante_old_legal == 1 ~ "oppositesex_oldlegal",
+    in_samesex == 1 & exante_old_legal == 0 ~ "samesex_newlegal",
+    in_samesex == 0 & exante_old_legal == 0 ~ "oppositesex_newlegal"
+  )) 
+
+
+#make functions to make charts
+
+make_flowtrend_chart <- function(df, sel_title, frac_migrate) {
+  chart <- df %>%
+  ggplot() +
+    geom_line(aes(x = year, y = {{ frac_migrate }}, linetype = subgroup)) + 
+    labs(title = sel_title,
+         x = "Year",
+         y = "Fraction Migrated",
+         linetype = "Subgroup") +
+    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + #bc factor issues
+    scale_linetype_manual(values = c("samesex_oldlegal" = "solid", "oppositesex_oldlegal" = "dotted", "samesex_newlegal" = "longdash", "oppositesex_newlegal" = "dotdash"),
+                     labels = c("samesex_oldlegal" = "Same-Sex Individuals in Locally Legalized States", "oppositesex_oldlegal" = "Opposite-Sex Individuals in Locally Legalized States", "samesex_newlegal" = "Same-Sex Individuals in Federally Legalized States", "oppositesex_newlegal" = "Opposite-Sex Individuals in Federally Legalized States")) +
+  scale_x_continuous(breaks = 2011:2019) +
+  theme_apa()
+  
+  return(chart)
+}
+
+make_flowdiffs_chart <- function(df, sel_title) {
+  chart <- df %>%
+  select(year, samesex_diff, oppositesex_diff) %>%
+  pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+  ggplot() +
+    geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
+    labs(title = sel_title,
+         x = "Year",
+         y = "Migration Locally - Not/Federally Legalized States", #ambiguous for purposes of from v. to
+         linetype = "Subgroup") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
+    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
+                     labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2011:2019) +
+  theme_apa()
+  return(chart)
+}
+
+#Post
+#From Fed (of interest)
+fed_post_df <- post_migrant_trends_df %>% #should help code run faster
+  group_by(year, subgroup) %>%
+  summarize(frac_ffed_migrate = survey_mean(fromfed_migrant, na.rm = T)) %>%
+  select(-frac_ffed_migrate_se) %>%
+  ungroup
+  
+fed_post_trends_chart <- fed_post_df %>%
+  make_flowtrend_chart(sel_title = "Ex-Post Trends From Not/Fed Legalized", frac_migrate = frac_ffed_migrate) 
+
+fed_post_diffs_chart <- fed_post_df %>%
+  pivot_wider(names_from = subgroup, values_from = frac_ffed_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_flowdiffs_chart(sel_title = "Ex-Post Diffs From Not/Fed Legalized") 
+
+#From Local
+local_post_df <- post_migrant_trends_df %>% #should help code run faster
+  group_by(year, subgroup) %>%
+  summarize(frac_flocal_migrate = survey_mean(fromlocal_migrant, na.rm = T)) %>%
+  select(-frac_flocal_migrate_se) %>%
+  ungroup
+  
+local_post_trends_chart <- local_post_df %>%
+  make_flowtrend_chart(sel_title = "Ex-Post Trends From Locally Legalized", frac_migrate = frac_flocal_migrate)
+
+local_post_diffs_chart <- local_post_df %>%
+  pivot_wider(names_from = subgroup, values_from = frac_flocal_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_flowdiffs_chart(sel_title = "Ex-Post Diffs From Locally Legalized")
+
+#Post Stay (note: should technically be the same ex-post/ex-ante frame except for the fact states can change legal state between years)
+stay_post_df <- post_migrant_trends_df %>% #note: should really only be one value
+  group_by(year, subgroup) %>%
+  summarize(frac_fstay = survey_mean(1 - migrant, na.rm = T)) %>%
+  select(-frac_fstay_se) %>%
+  ungroup
+  
+stay_post_trends_chart <- stay_post_df %>%
+  make_flowtrend_chart(sel_title = "Ex-Post Trends From Stay", frac_migrate = frac_fstay)
+
+stay_post_diffs_chart <- stay_post_df %>%
+  pivot_wider(names_from = subgroup, values_from = frac_fstay) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_flowdiffs_chart(sel_title = "Ex-Post Diffs From Stay")
+
+#Ante
+#To Fed (of interest)
+fed_ante_df <- ante_migrant_trends_df %>% #should help code run faster
+  group_by(year, subgroup) %>%
+  summarize(frac_tfed_migrate = survey_mean(tofed_migrant, na.rm = T)) %>%
+  select(-frac_tfed_migrate_se) %>%
+  ungroup
+  
+fed_ante_trends_chart <- fed_ante_df %>%
+  make_flowtrend_chart(sel_title = "Ex-Ante Trends To Not/Fed Legalized", frac_migrate = frac_tfed_migrate) 
+
+fed_ante_diffs_chart <- fed_ante_df %>%
+  pivot_wider(names_from = subgroup, values_from = frac_tfed_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_flowdiffs_chart(sel_title = "Ex-Ante Diffs To Not/Fed Legalized") 
+
+#To Local
+local_ante_df <- ante_migrant_trends_df %>% #should help code run faster
+  group_by(year, subgroup) %>%
+  summarize(frac_tlocal_migrate = survey_mean(tolocal_migrant, na.rm = T)) %>%
+  select(-frac_tlocal_migrate_se) %>%
+  ungroup
+  
+local_ante_trends_chart <- local_ante_df %>%
+  make_flowtrend_chart(sel_title = "Ex-Ante Trends To Locally Legalized", frac_migrate = frac_tlocal_migrate)
+
+local_ante_diffs_chart <- local_ante_df %>%
+  pivot_wider(names_from = subgroup, values_from = frac_tlocal_migrate) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_flowdiffs_chart(sel_title = "Ex-Ante Diffs To Locally Legalized")
+
+#Ante Stay (note: should technically be the same ex-post/ex-ante frame except for the fact states can change legal state between years)
+stay_ante_df <- ante_migrant_trends_df %>% #note: should really only be one value
+  group_by(year, subgroup) %>%
+  summarize(frac_tstay = survey_mean(1 - migrant, na.rm = T)) %>%
+  select(-frac_tstay_se) %>%
+  ungroup
+  
+stay_ante_trends_chart <- stay_ante_df %>%
+  make_flowtrend_chart(sel_title = "Ex-Ante Trends To Stay", frac_migrate = frac_tstay)
+
+stay_ante_diffs_chart <- stay_ante_df %>%
+  pivot_wider(names_from = subgroup, values_from = frac_tstay) %>%
+  mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
+  make_flowdiffs_chart(sel_title = "Ex-Ante Diffs To Stay")
+
+
+#Combine
+flows_post_trends_chart <- ggarrange(fed_post_trends_chart, local_post_trends_chart, stay_post_trends_chart, nrow = 1, common.legend = T, legend = "right")
+flows_ante_trends_chart <- ggarrange(fed_ante_trends_chart, local_ante_trends_chart, stay_ante_trends_chart, nrow = 1, common.legend = T, legend = "right")
+flows_post_diffs_chart <- ggarrange(fed_post_diffs_chart, local_post_diffs_chart, stay_post_diffs_chart, nrow = 1, common.legend = T, legend = "right")
+flows_ante_diffs_chart <- ggarrange(fed_ante_diffs_chart, local_ante_diffs_chart, stay_ante_diffs_chart, nrow = 1, common.legend = T, legend = "right")
+
+#Save and Export
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_trends.png", plot = flows_post_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_diffs.png", plot = flows_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_trends.png", plot = flows_ante_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs.png", plot = flows_ante_diffs_chart)
+#oop watch cohesive export size need to unify
+#more functionalize?
+#watch naming
+#darn naming conventions
+#watch typos
+```
+
+
+Main heterogeneity charts (first output: trend, second output: diff; can adjust first step chart making to make code take half the time)
 ```{r, include = F}
 gc()
 #make dfs
