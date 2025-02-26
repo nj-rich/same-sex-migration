@@ -6,6 +6,8 @@ date: "2024-12-11"
 ```{r}
 #NOTE: ADDED EMBRACING add_exantepost function; don't know if it works yet
 #NOTE: critically think through all labeling decisions
+
+#NOTE: WATCH MA IN HERE (everything but regions/pop support) (will likely need to comment out later)
 ```
 
 
@@ -37,6 +39,9 @@ gc()
 W25_pull1 <- fread("C:\\Users\\njrich\\Downloads\\W25_pull1.csv") %>%
   clean_names()
 
+MA_pull <- fread("C:\\Users\\njrich\\Downloads\\MA_W25pull.csv") %>%
+  clean_names() %>%
+  filter(statefip == 25 | migplac1 == 25) #this corresponds to MA's code
 #download cleaned-ish data
 #mac
 # cleanish <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta")
@@ -48,6 +53,8 @@ Make working_df dataframe to preserve original pull
 ```{r, include = F}
 gc()
 working_df <- W25_pull1
+
+MA_working <- MA_pull
 
 ```
 
@@ -309,6 +316,7 @@ return(df_samesex)
 #summary_stats <- add_context(summary_stats)
 working_df <- add_context(working_df)
 
+MA_working <- add_context(MA_working)
 #check ex-post ex-ante labeling- test by unique-ing- seems to work
 #test <- working_df %>%
 #  distinct(exante_state, expost_state)
@@ -354,6 +362,7 @@ technical_cleaning <- function (data) {
 
 working_df <- technical_cleaning(working_df)
 
+MA_working <- technical_cleaning(MA_working)
 #oop works just very slow
 ```
 Add regions
@@ -390,8 +399,13 @@ selected_data <- working_df %>%
   select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state, tofed_migrant, fromfed_migrant, tolocal_migrant, fromlocal_migrant, exante_region, expost_region)
 rm(W25_pull1, add_context, technical_cleaning, regions)
 
+MA_selected_data <- MA_working %>%
+  select(migrant, localtolocal_migrant, localtofed_migrant, fedtofed_migrant, fedtolocal_migrant, in_samesex, expost_old_legal, exante_old_legal, post_2015, sex, age, race, educ, occ, ind, bpl, has_child, inctot, perwt, year, expost_state, exante_state, tofed_migrant, fromfed_migrant, tolocal_migrant, fromlocal_migrant)
+
 #Export for STATA analysis (can use other purposes low key too)
 write_dta(selected_data, "C:\\Users\\njrich\\Downloads\\base_df.dta")
+
+write_dta(MA_selected_data, "C:\\Users\\njrich\\Downloads\\MA_base_df.dta")
 
 gc()
 rm(list = ls())

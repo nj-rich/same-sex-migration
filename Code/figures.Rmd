@@ -36,6 +36,10 @@ gc()
 clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
   clean_names() %>%
   mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
+
+MA_df <- read_dta("C:\\Users\\njrich\\Downloads\\MA_base_df.dta") %>%
+  clean_names() %>%
+  mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
 #mac
 # clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
 #   clean_names() %>% 
@@ -51,6 +55,7 @@ gc()
 
 summary_stats <- as_survey(clean_df, weights = perwt) #note: exclude rep_wts so standard errors are inaccurate (file otherwise insanely big- talk someone about it)
 
+MA_summary_stats <- as_survey(MA_df, weights = perwt)
 ```
 
 Summary stats - general population (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types) 
@@ -525,7 +530,6 @@ gc()
 
 Main Flow Charts
 ```{r, include = F}
-gc()
 gc()
 #make dfs
 post_migrant_trends_df <- summary_stats %>%
@@ -1093,6 +1097,143 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_an
 #watch rename axes (Not/Federally)
 #really wonder how much is motivated by noise/migration levels overall
 #only look at region ante? still closed loop issue
+```
+
+MA chart (is this set up right? keep thinking)
+```{r, include = F}
+#CHECK TYPOS
+gc()
+#ex-post
+#df
+MA_post_migrant_trends_df <- MA_summary_stats %>%
+  filter(expost_state == "MA") %>%
+  mutate(subgroup = case_when(
+    in_samesex == 1 ~ "samesex",
+    in_samesex == 0 ~ "oppositesex"
+  )) %>%
+  group_by(year, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se)
+
+#trends chart for export
+gc()
+MA_post_migrant_trends_chart <- MA_post_migrant_trends_df %>%
+  ggplot() +
+    geom_line(aes(x = year, y = frac_migrate, linetype = subgroup)) + 
+    labs(title = "Ex-Post MA Trends Visualized",
+         x = "Year",
+         y = "Fraction Migrated",
+         linetype = "Subgroup") + #maybe move title to plot itself
+    geom_vline(xintercept = 2003, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2008, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2009, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2011, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2012, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2013, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2014, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
+    scale_linetype_manual(values = c("samesex" = "solid", "oppositesex" = "dotted"),
+                     labels = c("samesex" = "Same-Sex Individuals", "oppositesex" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2001:2019) +
+  theme_apa() #can always go back to theme
+
+MA_post_migrant_trends_chart
+
+#ante
+#df
+MA_ante_migrant_trends_df <- MA_summary_stats %>%
+  filter(exante_state == "MA") %>%
+  mutate(subgroup = case_when(
+    in_samesex == 1 ~ "samesex",
+    in_samesex == 0 ~ "oppositesex"
+  )) %>%
+  group_by(year, subgroup) %>%
+  summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-frac_migrate_se)
+
+
+#trends chart for export
+gc()
+MA_ante_migrant_trends_chart <- MA_ante_migrant_trends_df %>%
+  ggplot() +
+    geom_line(aes(x = year, y = frac_migrate, linetype = subgroup)) + 
+    labs(title = "Ex-Ante MA Trends Visualized",
+         x = "Year",
+         y = "Fraction Migrated",
+         linetype = "Subgroup") + #maybe move title to plot itself
+    geom_vline(xintercept = 2003, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2008, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2009, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2011, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2012, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2013, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2014, color = "black", linetype = "dashed") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
+    scale_linetype_manual(values = c("samesex" = "solid", "oppositesex" = "dotted"),
+                     labels = c("samesex" = "Same-Sex Individuals", "oppositesex" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2001:2019) +
+  theme_apa() #can always go back to theme
+
+MA_ante_migrant_trends_chart
+
+#export charts
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/MA_post_trends.png", plot = MA_post_migrant_trends_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/MA_ante_trends.png", plot = MA_ante_migrant_trends_chart)
+
+#make difference tables?
+#maybe
+#lol event study uses, note vertical lines are time periods other states legalized
+```
+
+Predicted Charts (for illustration purposes)
+```{r, include = F}
+#Function:
+make_ex_diffs_chart <- function(df, sel_title) {
+  chart <- df %>%
+  ggplot() +
+    geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
+    labs(title = sel_title,
+         x = "Year",
+         y = "Migration Locally - Not/Federally Legalized States",
+         linetype = "Subgroup") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
+    scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "dashed"), #adjust this as needs be later
+                     labels = c("same_sex" = "Same-Sex Individuals", "opposite_sex" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2011:2019) +
+  theme_apa() +
+  theme(axis.text.y = element_blank())
+  return(chart)
+}
+
+#Make predicted dfs/charts
+post_ex <- data.frame(
+  year = 2011:2019,
+  same_sex = c(.5, .5, .5, .5, .2, .2, .2, .2, .2),
+  opposite_sex = c(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  ) %>%
+  pivot_longer(same_sex:opposite_sex, names_to = "subgroup", values_to = "diffs")
+
+ante_ex <- data.frame(
+  year = 2011:2019,
+  same_sex = c(-.5, -.5, -.5, -.5, -.2, -.2, -.2, -.2, -.2),
+  opposite_sex = c(0, 0, 0, 0, 0, 0, 0, 0, 0)
+) %>%
+  pivot_longer(same_sex:opposite_sex, names_to = "subgroup", values_to = "diffs")
+
+#Make charts
+ex_post_diffs_chart <- post_ex %>%
+  make_ex_diffs_chart(sel_title = "Predicted Ex-Post Differences")
+
+ex_ante_diffs_chart <- ante_ex %>%
+  make_ex_diffs_chart(sel_title = "Predicted Ex-Ante Differences")
+
+#export charts
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ex_post_diffs.png", plot = ex_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ex_ante_diffs.png", plot = ex_ante_diffs_chart)
+
+
+#could write out better/separate functions out clearer
+#output all together one line?
 ```
 
 Code
