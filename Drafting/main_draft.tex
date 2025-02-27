@@ -133,12 +133,25 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 
 \section{Results}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
 
 \subsection{Main Model}
 \clearpage
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/post_diffs.png}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/post_diffs.png}
     \label{fig:enter-label}
 \end{figure}
 
@@ -146,7 +159,7 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/ante_diffs.png}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ante_diffs.png}
     \label{fig:enter-label}
 \end{figure}
 
@@ -163,11 +176,10 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
     \label{fig:enter-label}
 \end{figure}
 
-%\begin{landscape}
 \centering
-\begin{tiny}
+\begin{scriptsize}
 \input{outputs/regressions/sex_expost_model}
-\end{tiny}
+\end{scriptsize}
 %\end{landscape}
 
 \begin{figure}
@@ -176,55 +188,153 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
     \label{fig:enter-label}
 \end{figure}
 
-%\begin{landscape}
 \centering
-\begin{tiny}
+\begin{scriptsize}
 \input{outputs/regressions/sex_exante_model}
-\end{tiny}
-
-%\subsection{Other Heterogeneity Tests}
+\end{scriptsize}
 
 
 \subsection{Migration Flows in More Detail}
 \clearpage
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/from_fed_diffs.png}
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
     \caption{Enter Caption}
     \label{fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/from_local_diffs.png}
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{landscape}
+\begin{scriptsize}
+\input{outputs/regressions/flow_expost_model}
+\input{outputs/regressions/flow_exante_model}
+\end{scriptsize}
+\end{landscape}
+%\subsection{State Comparisons- ie something like CA v TX}
+
+\subsection{Including (Anti) Popular Support in the Model}
+\clearpage
+
+\input{outputs/regressions/popsupport_expost_model}
+\input{outputs/regressions/popsupport_exante_model}
+
+
+\subsection{Heterogeneity Test: Region Split Sample}
+\clearpage
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_ante_diffs.png}
     \caption{Enter Caption}
     \label{fig:enter-label}
 \end{figure}
 
 \begin{landscape}
 \begin{tiny}
-\input{outputs/regressions/flow_expost_model}
+\input{outputs/regressions/region_expost_model}
+\input{outputs/regressions/region_exante_model}
 \end{tiny}
 \end{landscape}
-\begin{landscape}
-\begin{tiny}
-\input{outputs/regressions/flow_exante_model}
-\end{tiny}
-\end{landscape}
-%\subsection{State Comparisons- ie something like CA v TX}
-
-\subsection{Interaction (Anti) Popular Support}
-\clearpage
-
-\input{outputs/regressions/popsupport_expost_model}
-\input{outputs/regressions/popsupport_exante_model}
 
 \section{Conclusion}
 tbd
+
+
 
 \newpage
 % References section
 \bibliographystyle{chicago}
 \bibliography{Drafting/thesis_bibliography}
+
+\appendix
+\section{Additional Difference Charts}
+
+%age
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+
+%child
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+%Education
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+%income
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+%MA
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/MA_post_trends.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/MA_ante_trends.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
 
 \end{document}
