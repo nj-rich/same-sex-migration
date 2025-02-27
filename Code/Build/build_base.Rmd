@@ -452,7 +452,4 @@ Test r regression (outdated)
 #REALLY DO NEED TO THINK IF NEED SEPARATE STATE/YEAR FIXED EFFECTS (do not believe need to use i() function)
 ```
 
-Test
-```{r, include = F}
-#oi been coding states wrong fix
-```
+

@@ -37,9 +37,9 @@ clean_df <- read_dta("C:\\Users\\njrich\\Downloads\\clean_dataframe.dta") %>%
   clean_names() %>%
   mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
 
-MA_df <- read_dta("C:\\Users\\njrich\\Downloads\\MA_base_df.dta") %>%
-  clean_names() %>%
-  mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
+# MA_df <- read_dta("C:\\Users\\njrich\\Downloads\\MA_base_df.dta") %>%
+#   clean_names() %>%
+#   mutate(across(where(is.labelled), ~ as.character(as_factor(.)))) #hopefully this doesn't break things
 #mac
 # clean_df <- read_dta("/Users/njrich/Downloads/clean_dataframe.dta") %>%
 #   clean_names() %>% 
@@ -1245,4 +1245,20 @@ gc()
 Code
 ```{r, include = F}
 #hmm smushed graphs issue again- when in doubt adjust viewing window, print, and it'll save to that viewing specification
+```
+
+Test
+```{r, include = F}
+#check coding makes sense
+test <- clean_df %>%
+  select(year, migrant, exante_state, exante_old_legal, expost_state, expost_old_legal) %>%
+  distinct() %>%
+  filter(expost_state != exante_state) 
+
+test2 <- clean_df %>%
+  select(year, exante_state, exante_old_legal) %>%
+  filter(exante_old_legal == 1) %>%
+  distinct()
+
+#seems to be good?
 ```
