@@ -66,16 +66,23 @@ After 2015, same-sex marriage ceased to be a differentiating factor between stat
 
 \section{Model}
 \subsection{Theoretical Framework}
-Following \citet{1, 12, 18}, I state that an individual moves from their current state to another state when the utility of moving is positive, does not move when the utility of moving is negative, and is indifferent when the utility of moving is zero. In this framework, the utility of moving is a function of the utility to individual i of the possible new state n, the utility to individual i of the current state c, and moving costs m. Utilities of a given place are themselves functions of the characteristics of a given place and the characteristics of individual i. This can be seen in the following equation: 
+Following \citet{1, 12, 18}, I state that an individual moves from their current state to another state when the utility of moving is positive, does not move when the utility of moving is negative, and is indifferent when the utility of moving is zero. In this framework, the utility of moving is a function of the utility to individual i of the possible new state n, the utility to individual i of the current state c, and moving costs m. Utilities of a given place are themselves functions of the characteristics of a given place and the characteristics of individual i. This can be seen in the following equations: 
 
 \begin{equation}
-U(\text{moving to place}_i) = U(\text{new place}_i) - U(\text{current place}) - C(\text{moving})
+U_{ip} = F(i,p)
 \end{equation}
+where U represents the utility of place p for person i, i represents the characteristics of a person, and p represents the characteristics of a place. 
 
 \begin{equation}
-U(\text{place}_i \text{ for person}_j) = F(\text{characteristics of person}_j, \text{characteristics of place}_i)
+M(i, p, p-1) = U_{ip} - U_{ip-1} - C_{ipp-1}
 \end{equation}
+where M represents the utility of a move for person i from place p-1 to place p, U represents the utility of place p for person i, U represents the utility of place p-1 for person i, and C represents moving costs from place p-1 to place p for person i.
 
+\begin{equation}
+\arg\max_{l} M(i, l, p-1)
+\end{equation}
+where individual i chooses where to live by maximizing the above equation, where each l corresponds to each possible state, including the state individual i currently lives in.
+\newline
 
 In between 2003 and 2015, I argue that for same-sex individuals, legalized same-sex marriage is a relevant state characteristic when making migration decisions. For opposite-sex individuals, I argue that it isn’t. This is because in this period, opposite-sex individuals had access to marriage in all states, while same-sex individuals only had access to marriage in some states. This would make same-sex marriage a differentiator for same-sex individuals, if not opposite-sex individuals. As marriage conveys numerous benefits, same-sex individuals should see access to marriage as a benefit, and lack of marriage as a cost. It is also important to note that locally legalized same-sex marriage might convey other benefits for same-sex individuals, such as social acceptance \citep{12}. However, I argue that after 2015, this difference for same-sex and opposite-sex people should begin to decrease. Under Obergefell v Hodges, marriage is equally accessible across the US for same-sex individuals, just as for opposite-sex people. 
 
@@ -86,15 +93,14 @@ To test this theory, I use a triple differences specification \citep{23, 24, 25}
 %<pull eqn>
 In-Migration:
 \begin{equation}
-\text{migrate}_{i,t} = \alpha \cdot (\text{interactions})_{i,t} 
-+ \beta \cdot (\text{samesex} \times \text{post2015} \times \text{locally legalized})_{i,t} 
-+ \text{FE}_{i,t} + X_{i,t} + \epsilon_{i,t}
+\text{m}_{itp} = \gamma_t + \gamma_p + \gamma_i + \gamma_{tp} + \gamma_{ti} + \gamma_{ip} + \beta \cdot (\text{samesex} \times \text{post2015} \times \text{locally legalized})_{itp} 
++ X_{itp} + \epsilon_{itp}
 \end{equation}
 
 Out-Migration:
 \begin{equation}
-\text{migrate}_{i,t} = 
-\alpha \cdot (\text{interactions})_{i,t,t-1} + \beta \cdot (\text{samesex} \times \text{post2015} \times \text{locally legalized})_{i,t,t-1} + \text{FE}_{i,t,t-1} + X_{i,t} + \epsilon_{i,t}
+\text{m}_{itp-1} = \gamma_t + \gamma_{p-1} + \gamma_i + \gamma_{tp-1} + \gamma_{ti} + \gamma_{ip-1} + \beta \cdot (\text{samesex} \times \text{post2015} \times \text{locally legalized})_{itp-1} 
++ X_{itp} + \epsilon_{itp}
 \end{equation}
 
 In both, the outcome variable is if individual i migrated from state c to a different state state n in year t. In both, the main interaction term crosses a dummy variable for whether individual i is same-sex or not, whether year t is past 2015 or not, and whether the state of interest has locally legalized same-sex marriage or not in year t. In the pull model, the state of interest is the state individual i is in at time t. In the push model, the state of interest is the state individual i is in at time t - 1. In both, (FE) refers to time and state fixed effects for the state of interest. This captures any state and time-specific factors that might impact same-sex migration, such as state population, income, and attitude differences across states and time. (X) is a vector of controls, which depending on specification can include sex, race, education, age, income, parenthood, and birth state. Designed to support the parallel trends assumptions needed in a triple difference specification, these follow similar controls used in similar studies by \citep{1, 3, 5, 7, 12}. Frequency weights are used.
@@ -165,7 +171,29 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 
 \input{outputs/regressions/exante_model}
 
-%subsubsections for flow directions?
+\subsection{Migration Flows in More Detail}
+\clearpage
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{landscape}
+\begin{scriptsize}
+\input{outputs/regressions/flow_expost_model}
+\input{outputs/regressions/flow_exante_model}
+\end{scriptsize}
+\end{landscape}
+%\subsection{State Comparisons- ie something like CA v TX}
 
 \subsection{Heterogeneity Test: Gender Split Sample}
 \clearpage
@@ -193,38 +221,6 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 \input{outputs/regressions/sex_exante_model}
 \end{scriptsize}
 
-
-\subsection{Migration Flows in More Detail}
-\clearpage
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
-\end{figure}
-
-\begin{landscape}
-\begin{scriptsize}
-\input{outputs/regressions/flow_expost_model}
-\input{outputs/regressions/flow_exante_model}
-\end{scriptsize}
-\end{landscape}
-%\subsection{State Comparisons- ie something like CA v TX}
-
-\subsection{Including (Anti) Popular Support in the Model}
-\clearpage
-
-\input{outputs/regressions/popsupport_expost_model}
-\input{outputs/regressions/popsupport_exante_model}
-
-
 \subsection{Heterogeneity Test: Region Split Sample}
 \clearpage
 \begin{figure}
@@ -247,6 +243,16 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 \input{outputs/regressions/region_exante_model}
 \end{tiny}
 \end{landscape}
+
+
+\subsection{Including (Anti) Popular Support in the Model}
+\clearpage
+
+\input{outputs/regressions/popsupport_expost_model}
+\input{outputs/regressions/popsupport_exante_model}
+
+
+
 
 \section{Conclusion}
 tbd
