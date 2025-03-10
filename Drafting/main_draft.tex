@@ -10,13 +10,17 @@
 \usepackage{geometry}
 
 %I added the following
-\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref} %for text hyperlinks
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref} %for text hyperlinks
 \usepackage{graphicx}
 \usepackage{longtable} %for Gerstmann
 \usepackage{booktabs}  %for pretty tables
 \usepackage{lscape} %forget where horizontal comes from
 \usepackage{rotating} %forget where horizontal comes from
 \usepackage{tabularx}  %to help format tables
+\usepackage{caption} %to modify caption
+
+%removes colon after number label
+\captionsetup[figure]{labelsep=space} %might remove if want to label figures differently
 
 % Adjust margins to fit the AER style
 \geometry{top=1in, bottom=1in, left=1in, right=1in}
@@ -49,7 +53,7 @@ Over the past 30 years, the legal landscape for individuals in same-sex relation
 
 Economists have been interested in marriage since at least the 1970s. In a landmark series of papers, \citet{9} described how marriage can be understood in a traditional cost-benefit choice utility framework. Specifically, two people enter a marriage if, and only if, it increases both of their lifetime utility \citep{9}. Many unique benefits can be ascribed to marriage in the US. Legally, there are at least 1,138 benefits listed in federal law, including rights related to citizenship, taxes, benefits, healthcare, and parenthood \citep{1, 8}. Non-legal benefits include social status and a concrete symbol of commitment \citep{8}. On the other hand, costs include legal fees, and partner searching and marriage consideration costs \citep{9}. As marriage can then be understood as a good with costs and benefits, it can be understood as something that many people might pay to obtain. 
 
-These people, notably, include both those who would want to marry someone of the same or opposite sex. However, as stated above, individuals in same-sex relationships could not marry anywhere in the US until 2003 \citep{1, 3, 5, 12}. This follows a general trend defining the differences between those in same-sex and opposite-sex relationships: while there might be many similarities between those in same-sex and opposite sex relationships: outside social and legal factors, unrelated to sexuality, often determine differences \citep{2}. Researchers have noted these differences in education level, relationship structure, income, likelihood to have children, and importantly, living location \citep{2, 11, 6, 7, 8, 10, 7}. Gay men and lesbian women tend to be more highly educated than heterosexual people \citep{2, 7, 11}. Same-sex cohabiting relationships tend to form at a lower rate than opposite-sex cohabiting relationships; however, same-sex relationships tend to be less homogenous across age and racial lines \citep{2, 7}. Gay men tend to earn less than straight men, while lesbian women tend to earn more than straight women \citep{6}. Those in same-sex relationships face higher costs to raising children, and tend to have children at lower rates than those in opposite sex relationships \citep{8, 10, 11}. Finally, gay men and lesbian women tend to live in different places than their heterosexual counterparts: gay men, similar to straight men without children, often choose to live in expensive, high-amenity places like San Francisco \citep{7, 10, 11, 13}. Again crucially, this follows the pattern described above by (2): sexuality might play some role in this difference, but another factor- likelihood to have children- can also plays a role.
+These people, notably, include both those who would want to marry someone of the same or opposite sex. However, as stated above, individuals in same-sex relationships could not marry anywhere in the US until 2003 \citep{1, 3, 5, 12}. This follows a general trend defining the differences between those in same-sex and opposite-sex relationships: while there might be many similarities between those in same-sex and opposite sex relationships: outside social and legal factors, unrelated to sexuality, often determine differences \citep{2}. Researchers have noted these differences in education level, relationship structure, income, likelihood to have children, and importantly, living location \citep{2, 11, 6, 7, 8, 10, 7}. Gay men and lesbian women tend to be more highly educated than heterosexual people \citep{2, 7, 11}. Same-sex cohabiting relationships tend to form at a lower rate than opposite-sex cohabiting relationships; however, same-sex relationships tend to be less homogenous across age and racial lines \citep{2, 7}. Gay men tend to earn less than straight men, while lesbian women tend to earn more than straight women \citep{6}. Those in same-sex relationships face higher costs to raising children, and tend to have children at lower rates than those in opposite sex relationships \citep{8, 10, 11}. Finally, gay men and lesbian women tend to live in different places than their heterosexual counterparts: gay men, similar to straight men without children, often choose to live in expensive, high-amenity places like San Francisco \citep{7, 10, 11, 13}. Again crucially, this follows the pattern described above by \citet{2}: sexuality might play some role in this difference, but another factor- likelihood to have children- can also plays a role.
 
 Understanding this, that many of these differences might not be attributable purely to sexuality but other outside factors, researchers have studied how marriage legalization differences on a statewide basis impacted those in same-sex relationships relative to those in opposite-sex relationships. Overall, researchers have found some convergence in outcomes between those in same-sex and opposite-sex relationships in states where same-sex marriage was legalized. \citep{3} found some evidence that the legalization of same-sex marriage led to the better integration of those in same-sex relationships into the labor market and thus higher employment. With the tax, health insurance, and adoption rights allowed by legal marriage, same-sex spouses began to specialize more in paid work or unpaid housework and childcare \citep{3, 4, 6}. Further, legal same-sex marriage brought a degree of social acceptance: there is some evidence that same-sex marriage legalization led to more popular support for same-sex marriage \citep{3, 21}. When more outside factors were similar, individuals in same-sex and opposite-sex relationships began to share more similarities.
 
@@ -105,7 +109,7 @@ Out-Migration:
 
 In both, the outcome variable is if individual i migrated from state c to a different state state n in year t. In both, the main interaction term crosses a dummy variable for whether individual i is same-sex or not, whether year t is past 2015 or not, and whether the state of interest has locally legalized same-sex marriage or not in year t. In the pull model, the state of interest is the state individual i is in at time t. In the push model, the state of interest is the state individual i is in at time t - 1. In both, (FE) refers to time and state fixed effects for the state of interest. This captures any state and time-specific factors that might impact same-sex migration, such as state population, income, and attitude differences across states and time. (X) is a vector of controls, which depending on specification can include sex, race, education, age, income, parenthood, and birth state. Designed to support the parallel trends assumptions needed in a triple difference specification, these follow similar controls used in similar studies by \citep{1, 3, 5, 7, 12}. Frequency weights are used.
 
-In both models, the coefficient of interest is $\beta$. When $\beta$ is negative in the pull model, that can be interpreted as there being a decrease in same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When (beta) is zero in the pull model, that can be interpreted as there being no change in the amount of same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is positive in the pull model, that can be interpreted as there being an increase in the amount of same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is negative in the push model, that can be interpreted as there being a decrease in same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is zero in the push model, that can be interpreted as there being no change in the amount of same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is positive in the push model, that can be interpreted as there being an increase in the amount of same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. I would expect $\beta$ to be symmetrically negative in the pull model and positive in the push model.
+In both models, the coefficient of interest is $\beta$. When $\beta$ is negative in the pull model, that can be interpreted as there being a decrease in same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is zero in the pull model, that can be interpreted as there being no change in the amount of same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is positive in the pull model, that can be interpreted as there being an increase in the amount of same-sex people moving to locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is negative in the push model, that can be interpreted as there being a decrease in same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is zero in the push model, that can be interpreted as there being no change in the amount of same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. When $\beta$ is positive in the push model, that can be interpreted as there being an increase in the amount of same-sex people moving from locally legalized states after 2015 relative to opposite-sex people. I would expect $\beta$ to be symmetrically negative in the pull model and positive in the push model.
 
 To further isolate any relationships, I run heterogeneity tests across age groups and state legalization type. While all the individuals in my sample are in relationships, they are not all of the same age nor from states of the same legalization type. Individuals of different ages have different propensities to move, meaning that same-sex legalization could have differences across age groups \citep{1, 17}.  I expect opposite results for individuals originating from states locally legalized and not, so it can be helpful to run separate regressions on each group.
 
@@ -138,121 +142,222 @@ In further robustness checks and heterogeneity analyses, I restrict the sample f
 \clearpage
 
 \section{Results}
+In the following section, I discuss the results of my analysis. For all analyses, I roughly expect “pull factor” models to follow the trends in figure \ref{fig: ex_post_diffs} and “push factor” models to follow the trends in figure \ref{fig: ex_ante_diffs}. These illustrate how I expect less individuals in same-sex relationships to move to states that “locally-legalized” same-sex marriage after 2015 and more individuals in same-sex relationships to move out of states with “locally-legalized” same-sex marriage after 2015. 
 
+I first discuss the results of the main model described earlier. I then discuss migration flow heterogeneity, gender heterogeneity, and region heterogeneity. I conclude by discussing the relative importance of marriage legalization relative to social tolerance in same-sex migration decisions.
+
+\begin{centering}
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_post_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: ex_post_diffs}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_ante_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: ex_ante_diffs}
 \end{figure}
+\end{centering}
 
-\subsection{Main Model}
 \clearpage
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/post_diffs.png}
-    \label{fig:enter-label}
-\end{figure}
+\subsection{Main Model} %ok still need to fix centering
+In table \ref{tab: expost_model} I present main regression results from “pull factor” models and in table \ref{tab: exante_model} I present main regression results from “push factor” models. In both tables, column 1 reports the regression coefficient of a model with only state and year fixed effects; column 2 reports the regression coefficient of a model with these fixed effects and controls for sex, race, education level, the presence of children in the household, income level, and age; and column 3 reports the regression coefficients of a model with these fixed effects, controls, and controls for an individual’s birth state. Figure \ref{fig: post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: ante_diffs} illustrates the underlying trends of the “push factor” model. 
 
-\input{outputs/regressions/expost_model}
+Triple difference models require the assumption that there is an identifiable causal mechanism and that there are parallel trends \citep{24, 25}. In earlier sections, I have described plausible causal mechanisms. However, it can be seen in figure \ref{fig: post_diffs} and figure \ref{fig: ante_diffs} that the parallel trend assumption fails. There are a number of reasons for which this could occur. In the period between 2011 and 2015, there are significant changes in which states have “locally-legalized” same-sex marriage and which states do not. This means that one migrant identified as moving to (from) a “not-locally-legalized” state one year might have been identified as moving to (from) a “locally-legalized” state only one or two years later on. This could contribute to a violation of parallel trends as other factors, not related to same-sex marriage legalization but related to the sex of an individual’s partner, contribute to migration pattern differences across states. Further, the percentage of individuals migrating between states in any given year is relatively low, at (Z) percent. More noise is expected with smaller sample sizes. 
+
+\begin{centering} %maybe just do centering in figures
+\begin{figure}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/post_diffs.png}
+    \caption{}
+    \label{fig: post_diffs}
+\end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ante_diffs.png}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: ante_diffs}
 \end{figure}
+\end{centering}
 
-\input{outputs/regressions/exante_model}
+In the “pull factor” model, the coefficient of interest is negative and statistically insignificant across all three models. Further, the standard error in models 2 and 3 suggests the true population mean could be 0 or positive. While the sign of the coefficients of interest is what I would expect, this means there is close to no difference between the fraction of same-sex individuals who moved to states that “locally-legalized” same-sex marriage and those that did not before and after 2015 relative to opposite-sex individuals. In other words, federal legalization led to minimal or no “pull factor” “dilution effect”. 
 
-\subsection{Migration Flows in More Detail}
+In the “push factor” model, the coefficient of interest is negative and statistically insignificant across all three models. Further, the standard error in all models suggests the true population mean could be 0 or positive. While the sign of the coefficients of interest is not what I would expect, this means there is close to no difference between the fraction of same-sex individuals who moved from states that “locally-legalized” same-sex marriage and those that did not before and after 2015 relative to opposite-sex individuals. In other words, federal legalization led to minimal or no “push factor” “dilution effect.”  
+
+Even as both the “pull factor” and “push factor” model regressions similarly did not give support to my “dilution effect” hypothesis, they did so from directions opposite to which I predicted. This is puzzling: one model predicted slight decrease in migration to states that “locally-legalized” same-sex marriage after 2015; the other predicted a slight decrease in migration from states that “locally-legalized” same-sex marriage after 2015. This would suggest same-sex marriage was less of a “pull factor” but more of a “push factor” after 2015. One plausible explanation for this is related to sample size: the pool of migrants to a given state is larger than the pool of migrants from a given state. Using similar logic as above, it is less surprising that there is more deviation for the regressions run on smaller sample sizes. Other plausible explanations include that there is heterogeneity across states and individuals that obscure the effect of the “local-legalization” of same-sex marriage on the migration decisions of individuals in same-sex relationships, and that there are other, more salient factors, impacting the migration decisions of individuals in same-sex relationships. This heterogeneity and potential impact of other factors is explored in the following regressions. 
+
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/expost_model}
+    \caption{}
+    \label{tab: expost_model}
+\end{table}
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/exante_model}
+    \caption{}
+    \label{tab: exante_model}
+\end{table}
+
 \clearpage
+\subsection{Flow Heterogeneity}
+
+One source of heterogeneity is from which type of state an individual might move in the “pull factor” model and to which type of state an individual might move in the “push factor” model. If fewer individuals in same-sex relationships move between “locally-legalized” states after 2015, that could make the “push factor” model coefficient negative even if more individuals in same-sex relationships move from “locally-legalized” to “not-locally-legalized” states after 2015. This could help explain the opposite-than-expected main “push factor” regression results.
+
+Table \ref{tab: flow_expost_model} presents regression results from “pull factor” models in which the outcome variable indicates whether an individual migrated from a state with “locally-legalized” same-sex marriage, migrated from a state that had “not-locally-legalized” same-sex marriage, or whether an individual did not migrate from a different state. Table \ref{tab: flow_exante_model} presents regression results from “push factor” models in which the outcome variable indicates whether an individual migrated to a state with “locally-legalized” same-sex marriage, migrated to a state that had “not-locally-legalized” same-sex marriage, or whether an individual did not migrate to a different state. M1, M2, and M3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: flows_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: flows_ante_diffs} illustrates the underlying trends of the “push factor” model with the modified outcome variables.
+
+As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. In line with the “dilution effect”, I would expect there to be slightly less migration between states that “locally legalized” same-sex marriage after 2015, as previously “not-locally-legalized” states become marginally more attractive for those in same-sex relationships. On the other hand, I would expect there to be more migration from states that “locally-legalized” same-sex marriage to states that had “not-locally-legalized” same-sex marriage after 2015, and less migration from states that had “not-locally-legalized” same-sex marriage to states that “locally-legalized” same-sex marriage after 2015. Figures \ref{fig: flows_post_diffs} and \ref{fig: flows_ante_diffs} illustrate that parallel trends do not hold for any of the modified outcome variables. However, it is important to note that the to (from) “not-locally-legalized” trends appear significantly less noisy.
+
+\begin{centering}
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: flows_post_diffs}
 \end{figure}
 
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: flows_ante_diffs}
 \end{figure}
+\end{centering}
+
+ The two coefficients of interest in this exercise are those in columns (7) and (8) of table \ref{tab: flow_exante_model}. The coefficient in column (7) is negative and statistically insignificant and the coefficient in column (8) is positive and statistically insignificant. The standard error in both columns suggests the true population mean could be 0 or of the opposite sign. This indicates that those in same-sex relationships were slightly less likely to move from “locally-legalized” states to “not-locally-legalized” states and slightly more likely to move to other “locally-legalized” states. This is the opposite of what I would have predicted under my theory. This then suggests that flow heterogeneity, as measured, does not contribute to the opposite-than-expected results in the main “push factor” regression.
+
 
 \begin{landscape}
 \begin{scriptsize}
-\input{outputs/regressions/flow_expost_model}
-\input{outputs/regressions/flow_exante_model}
+\begin{table}[h] %maybe put on top
+    \centering
+    \input{outputs/regressions/flow_expost_model}
+    \caption{}
+    \label{tab: flow_expost_model}
+\end{table}
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/flow_exante_model}
+    \caption{}
+    \label{tab: flow_exante_model}
+\end{table}
 \end{scriptsize}
 \end{landscape}
+
 %\subsection{State Comparisons- ie something like CA v TX}
 
-\subsection{Heterogeneity Test: Gender Split Sample}
 \clearpage
+\subsection{Gender Heterogeneity}
 
+Another source of heterogeneity is an individual’s gender. If same-sex marriage legalization affects the behavior of men in same-sex relationships differently than women, that could impact the main regression results.
+
+Table \ref{tab: sex_expost_model} presents regression results from “pull factor” models split by gender. Table \ref{tab: sex_exante_model} presents regression results from “push factor” models split by gender. Model 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: sex_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: sex_ante_diffs} illustrates the underlying trends of the “push factor” model by region.
+
+As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. Like in the main model, plausible causal mechanisms are explained in earlier sections. However, it is important to note that research by \citet{1, 12} indicates same-sex marriage legalization could lead to larger behavioral changes for men in same-sex relationship. Figures \ref{fig: sex_post_diffs} and \ref{fig: sex_ante_diffs} illustrate that parallel trends hold for men but not women. Indeed, the “pull factor” figure for men roughly corresponds with what I predicted.
+
+\begin{centering}
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_post_diffs.png}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: sex_post_diffs}
 \end{figure}
 
-\centering
-\begin{scriptsize}
-\input{outputs/regressions/sex_expost_model}
-\end{scriptsize}
-%\end{landscape}
-
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_ante_diffs.png}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: sex_ante_diffs}
 \end{figure}
+\end{centering}
 
-\centering
+The two coefficients of interest in this exercise are those in columns (5) and (6). While it is interesting that the coefficients for men and women have opposite signs, even as they are all statistically insignificant, this does not provide greater insight why the main “push” model coefficients are negative. This then suggests that gender heterogeneity, as measured, does not contribute to the opposite-than-expected results in the main “push factor” regression.
+
+
 \begin{scriptsize}
-\input{outputs/regressions/sex_exante_model}
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/sex_expost_model}
+    \caption{}
+    \label{tab: sex_expost_model}
+\end{table}
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/sex_exante_model}
+    \caption{}
+    \label{tab: sex_exante_model}
+\end{table}
 \end{scriptsize}
 
-\subsection{Heterogeneity Test: Region Split Sample}
 \clearpage
+\subsection{Region Heterogeneity}
+
+Another source of heterogeneity is from which region an individual comes from in the “push factor” model and to which region an individual is in the “pull factor” model. While the main model includes state-level fixed effects, it does not directly control for distance between states. \citep{1} suggests distance impacts what type of state an individual moves to (from), as individuals are less likely to move to states further away. If an individual’s region has relatively more “locally legalized” states, that could make the  “push factor” coefficient less positive as “not locally legalized” states are relatively further away. If an individual’s region has both “locally legalized” and “not locally legalized” states, coefficients of interest should be as predicted in line with the “dilution effect”. This could help explain the opposite-than-expected main “push factor” regression results.
+
+Table \ref{tab: region_expost_model} presents regression results from “pull factor” models split by region. Table \ref{tab: region_exante_model} presents regression results from “push factor” models split by region. Model 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: region_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: region_ante_diffs} illustrates the underlying trends of the “push factor” model by region. The northeast and west “push factor” figures are cut off after 2013 as all states in the northeast and west locally legalized same-sex marriage by 2014.
+
+As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. Like in the main model, plausible causal mechanisms are explained in earlier sections, albeit with further elaboration in the first paragraph of this subsection. Figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} illustrate that parallel trends roughly hold for the midwest and south “pull factor” models and for all “push factor” models. 
+
+\begin{centering}
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/region_post_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: region_post_diffs}
 \end{figure}
 
 \begin{figure}
-    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/region_ante_diffs.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+    \caption{}
+    \label{fig: region_ante_diffs}
 \end{figure}
+\end{centering}
+
+The coefficients of interest are in columns (9) and (10) of the “push factor” model. Only the south and midwest had states that never “locally legalized” same-sex marriage. The coefficient in column (9) is negative and statistically insignificant and the coefficient in column (10) is negative and statistically insignificant. This then suggests that region heterogeneity, as measured, also does not contribute to the opposite-than-expected results in the main “push factor” regression. 
+
 
 \begin{landscape}
 \begin{tiny}
-\input{outputs/regressions/region_expost_model}
-\input{outputs/regressions/region_exante_model}
+\begin{table}[h] %maybe put on top
+    \centering
+    \input{outputs/regressions/region_expost_model}
+    \caption{}
+    \label{tab: region_expost_model}
+\end{table}
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/region_exante_model}
+    \caption{}
+    \label{tab: region_exante_model}
+\end{table}
 \end{tiny}
 \end{landscape}
 
-
-\subsection{Including (Anti) Popular Support in the Model}
 \clearpage
+\subsection{Social Acceptance}
 
-\input{outputs/regressions/popsupport_expost_model}
-\input{outputs/regressions/popsupport_exante_model}
+Above, I have attempted to use heterogeneity to explain why some of my results were opposite to what was expected. I have not attempted to explain why my results are relatively insignificant. One argument for why they are insignificant is that there are other, more important factors, shaping the migration decisions of individuals in same-sex relationships. One of these factors could be statewide support for individuals in same-sex relationships. If individuals in same-sex relationships are more concerned with statewide explicit social acceptance outside of legal protection, popular support effects could dominate marriage-legalization effects.
 
+The following table displays state-wide support for individuals in same-sex relationships in 2016. Larger values indicate less support while smaller values indicate more support. Data comes from (ANES).
 
+<ANES table/question text>
 
+In the following regressions, I interact this measure for popular support with the (BETA) term from my main model. I do not include popular support as a separate control as popular support should be captured by state fixed effects. If popular support does play a larger role, I expect the “pull factor” coefficient of interest to be more negative and the “push factor” coefficient to be more positive. I expect this because I expect less popular support to result in less migration to “locally-legalized” states after 2015 and more migration out of “locally-legalized” states after 2015. 
+
+<modified equations>
+
+Table \ref{tab: popsupport_expost_model} reports results from the “pull factor” model including popular support. Table \ref{tab: popsupport_exante_model} reports results from the “push factor” model including popular support. All coefficients are larger in magnitude than in the main model; however, the coefficients in the “push factor” model are larger in the opposite direction than predicted. This could indicate that legalization and popular support capture similar phenomena, both of which result in different outcomes than expected in the “push factor” model.
+
+\begin{table}[h] %maybe put on top
+    \centering
+    \input{outputs/regressions/popsupport_expost_model}
+    \caption{}
+    \label{tab: popsupport_expost_model}
+\end{table}
+\begin{table}[h]
+    \centering
+    \input{outputs/regressions/popsupport_exante_model}
+    \caption{}
+    \label{tab: popsupport_exante_model}
+\end{table}
 
 \section{Conclusion}
 tbd
@@ -272,14 +377,14 @@ tbd
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_post_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_ante_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 
@@ -288,14 +393,14 @@ tbd
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_post_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_ante_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 %Education
@@ -303,14 +408,14 @@ tbd
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_post_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_ante_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 %income
@@ -318,14 +423,14 @@ tbd
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_post_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_ante_diffs.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 %MA
@@ -333,14 +438,14 @@ tbd
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/MA_post_trends.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/MA_ante_trends.png}
     \caption{Enter Caption}
-    \label{fig:enter-label}
+    \label{fig: fig:enter-label}
 \end{figure}
 
 \end{document}
