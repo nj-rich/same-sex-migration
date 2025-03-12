@@ -26,7 +26,7 @@
 \geometry{top=1in, bottom=1in, left=1in, right=1in}
 
 % Title setup
-\title{An Analysis of the Dilution Effects of Obergefell v Hodges on Same-Sex Marriage Legalization}
+\title{An Analysis of the Dilution Effects of Obergefell v Hodges on Same-Sex Marriage Legalization\footnote{Acknowledgements: I am indebted to Dr. Reynoso, Dr. Mueller-Smith, Dr. Montgomery, and Dr. Dominguez for their invaluable guidance and advice. I also appreciate all my friends and fellow economics honors students who read drafts and offered incredibly helpful advice. I also have to thank Eugenia Quintanilla for starting my social science research journey.}}
 \author{Noah Rich\footnote{University of Michigan, njrich@umich.edu.}}
 \date{\today}
 
@@ -34,11 +34,11 @@
 \begin{document}
 
 \maketitle
-\footnote{Acknowledgements:}
+
 
 % Abstract section
 \begin{abstract}
-    tbd
+Same-sex marriage was federally legalized in the US in 2015. This paper investigates to what extent migration patterns of individuals in same-sex relationships and opposite-sex relationships converged across states that “locally legalized” same-sex marriage and those that did not after 2015. It offers a novel analysis of the ramifications of federal, relative to local, legalization of same-sex marriage. It introduces the idea of a “dilution effect”, or the idea that federal policy might dilute the effects of state policy in the context of migration. Using a triple difference design and American Community Survey data from 2011 through 2019, I find no statistically significant difference between where individuals in same-sex and opposite-sex relationships migrate before and after 2015. I conjecture that this could be due to data quality issues and a weak relationship between same-sex marriage legalization and migration. Future research might try to understand the “dilution effect” in other contexts with different tools.
 \end{abstract}
 
 \newpage
@@ -46,7 +46,21 @@
 % Main content section
 \section{Introduction}
 
-tbd
+In 2015, same-sex marriage was federally legalized across the United States. This marked a landmark moment in the LGBTQ+ civil rights movement: in the eyes of the law, same-sex relationships and opposite-sex relationships were now equal everywhere. Before 2015, some states had already legalized same-sex marriage. However, this left a patchwork of rules and regulations across the US for individuals in same-sex relationships. This made 2015 important: US law converged.
+
+This begs the natural question, how did individuals in same-sex relationships respond to the geographic expansion of their rights? Might they feel more comfortable moving to places where they previously had fewer rights? In this paper, I investigate to what extent migration patterns of individuals in same-sex relationships and opposite-sex relationships converged across states that “locally legalized” same-sex marriage and those that did not after 2015. I do this by performing a triple differences regression on American Community Survey (ACS) data from 2011 through 2019.
+
+Researchers have investigated how heterogenous legal and social treatment have impacted individuals in same-sex relationships. Generally, researchers have found that individuals in same-sex relations and individuals in opposite-sex relationships have similar behavior and outcomes when treated equivalently. Behaviors and outcomes diverge when they are treated differently \citep{2}. This has been studied in the context of state-by-state migration. Traditional economics frameworks predict that an individual moves when the utility of a different location is larger than the utility of an individual’s current location and moving costs \citep{12, 8}. Positing that marriage legalization impacts the utility of living in a state, researchers have investigated and found that individuals in same-sex relationships move to states that legalize same-sex marriage \citep{1, 12}. 
+
+There is less research on how federal legalization impacted state-by-state migration. This paper fills that gap. It also introduces the idea that federal legalization could “dilute” the effect of “local legalization.” Both state legalization of same-sex marriage and federal legalization of same-sex marriage are both examples of legalization. However, while “local legalization” gives individuals in same-sex relationships an additional incentive to move to a state, federal legalization “dilutes” that benefit by giving all states, those that “locally legalized” and those that did not, diluting that same potential benefit. 
+
+Under this framework, I expect the “local legalization” of same-sex marriage to be less of a migration “pull factor” to a state after 2015. I also expect that having “not-locally-legalized” same-sex marriage to be less of a “push factor” out of a state after 2015. However, I do not find evidence for these effects in this paper.
+
+As stated above, I test for these effects by performing a triple differences regression on ACS data from 2011 - 2019. In this data, I observe whether an individual is in a same-sex relationship and if they lived in a different state a year prior. I also use data from \citet{1} to identify states that “locally legalized” same-sex marriage and from (ANES)  to identify the level of popular support individuals in same-sex relationships have across states.
+
+I find statistically insignificant differences between where individuals in same-sex and opposite-sex relationships move before and after 2015. This is robust to several heterogeneous model specifications. I suspect I get these results because of relatively poor data quality and that the relationship between same-sex marriage and migration is relatively weak. While the ACS has a large sample, the fraction that are identified as in same-sex relationships and as migrants is relatively small. While same-sex marriage legalization might have some impact on individuals’ migration decisions, it might matter more in other contexts. For example, I find a marked increase in identified individuals in same-sex relationships after 2015. 
+
+The rest of the paper is organized as follows: section 2 addresses the literature on same-sex individuals and migration, section 3 describes the theoretical and empirical models used in this paper, section 4 describes data sources, section 5 discusses results, and section 5 concludes.
 
 \section{Literature Review}
 Over the past 30 years, the legal landscape for individuals in same-sex relationships has changed dramatically in the United States. In 1996, Congress passed the Defense of Marriage Act (DOMA), which defined marriage as being strictly between a man and a woman \citep{5}. Seven short years later, Massachusetts became the first state to legalize same-sex marriage \citep{1, 3, 5}. Between then and 2015, more than half of all U.S. states followed \citep{12}. In 2013, the Supreme Court invalidated DOMA’s definition of marriage, and in 2015, legalized same-sex marriage outright \citep{1, 3, 5, 12}. This incredible period of flux has brought many questions: how might those in same-sex and opposite-sex relationships respond differently to marriage access? Might this impact interstate migration? Many researchers have attempted to answer these questions, at least in part.
@@ -360,9 +374,16 @@ Table \ref{tab: popsupport_expost_model} reports results from the “pull factor
 \end{table}
 
 \section{Conclusion}
-tbd
 
+In a landmark civil rights ruling, the Supreme Court federally legalized same-sex marriage in 2015. This begs the question, how did individuals in same-sex relationships respond to the geographic expansion of their rights? In this paper, I investigated to what extent migration patterns of individuals in same-sex relationships and opposite-sex relationships converged across states that “locally legalized” same-sex marriage and those that did not after 2015. I added to the literature by addressing the effects of federal legalization after 2015 and introducing the idea of a “dilution effect.”
 
+I found statistically insignificant differences between where individuals in same-sex and opposite-sex relationships move before and after 2015. Specifically, the main “pull model” coefficient of interest was negative and statistically insignificant and the main “push model” coefficient of interest was negative and statistically insignificant. While the sign of the main “pull model” coefficient of interest was expected, the sign of the main “push model” coefficient of interest was not expected. These results held across model specifications designed to account for flow heterogeneity, gender heterogeneity, region heterogeneity, and the impact of other factors such as social acceptance. 
+
+I suspect I get these results because of poor data quality and that the relationship between same-sex marriage and migration is relatively weak. While the ACS has a large sample, the fraction of those who move between states in a given year is relatively small. While same-sex marriage legalization might have some impact on individuals’ migration decisions, it might matter more in other contexts. While the ACS has a large sample, the fraction that are identified as in same-sex relationships is relatively small, at about (X) percent. Similarly, the fraction identified as migrants is also relatively small, at about (Y) percent. This also might help explain why the “push factor” model coefficient of interest is opposite than expected: the pool of migrants to a given state is larger than the pool of migrants from a given state. Further, while same-sex marriage legalization might have some impact on individuals’ migration decisions, it might matter more in other contexts. Between 2011 and 2019, the percentage of those the ACS identified as in same-sex relationships almost doubled from 1 percent to 1.7 percent.
+
+These null results hold important implications. There might still be identifiable relationships between federal same-sex marriage legalization and migration; the methods used here simply do not identify them. Following \citet{1, 12}, it might be worthwhile to further consider the implications of migration distance on any migration model. Following \citet{15}, it might be worthwhile to consider the implications of same-sex marriage legalization on migration levels. Following my observations, it might be worthwhile to consider the implications of federal same-sex marriage legalization on other factors, such as level of individuals identified as in same-sex relationships. Finally, it might be worthwhile to consider if the “dilution effect” holds in other contexts, or in similar contexts but using other measurement tools.
+
+I wrote earlier that the legal landscape for individuals in same-sex relationships has changed dramatically in the United States. Even though same-sex marriage is now the law of the land, there continue to be evolving laws and norms affecting LGBT+ people. While understanding these changes in the context of law, politics, and culture continues to be important, there are economic implications that also should not be ignored. Further research continues to be useful.
 
 \newpage
 % References section
