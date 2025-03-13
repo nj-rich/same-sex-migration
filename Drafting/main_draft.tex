@@ -374,9 +374,30 @@ The following table displays state-wide support for individuals in same-sex rela
 
 <ANES table/question text>
 
-In the following regressions, I interact this measure for popular support with the (BETA) term from my main model. I do not include popular support as a separate control as popular support should be captured by state fixed effects. If popular support does play a larger role, I expect the “pull factor” coefficient of interest to be more negative and the “push factor” coefficient to be more positive. I expect this because I expect less popular support to result in less migration to “locally-legalized” states after 2015 and more migration out of “locally-legalized” states after 2015. 
+In the following regressions, I interact this measure for popular support with the triple difference term from my main model. I do not include popular support as a separate control as popular support should be captured by state fixed effects. If popular support does play a larger role, I expect the “pull factor” coefficient of interest to be more negative and the “push factor” coefficient to be more positive. I expect this because I expect less popular support to result in less migration to “locally-legalized” states after 2015 and more migration out of “locally-legalized” states after 2015. 
 
-<modified equations>
+\hfill
+\break
+%<pull eqn>
+Social Acceptance Pull Factor Regression:
+\begin{equation}
+\begin{aligned}
+\text{m}_{itg} &= \gamma_t + \gamma_g + \gamma_s + \gamma_{tg} + \gamma_{ts} + \gamma_{sg} \\
+&\quad + \beta \cdot (\text{support}_g \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_g) \\
+&\quad + X_{it} + \epsilon_{itg}
+\end{aligned}
+\end{equation}
+
+\hfill
+\break
+Social Acceptance Push Factor Regression:
+\begin{equation}
+\begin{aligned}
+\text{m}_{ith} &= \gamma_t + \gamma_h + \gamma_s + \gamma_{th} + \gamma_{ts} + \gamma_{sh} \\
+&\quad + \beta \cdot (\text{support}_h \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_h) \\
+&\quad + X_{it} + \epsilon_{ith}
+\end{aligned}
+\end{equation}
 
 Table \ref{tab: popsupport_expost_model} reports results from the “pull factor” model including popular support. Table \ref{tab: popsupport_exante_model} reports results from the “push factor” model including popular support. All coefficients are larger in magnitude than in the main model; however, the coefficients in the “push factor” model are larger in the opposite direction than predicted. This could indicate that legalization and popular support capture similar phenomena, both of which result in different outcomes than expected in the “push factor” model.
 
