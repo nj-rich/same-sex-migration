@@ -55,7 +55,7 @@ gc()
 
 summary_stats <- as_survey(clean_df, weights = perwt) #note: exclude rep_wts so standard errors are inaccurate (file otherwise insanely big- talk someone about it)
 
-MA_summary_stats <- as_survey(MA_df, weights = perwt)
+#MA_summary_stats <- as_survey(MA_df, weights = perwt)
 ```
 
 Summary stats - general population (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types) 
@@ -1242,9 +1242,21 @@ gc()
 #code
 ```
 
-Code
+Pop Support Table
 ```{r, include = F}
-#hmm smushed graphs issue again- when in doubt adjust viewing window, print, and it'll save to that viewing specification
+gc()
+pop_support <- clean_df %>% #don't need survey object here
+  distinct(expost_state, expost_support) %>%
+  mutate(support = 100 - expost_support) %>%
+  arrange(support) %>%
+  rename("State" = expost_state, "Popular Support" = "support") %>%
+  select(State, "Popular Support") 
+
+pop_support_export <-pop_support %>%
+  kable(caption = "Support for Gay Men and Lesbian Women by State in 2016", format = "latex", booktabs = T, digits = 3, longtable = T)
+
+writeLines(pop_support_export, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/pop_support.tex")
+
 ```
 
 Test
