@@ -372,7 +372,7 @@ Above, I have attempted to use heterogeneity to explain why some of my results w
 
 The following table displays state-wide support for individuals in same-sex relationships in 2016. Larger values indicate less support while smaller values indicate more support. Data comes from \citet{29}.
 
-<ANES table/question text>
+\input{outputs/summary_stats/pop_support}
 
 In the following regressions, I interact this measure for popular support with the triple difference term from my main model. I do not include popular support as a separate control as popular support should be captured by state fixed effects. If popular support does play a larger role, I expect the “pull factor” coefficient of interest to be more negative and the “push factor” coefficient to be more positive. I expect this because I expect less popular support to result in less migration to “locally-legalized” states after 2015 and more migration out of “locally-legalized” states after 2015. 
 
@@ -431,9 +431,10 @@ I wrote earlier that the legal landscape for individuals in same-sex relationshi
 \bibliographystyle{chicago}
 \bibliography{Drafting/thesis_bibliography}
 
+\newpage
 \appendix
+\FloatBarrier
 \section{Additional Difference Charts}
-
 %age
 \begin{figure}
     \centering
