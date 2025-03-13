@@ -1249,11 +1249,11 @@ pop_support <- clean_df %>% #don't need survey object here
   distinct(expost_state, expost_support) %>%
   mutate(support = 100 - expost_support) %>%
   arrange(support) %>%
-  rename("State" = expost_state, "Popular Support" = "support") %>%
-  select(State, "Popular Support") 
+  rename("State" = expost_state, "Support Level" = "support") %>%
+  select(State, "Support Level") 
 
 pop_support_export <-pop_support %>%
-  kable(caption = "Support for Gay Men and Lesbian Women by State in 2016", format = "latex", booktabs = T, digits = 3, longtable = T)
+  kable(caption = "Support for Gay Men and Lesbian Women by State in 2016", format = "latex", booktabs = F, digits = 3, longtable = T)
 
 writeLines(pop_support_export, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/pop_support.tex")
 
