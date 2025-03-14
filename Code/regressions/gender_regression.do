@@ -62,7 +62,7 @@ reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.yea
 outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_exante_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Post Model: Female) ///
+	title(Ex-Ante Model: Female) ///
 	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
