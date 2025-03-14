@@ -162,15 +162,12 @@ The ACS includes data on individuals who are not in relationships, migrated to t
 
 I also apply several restrictions for technical reasons. I exclude observations in which the ACS has identified errors in coding an individual’s sex or has identified an individual’s sex as missing. While researchers have noted that ACS more reliably identifies individuals in same-sex relationships after 2012, other researchers have noted that before this there were sex-coding reliability issues before this \citep{3, 5, 7, 12}. Dropping these observations ensures more reliable identification of individuals in same-sex relationships. I also drop observations with missing age, education, and race information and unknown employment status and income status. I do this because these variables are included as controls in my model.
 
-%\begin{landscape}
-\begin{centering}
-\begin{scriptsize}
-\input{outputs/summary_stats/control_table}
-\end{scriptsize}
-\end{centering}
-%\end{landscape}
-%add in: region, migrate
-%make real percents
+
+\input{outputs/summary_stats/var_table_1}
+%move to appendix
+\begin{landscape}
+\input{outputs/summary_stats/var_table_2}
+\end{landscape}
 
 
 \clearpage
@@ -325,7 +322,7 @@ The two coefficients of interest in this exercise are those in columns (5) and (
 \clearpage
 \subsection{Region Heterogeneity}
 
-Another source of heterogeneity is from which region an individual comes from in the “push factor” model and to which region an individual is in the “pull factor” model. While the main model includes state-level fixed effects, it does not directly control for distance between states. \citep{1} suggests distance impacts what type of state an individual moves to (from), as individuals are less likely to move to states further away. If an individual’s region has relatively more “locally legalized” states, that could make the  “push factor” coefficient less positive as “not locally legalized” states are relatively further away. If an individual’s region has both “locally legalized” and “not locally legalized” states, coefficients of interest should be as predicted in line with the “dilution effect”. This could help explain the opposite-than-expected main “push factor” regression results.
+Another source of heterogeneity is from which region an individual comes from in the “push factor” model and to which region an individual is in the “pull factor” model. While the main model includes state-level fixed effects, it does not directly control for distance between states. \citep{1} suggests distance impacts what type of state an individual moves to (from), as individuals are less likely to move to states further away. If an individual’s region has relatively more “locally legalized” states, that could make the  “push factor” coefficient less positive as “not locally legalized” states are relatively further away. If an individual’s region has both “locally legalized” and “not locally legalized” states, coefficients of interest should be as predicted in line with the “dilution effect”. This could help explain the opposite-than-expected main “push factor” regression results. 
 
 Table \ref{tab: region_expost_model} presents regression results from “pull factor” models split by region. Table \ref{tab: region_exante_model} presents regression results from “push factor” models split by region. Model 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: region_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: region_ante_diffs} illustrates the underlying trends of the “push factor” model by region. The northeast and west “push factor” figures are cut off after 2013 as all states in the northeast and west locally legalized same-sex marriage by 2014.
 
