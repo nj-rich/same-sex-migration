@@ -58,7 +58,7 @@ summary_stats <- as_survey(clean_df, weights = perwt) #note: exclude rep_wts so 
 #MA_summary_stats <- as_survey(MA_df, weights = perwt)
 ```
 
-Summary stats - general population (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types) 
+Summary stats - general population 
 ```{r, include = F}
 gc()
 #count those in/not in same sex
@@ -67,15 +67,6 @@ count_samesex <- summary_stats %>%
   summarize(prop_samesex = survey_mean(in_samesex, na.rm = T)) %>%
   select(-prop_samesex_se)
 
-#need to recreate variables for this
-gc()
-#count prop in legal same-sex state/not:
-# count_in_legal <- summary_stats %>%
-#   group_by(year) %>%
-#   summarize(prop_in_legal = survey_mean(expost_legal_state, na.rm = T)) %>%
-#   select(-prop_in_legal_se) 
-
-###
 
 gc()
 #count male/female - think about if need this
@@ -97,7 +88,8 @@ gc()
 joint_overall_table <- count_male_female %>%
   left_join(count_samesex, by = "year") %>%
   left_join(count_in_old_legal, by = "year") %>%
-  setNames(c("Year", "%/100 Female", "%/100 Same-Sex", "%/100 in Locally Legalized States")) %>%
+  mutate(across(-year, ~ . * 100)) %>%
+  setNames(c("Year", "% Female", "% Same-Sex", "% in Locally Legalized States")) %>%
   kable(caption = "Summary Statistics for Overall Population", format = "latex", booktabs = T, digits = 3) 
 
 #export joint table
@@ -106,8 +98,18 @@ writeLines(joint_overall_table, "/Users/njrich/Desktop/same-sex-migration/output
 #note frac v percent
 ```
 
-Summary stats - for controls (will need to do a lot of work to functionalize and combine in logical way- think about categories of table types) (need to add children count)
+Summary stats by Relationship Type By Variable
 ```{r, include = F}
+gc()
+#count frac. migrant:
+prop_mig_samesex <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(prop_migrate = survey_mean(migrant, na.rm = T)) %>%
+  select(-prop_migrate_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrate", "Opposite-Sex Migrate")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_migrate) %>%
+  select(year, "Same-Sex Migrate", "Opposite-Sex Migrate")
+
 
 gc()
 #count male/female among those in same-sex relationships
@@ -177,99 +179,34 @@ frac_child_samesex <- summary_stats %>%
 
 
 gc()
-#create joint table
-joint_control_table <- prop_fem_samesex %>%
-  left_join(mean_age_samesex, by = "year") %>%
+#create joint tables
+joint_var_table_1 <- prop_mig_samesex %>%
+  left_join(prop_fem_samesex, by = "year") %>%
+  left_join(frac_child_samesex, by = "year") %>%
+  ungroup %>%
+  mutate(across(-year, ~ . * 100)) %>%
+  setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>%
+  kable(caption = "Summary Statistics for Main Variables (1)", format = "latex", booktabs = T, digits = 3) %>%
+  add_header_above(c(" " = 1, "% Migrate" = 2, "% Female" = 2, "% Has Child" = 2))  
+
+joint_var_table_2 <- mean_age_samesex %>%
   left_join(frac_college_samesex, by = "year") %>%
   left_join(frac_white_samesex, by = "year") %>%
   left_join(mean_income_samesex, by = "year") %>%
-  left_join(frac_child_samesex, by = "year") %>%
-  setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
-  kable(caption = "Summary Statistics for Proposed Controls", format = "latex", booktabs = T, digits = 3) %>%
-  add_header_above(c(" " = 1, "%/100 Female" = 2, "Mean Age" = 2, "%/100 College" = 2, "%/100 White" = 2, "Mean Income" = 2, "%/100 Has Child" = 2))
+  ungroup %>%
+  mutate(across(-all_of(c("year", "Same-Sex Age", "Opposite-Sex Age", "Same-Sex Inc", "Opposite-Sex Inc")), ~ . * 100)) %>%
+  setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
+  kable(caption = "Summary Statistics for Main Variables (2)", format = "latex", booktabs = T, digits = 3) %>%
+  add_header_above(c(" " = 1, "Mean Age" = 2, "% College" = 2, "% White" = 2, "Mean Income" = 2))
 
-#export joint table
-writeLines(joint_control_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/control_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
+#export joint tables
+writeLines(joint_var_table_1, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/var_table_1.tex") #for mac
+writeLines(joint_var_table_2, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/var_table_2.tex") 
 
 #watch column arranging
 ```
 
-(Deprecated) stats - stock migrants/general pops. in certain state categories
-```{r, include = F}
-# #oop count labeling not super accurate
-# 
-# gc()
-# #count prop by same_sex in post_old_legal state/not (with old_legal definition):
-# count_samesex_in_old_legal <- summary_stats %>%
-#   group_by(year, in_samesex) %>%
-#   summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
-#   select(-prop_in_old_legal_se) %>%
-#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")) %>%
-#   pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
-#   select(year, "Same-Sex in Old Legal", "Opposite-Sex in Old Legal")
-# 
-# gc()
-# #count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
-# count_samesex_migrants_in_old_legal <- summary_stats %>%
-#   filter(migrant == 1) %>%
-#   group_by(year, in_samesex) %>%
-#   summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
-#   select(-prop_in_old_legal_se) %>%
-#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")) %>%
-#   pivot_wider(names_from = in_samesex, values_from = prop_in_old_legal) %>%
-#   select(year, "Same-Sex Migrants in Old Legal", "Opposite-Sex Migrants in Old Legal")
-# 
-# gc()
-# #subtracted expost trends table
-# subtracted_trends_post <- count_samesex_migrants_in_old_legal %>%
-#   mutate(subtracted_trends_post = `Same-Sex Migrants in Old Legal` - `Opposite-Sex Migrants in Old Legal`) %>%
-#   select(year, subtracted_trends_post)
-# 
-# gc()
-# #count prop by same_sex from post_old_legal state/not (with old_legal definition):
-# count_samesex_from_old_legal <- summary_stats %>%
-#   group_by(year, in_samesex) %>%
-#   summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
-#   select(-prop_from_old_legal_se) %>%
-#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")) %>%
-#   pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal) %>%
-#   select(year, "Same-Sex from Old Legal", "Opposite-Sex from Old Legal")
-# 
-# gc()
-# #count prop migrants by same_sex in post_old_legal state/not (with old_legal definition):
-# count_samesex_migrants_from_old_legal <- summary_stats %>%
-#   filter(migrant == 1) %>%
-#   group_by(year, in_samesex) %>%
-#   summarize(prop_from_old_legal = survey_mean(exante_old_legal, na.rm = T)) %>%
-#   select(-prop_from_old_legal_se) %>%
-#   mutate(in_samesex = ifelse(in_samesex == 1, "Same-Sex Migrants from Old Legal", "Opposite-Sex Migrants from Old Legal")) %>%
-#   pivot_wider(names_from = in_samesex, values_from = prop_from_old_legal)
-# 
-# gc()
-# #subtracted exante trends table
-# subtracted_trends_ante <- count_samesex_migrants_from_old_legal %>%
-#   mutate(subtracted_trends_ante = `Same-Sex Migrants from Old Legal` - `Opposite-Sex Migrants from Old Legal`) %>%
-#   select(year, subtracted_trends_ante)
-# 
-# gc()
-# #create joint table
-# joint_location_table <- count_samesex_in_old_legal %>%
-#   left_join(count_samesex_migrants_in_old_legal, by = "year") %>%
-#   left_join(subtracted_trends_post, by = "year") %>%
-#   left_join(count_samesex_from_old_legal, by = "year") %>%
-#   left_join(count_samesex_migrants_from_old_legal, by = "year") %>%
-#   left_join(subtracted_trends_ante, by = "year") %>%
-#   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Difference")) %>% #needs work
-#   kable(caption = "Individuals by Location", format = "latex", booktabs = T, digits = 3) %>%
-#   add_header_above(c(" " = 1, "In Locally Legalized" = 2, "Migrants in Locally Legalized" = 2, " " = 1, "In from Locally Legalized" = 2, "Migrants from Locally Legalized" = 2, " " = 1)) 
-# 
-# #export joint table
-# writeLines(joint_location_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/locations_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
-# 
-# #need to abbreviate some titles
-```
-
-Summary statistics/trends table for regression storytelling
+Main Trends/Differences Visualizations
 ```{r, include = F}
 gc()
 #ex-post
