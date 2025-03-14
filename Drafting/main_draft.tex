@@ -155,38 +155,33 @@ The ACS records if an individual is in a relationship with someone that lives in
 
 \FloatBarrier
 \input{outputs/summary_stats/overall_table}
-%add overall levels of migration, get actual percents
-%fix overlap issue
+
 
 The ACS includes data on individuals who are not in relationships, migrated to the United States, and were born outside of the United States. Following \citet{1, 16}, I exclude individuals not in relationships to make comparisons between the subgroups in my model more plausible. I exclude individuals who have migrated to the United States in the past year as they are outside my scope of study. I exclude individuals born outside of the United States because I include birth state. I do this with the understanding that if someone lives in a state that is not their birth state they are more likely to move back to their birth state \citep{12}. This control will affect those not born in a US state differently than those born in a US state.
 
 I also apply several restrictions for technical reasons. I exclude observations in which the ACS has identified errors in coding an individual’s sex or has identified an individual’s sex as missing. While researchers have noted that ACS more reliably identifies individuals in same-sex relationships after 2012, other researchers have noted that before this there were sex-coding reliability issues before this \citep{3, 5, 7, 12}. Dropping these observations ensures more reliable identification of individuals in same-sex relationships. I also drop observations with missing age, education, and race information and unknown employment status and income status. I do this because these variables are included as controls in my model. Summary statistics for these key variables can be found in table \ref{var_table_1} in this section and \ref{var_table_2} in the appendix.
 
-
 \input{outputs/summary_stats/var_table_1}
 
 \clearpage
-
 \section{Results}
 In the following section, I discuss the results of my analysis. For all analyses, I roughly expect “pull factor” models to follow the trends in figure \ref{fig: ex_post_diffs} and “push factor” models to follow the trends in figure \ref{fig: ex_ante_diffs}. These illustrate how I expect less individuals in same-sex relationships to move to states that “locally-legalized” same-sex marriage after 2015 and more individuals in same-sex relationships to move out of states with “locally-legalized” same-sex marriage after 2015. 
 
 I first discuss the results of the main model described earlier. I then discuss migration flow heterogeneity, gender heterogeneity, and region heterogeneity. I conclude by discussing the relative importance of marriage legalization relative to social tolerance in same-sex migration decisions.
 
-\begin{centering}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_post_diffs.png}
-    \caption{}
+\begin{figure}[h]
     \label{fig: ex_post_diffs}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_post_diffs.png}
+    \centering
+    \caption{}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_ante_diffs.png}
     \caption{}
     \label{fig: ex_ante_diffs}
 \end{figure}
-\end{centering}
 
 \clearpage
 \subsection{Main Model} %ok still need to fix centering
@@ -194,20 +189,20 @@ In table \ref{tab: expost_model} I present main regression results from “pull 
 
 Triple difference models require the assumption that there is an identifiable causal mechanism and that there are parallel trends \citep{24, 25}. In earlier sections, I have described plausible causal mechanisms. However, it can be seen in figure \ref{fig: post_diffs} and figure \ref{fig: ante_diffs} that the parallel trend assumption fails. There are a number of reasons for which this could occur. In the period between 2011 and 2015, there are significant changes in which states have “locally-legalized” same-sex marriage and which states do not. This means that one migrant identified as moving to (from) a “not-locally-legalized” state one year might have been identified as moving to (from) a “locally-legalized” state only one or two years later on. This could contribute to a violation of parallel trends as other factors, not related to same-sex marriage legalization but related to the sex of an individual’s partner, contribute to migration pattern differences across states. Further, the percentage of individuals migrating between states in any given year is relatively low, at (Z) percent. More noise is expected with smaller sample sizes. 
 
-\begin{centering} %maybe just do centering in figures
-\begin{figure}
+
+\begin{figure}[h]
+    \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/post_diffs.png}
     \caption{}
     \label{fig: post_diffs}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ante_diffs.png}
     \caption{}
     \label{fig: ante_diffs}
 \end{figure}
-\end{centering}
 
 In the “pull factor” model, the coefficient of interest is negative and statistically insignificant across all three models. Further, the standard error in models 2 and 3 suggests the true population mean could be 0 or positive. While the sign of the coefficients of interest is what I would expect, this means there is close to no difference between the fraction of same-sex individuals who moved to states that “locally-legalized” same-sex marriage and those that did not before and after 2015 relative to opposite-sex individuals. In other words, federal legalization led to minimal or no “pull factor” “dilution effect”. 
 
@@ -217,15 +212,15 @@ Even as both the “pull factor” and “push factor” model regressions simil
 
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/expost_model}
-    \caption{}
+    \caption{Main Ex-Post Model}
     \label{tab: expost_model}
+    \input{outputs/regressions/expost_model}
 \end{table}
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/exante_model}
-    \caption{}
+    \caption{Main Ex-Ante Model}
     \label{tab: exante_model}
+    \input{outputs/regressions/exante_model}
 \end{table}
 
 \clearpage
@@ -237,35 +232,33 @@ Tables \ref{tab: ffed_expost_model, tab: flocal_expost_model, tab: fstay_expost_
 
 As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. In line with the “dilution effect”, I would expect there to be slightly less migration between states that “locally legalized” same-sex marriage after 2015, as previously “not-locally-legalized” states become marginally more attractive for those in same-sex relationships. On the other hand, I would expect there to be more migration from states that “locally-legalized” same-sex marriage to states that had “not-locally-legalized” same-sex marriage after 2015, and less migration from states that had “not-locally-legalized” same-sex marriage to states that “locally-legalized” same-sex marriage after 2015. Figures \ref{fig: flows_post_diffs} and \ref{fig: flows_ante_diffs} illustrate that parallel trends do not hold for any of the modified outcome variables. However, it is important to note that the to (from) “not-locally-legalized” trends appear significantly less noisy.
 
-\begin{centering}
-\begin{figure}
+\begin{figure}[h]
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
     \caption{}
     \label{fig: flows_post_diffs}
 \end{figure}
-
-\begin{figure}
+\begin{figure}[h]
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
     \caption{}
     \label{fig: flows_ante_diffs}
 \end{figure}
-\end{centering}
 
  The two coefficients of interest in this exercise are those in column 3  of table \ref{tab: tfed_exante_model} and table \ref{tab: tlocal_exante_model}. The coefficient in column 3 of the table \ref{tab: tfed_exante_model} is negative and statistically insignificant and the coefficient in column 3 of table \ref{tab: tlocal_exante_model} is positive and statistically insignificant. The standard error in both columns suggests the true population mean could be 0 or of the opposite sign. This indicates that those in same-sex relationships were slightly less likely to move from “locally-legalized” states to “not-locally-legalized” states and slightly more likely to move to other “locally-legalized” states. This is the opposite of what I would have predicted under my theory. This then suggests that flow heterogeneity, as measured, does not contribute to the opposite-than-expected results in the main “push factor” regression. Other flow regression results can be found in tables \ref{tab: tstay_exante_model, tab: ffed_expost_model, tab: flocal_expost_model, tab: fstay_expost_model} in the appendix.
 
-
-
-\begin{table}[h] %maybe put on top
+\begin{table}[p] %finagling to get formatting right
     \centering
-    \input{outputs/regressions/tfed_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: To Not Locally Legalized}
     \label{tab: tfed_exante_model}
+    \input{outputs/regressions/tfed_exante_model}
 \end{table}
-\begin{table}[h]
+
+\begin{table}[p]
     \centering
-    \input{outputs/regressions/tlocal_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: To Locally Legalized}
     \label{tab: tlocal_exante_model}
+    \input{outputs/regressions/tlocal_exante_model}
 \end{table}
 
 %\subsection{State Comparisons- ie something like CA v TX}
@@ -275,50 +268,49 @@ As these regressions are still triple difference models, assumptions of a plausi
 
 Another source of heterogeneity is an individual’s gender. If same-sex marriage legalization affects the behavior of men in same-sex relationships differently than women, that could impact the main regression results.
 
-Tables \ref{tab: male_expost_model} and \ref{tab: female_expost_model} present regression results from “pull factor” models split by gender. Table \ref{tab: sex_exante_model} and \ref{tab: female_expost_model} present regression results from “push factor” models split by gender. Model 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: sex_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: sex_ante_diffs} illustrates the underlying trends of the “push factor” model by region.
+Tables \ref{tab: male_expost_model} and \ref{tab: female_expost_model} present regression results from “pull factor” models split by gender. Table \ref{tab: male_exante_model} and \ref{tab: female_expost_model} present regression results from “push factor” models split by gender. Model 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: sex_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: sex_ante_diffs} illustrates the underlying trends of the “push factor” model by region.
 
 As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. Like in the main model, plausible causal mechanisms are explained in earlier sections. However, it is important to note that research by \citet{1, 12} indicates same-sex marriage legalization could lead to larger behavioral changes for men in same-sex relationship. Figures \ref{fig: sex_post_diffs} and \ref{fig: sex_ante_diffs} illustrate that parallel trends hold for men but not women. Indeed, the “pull factor” figure for men roughly corresponds with what I predicted.
 
-\begin{centering}
-\begin{figure}
+\begin{figure}[p]
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_post_diffs.png}
     \caption{}
     \label{fig: sex_post_diffs}
 \end{figure}
-
-\begin{figure}
+\begin{figure}[p]
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_ante_diffs.png}
     \caption{}
     \label{fig: sex_ante_diffs}
 \end{figure}
-\end{centering}
 
 The two coefficients of interest in this exercise are those in column 3 of the ex-ante models. While it is interesting that the coefficients for men and women have opposite signs, even as they are all statistically insignificant, this does not provide greater insight why the main “push” model coefficients are negative. This then suggests that gender heterogeneity, as measured, does not contribute to the opposite-than-expected results in the main “push factor” regression.
 
-
-\begin{table}[h] %maybe put on top
+\clearpage %finagling to get formatting right
+\begin{table}[p] %maybe put some of these in the appendix
     \centering
-    \input{outputs/regressions/male_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: Male}
     \label{tab: male_expost_model}
+    \input{outputs/regressions/male_expost_model}
 \end{table}
-\begin{table}[h]
+\begin{table}[p]
     \centering
+    \caption{Ex-Post Model: Female}
+    \label{tab: female_expost_model}
     \input{outputs/regressions/female_expost_model}
-    \caption{}
-    \label{tab: female_exante_model}
 \end{table}
-\begin{table}[h] %maybe put on top
+\begin{table}[p] %maybe put on top
     \centering
-    \input{outputs/regressions/male_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: Male}
     \label{tab: male_exante_model}
+    \input{outputs/regressions/male_exante_model}
 \end{table}
-\begin{table}[h]
+\begin{table}[p] %own dedicated page
     \centering
-    \input{outputs/regressions/female_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: Female}
     \label{tab: female_exante_model}
+    \input{outputs/regressions/female_exante_model}
 \end{table}
 
 \clearpage
@@ -328,38 +320,38 @@ Another source of heterogeneity is from which region an individual comes from in
 
 \input{outputs/summary_stats/regions_1}
 
-Tables \ref{tab: midwest_expost_model}, \ref{tab: south_expost_model}, \ref{tab: west_expost_model}, and \ref{tab: northeast_expost_model} presents regression results from “pull factor” models split by region. Tables \ref{tab: midwest_exante_model}, \ref{tab: south_exante_model}, \ref{tab: west_exante_model}, and \ref{tab: northeast_expante_model}  presents regression results from “push factor” models split by region. All tables except \ref{tab: midwest_exante_model} and \ref{tab: south_exante_model} can be found in the appendix. \Model 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: region_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: region_ante_diffs} illustrates the underlying trends of the “push factor” model by region. The northeast and west “push factor” figures are cut off after 2013 as all states in the northeast and west locally legalized same-sex marriage by 2014.
+Tables \ref{tab: midwest_expost_model}, \ref{tab: south_expost_model}, \ref{tab: west_expost_model}, and \ref{tab: northeast_expost_model} presents regression results from “pull factor” models split by region. Tables \ref{tab: midwest_exante_model}, \ref{tab: south_exante_model}, \ref{tab: west_exante_model}, and \ref{tab: northeast_exante_model}  presents regression results from “push factor” models split by region. All tables except \ref{tab: midwest_exante_model} and \ref{tab: south_exante_model} can be found in the appendix. Models 1, Model 2, and Model 3 refer to the varying levels of controls that differentiated columns 1, 2, and 3 in the main model regressions.  Figure \ref{fig: region_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: region_ante_diffs} illustrates the underlying trends of the “push factor” model by region. The northeast and west “push factor” figures are cut off after 2013 as all states in the northeast and west locally legalized same-sex marriage by 2014.
 
 As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. Like in the main model, plausible causal mechanisms are explained in earlier sections, albeit with further elaboration in the first paragraph of this subsection. Figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} illustrate that parallel trends roughly hold for the midwest and south “pull factor” models and for all “push factor” models. 
 
-\begin{centering}
-\begin{figure}
+\begin{figure}[p]
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/region_post_diffs.png}
     \caption{}
     \label{fig: region_post_diffs}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
+    \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/region_ante_diffs.png}
     \caption{}
     \label{fig: region_ante_diffs}
 \end{figure}
-\end{centering}
 
 The coefficients of interest are in columns 3 of the midwest and south “push factor” model. Only the south and midwest had states that never “locally legalized” same-sex marriage. Both coefficients are negative and statistically insignificant. This then suggests that region heterogeneity, as measured, also does not contribute to the opposite-than-expected results in the main “push factor” regression. 
 
-
-\begin{table}[h] %maybe put on top
+\clearpage
+\begin{table}[p] %finagling to get formatting to work
     \centering
-    \input{outputs/regressions/midwest_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: Midwest}
     \label{tab: midwest_exante_model}
+    \input{outputs/regressions/midwest_exante_model}
 \end{table}
-\begin{table}[h]
+\begin{table}[p]
     \centering
-    \input{outputs/regressions/south_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: South}
     \label{tab: south_exante_model}
+    \input{outputs/regressions/south_exante_model}
 \end{table}
 
 
@@ -402,15 +394,15 @@ Table \ref{tab: popsupport_expost_model} reports results from the “pull factor
 
 \begin{table}[h] %maybe put on top
     \centering
-    \input{outputs/regressions/popsupport_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: Popular Support}
     \label{tab: popsupport_expost_model}
+    \input{outputs/regressions/popsupport_expost_model}
 \end{table}
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/popsupport_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: Popular Support}
     \label{tab: popsupport_exante_model}
+    \input{outputs/regressions/popsupport_exante_model}
 \end{table}
 
 \section{Conclusion}
@@ -435,157 +427,161 @@ I wrote earlier that the legal landscape for individuals in same-sex relationshi
 \FloatBarrier
 \section{More Summary Statistics}
 
+\input{outputs/summary_stats/regions_2}
+
 \begin{landscape}
 \input{outputs/summary_stats/var_table_2}
 \end{landscape}
 
-\input{outputs/summary_stats/regions_2}
-
 
 \FloatBarrier
+\newpage
 \section{Additional Difference Charts}
 %age
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_post_diffs.png}
-    \caption{Enter Caption}
-    \label{fig: fig:enter-label}
+    \caption{}
+    \label{}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_ante_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
 
 %child
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_post_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_ante_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
 %Education
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_post_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_ante_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
 %income
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_post_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_ante_diffs.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: fig:enter-label}
 \end{figure}
 
 %regression tables
 \FloatBarrier
+\newpage
 \section{Additional Regression Tables}
 %additional flow tables
 \begin{table}[h] %maybe put on top
     \centering
-    \input{outputs/regressions/tstay_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: To Same State}
     \label{tab: tstay_exante_model}
+    \input{outputs/regressions/tstay_exante_model}
 \end{table}
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/tfed_exante_model}
-    \caption{}
-    \label{tab: tfed_exante_model}
+    \caption{Ex-Post Model: From Not Locally Legalized}
+    \label{tab: ffed_expost_model}
+    \input{outputs/regressions/ffed_expost_model}
 \end{table}
 \begin{table}[h] %maybe put on top
     \centering
-    \input{outputs/regressions/flocal_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: From Locally Legalized}
     \label{tab: flocal_expost_model}
+    \input{outputs/regressions/flocal_expost_model}
 \end{table}
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/fstay_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: From the Same State}
     \label{tab: fstay_expost_model}
+    \input{outputs/regressions/fstay_expost_model}
 \end{table}
 
 %additional region tables
 \begin{table}[h] %maybe put on top
     \centering
-    \input{outputs/regressions/midwest_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: Midwest}
     \label{tab: midwest_expost_model}
+    \input{outputs/regressions/midwest_expost_model}
 \end{table}
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/south_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: South}
     \label{tab: south_expost_model}
+    \input{outputs/regressions/south_expost_model}
 \end{table}
 \begin{table}[h] %maybe put on top
     \centering
-    \input{outputs/regressions/west_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: West}
     \label{tab: west_expost_model}
+    \input{outputs/regressions/west_expost_model}
 \end{table}
 \begin{table}[h]
     \centering
-    \input{outputs/regressions/northeast_expost_model}
-    \caption{}
+    \caption{Ex-Post Model: Northeast}
     \label{tab: northeast_expost_model}
+    \input{outputs/regressions/northeast_expost_model}
 \end{table}
 \begin{table}[h] %maybe put on top
     \centering
-    \input{outputs/regressions/west_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: West}
     \label{tab: west_exante_model}
+    \input{outputs/regressions/west_exante_model}
 \end{table}
-\begin{table}[h]
+\FloatBarrier
+\begin{table}[h] %try htbp in future test in other doc if this works elsewhere lol wow
     \centering
-    \input{outputs/regressions/northeast_exante_model}
-    \caption{}
+    \caption{Ex-Ante Model: Northeast}
     \label{tab: northeast_exante_model}
+    \input{outputs/regressions/northeast_exante_model}
 \end{table}
 
 %MA
-\FloatBarrier
+\clearpage
+\newpage
 \section{Massachusetts Figures}
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/MA_post_trends.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: MA_post_trends}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.75\linewidth]{outputs/summary_stats/MA_ante_trends.png}
-    \caption{Enter Caption}
+    \caption{}
     \label{fig: MA_ante_trends}
 \end{figure}
 
