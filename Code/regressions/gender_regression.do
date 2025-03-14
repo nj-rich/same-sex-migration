@@ -20,11 +20,11 @@ collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant
 *Male
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 1, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\male_expost_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Post Model) ///
-	ctitle(Model 1: Male) ///
+	title(Ex-Post Model: Male) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -33,10 +33,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Female
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 2, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_expost_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: Female) ///
+	title(Ex-Post Model: Female) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -45,11 +46,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Male
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\male_exante_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Ante Model) ///
-	ctitle(Model 1: Male) ///
+	title(Ex-Ante Model: Male) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -58,10 +59,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Female
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if sex == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_exante_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: Female) ///
+	title(Ex-Post Model: Female) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -71,10 +73,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Male
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\male_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Male) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -82,10 +84,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Female
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Female) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -94,10 +96,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Male
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\male_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Male) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -105,10 +107,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Female
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Female) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -127,10 +129,10 @@ collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant
 *Male
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\male_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Male) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -138,10 +140,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Female
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Female) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -150,7 +152,7 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Male
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\male_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
 	ctitle(Model 3: Male) ///
@@ -161,10 +163,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\se
 *Female
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if sex == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\sex_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\female_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Female) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///

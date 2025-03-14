@@ -1,0 +1,14 @@
+Ex-Post Model: Male				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+post_treatment	post_treatment	-0.014	-0.007	-0.008
+		(0.009)	(0.037)	(0.043)
+Constant	Constant	0.102***	3.971***	3.826***
+		(0.000)	(0.125)	(0.102)
+				
+Observations		17,816	17,816	17,816
+R-squared		0.004	0.912	0.917
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+See below.				

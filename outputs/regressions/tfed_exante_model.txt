@@ -1,0 +1,14 @@
+To Not Locally Legalized				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+ante_treatment	ante_treatment	-0.031***	-0.025	-0.015
+		(0.009)	(0.028)	(0.032)
+Constant	Constant	0.100***	2.094***	1.977***
+		(0.000)	(0.314)	(0.357)
+				
+Observations		19,755	19,755	19,755
+R-squared		0.045	0.519	0.551
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+See below.				

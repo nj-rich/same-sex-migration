@@ -21,11 +21,11 @@ collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant
 *South
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if expost_region == 1, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\south_expost_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Post Model) ///
-	ctitle(Model 1: South) ///
+	title(Ex-Post Model: South) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -34,10 +34,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *West
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if expost_region == 2, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\west_expost_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: West) ///
+	title(Ex-Post Model: West) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -45,10 +46,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Northeast
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if expost_region == 3, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\northeast_expost_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: Northeast) ///
+	title(Ex-Post Model: Northeast) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -56,10 +58,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Midwest
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex [pw=perwt] if expost_region == 4, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\midwest_expost_model.tex", ///
+	replace ///
+	title(Ex-Post Model: Midwest) ///
 	tex(fragment) ///
-	ctitle(Model 1: Midwest) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -68,11 +71,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *South
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if exante_region == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\south_exante_model.tex", ///
 	replace ///
 	tex(fragment) ///
-	title(Ex-Ante Model) ///
-	ctitle(Model 1: South) ///
+	title(Ex-Ante Model: South) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -81,10 +84,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Midwest
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if exante_region == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\midwest_exante_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: Midwest) ///
+	title(Ex-Ante Model: Midwest) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -92,10 +96,11 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *West
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if exante_region == 3, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\west_exante_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: West) ///
+	title(Ex-Ante Model: West) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -103,10 +108,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Northeast
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex [pw=perwt] if exante_region == 4, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
-	append ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\northeast_exante_model.tex", ///
+	replace ///
 	tex(fragment) ///
-	ctitle(Model 1: Northeast) ///
+	ctitle(Model 1) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -116,10 +121,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *South
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 1, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\south_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: South) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -127,10 +132,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *West
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 2, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\west_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: West) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -138,10 +143,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Northeast
 	reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 3, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\northeast_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Northeast) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -149,10 +154,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Midwest
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 4, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\midwest_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Midwest) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -161,10 +166,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *South
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\south_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: South) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -172,10 +177,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Midwest
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\midwest_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Midwest) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -183,10 +188,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *West
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\west_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: West) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -194,10 +199,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Northeast
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\northeast_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 2: Northeast) ///
+	ctitle(Model 2) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -216,10 +221,10 @@ collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant
 *South
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 1, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\south_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: South) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -227,10 +232,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *West
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 2, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\west_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: West) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -238,10 +243,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Northeast
 	reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 3, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\northeast_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Northeast) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -249,10 +254,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Midwest
 reg migrant post_treatment i.expost_state##i.year expost_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if expost_region == 4, ///
 	vce(cluster expost_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_expost_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\midwest_expost_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Midwest) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -261,10 +266,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *South
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\south_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: South) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -272,10 +277,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Midwest
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\midwest_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Midwest) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -283,10 +288,10 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *West
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 1, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\west_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: West) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
@@ -294,13 +299,12 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\re
 *Northeast
 reg migrant ante_treatment i.exante_state##i.year exante_state##in_samesex i.year##in_samesex _I* age inctot [pw=perwt] if exante_region == 2, ///
 	vce(cluster exante_state year)
-outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\region_exante_model.tex", ///
+outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\northeast_exante_model.tex", ///
 	append ///
 	tex(fragment) ///
-	ctitle(Model 3: Northeast) ///
+	ctitle(Model 3) ///
 	label ///
 	dec(3) ///
 	se ///
 	keep(ante_treatment) 
-
 *use label list var to generate which labels go with what factors
