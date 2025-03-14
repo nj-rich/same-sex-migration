@@ -1,4 +1,4 @@
-Ex-Post Model: Female				
+Ex-Ante Model: Female				
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
