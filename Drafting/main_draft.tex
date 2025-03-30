@@ -198,7 +198,7 @@ I also exclude individuals for technical reasons. I exclude observations in whic
 
 All code, figures, and tables (excluding raw data) can be found here: \href{https://github.com/nj-rich/same-sex-migration}{GitHub Repository}\footnote{\url{https://github.com/nj-rich/same-sex-migration}}.
 
-\clearpage
+\FloatBarrier
 \section{Results}
 In the following section, I discuss the results of my analysis. For all analyses, I roughly expect “pull factor” models to follow the trends in figure \ref{fig: ex_post_diffs} and “push factor” models to follow the trends in figure \ref{fig: ex_ante_diffs}. The horizontal axis is time. In pull factor models, the y axis is the difference in migration rates to \textit{Obergefell}-legalized states (before 2015, states without marriage equality) and non-Obergefell legalized states. In push factor models, the y axis is the difference in migration rates from \textit{Obergefell}-legalized states and non-Obergefell legalized states. These sample figures illustrate how I expect more individuals in same-sex relationships to move to states that Obergefell-legalized states after 2015 and less to move out after 2015 compared to individuals in different-sex relationships.
 
@@ -219,7 +219,7 @@ In section 5.1, I discuss the results of my main model. I then discuss heterogen
 \end{figure}
 
 
-\clearpage
+\FloatBarrier
 \subsection{Main Model} %ok still need to fix centering
 I present results from my main pull factor model in table \ref{tab: expost_model} and from my main push factor model in table \ref{tab: exante_model}. In both tables, Column 1 reports the regression coefficient from a model that includes fixed effects for state, year, relationship type, and their interactions. Column 2 reports the regression coefficient of a model with these fixed effects and controls for sex, race, education level, the presence of children in the household, income level, and age. Column 3 reports the regression coefficients of a model with additional controls for an individual’s birth state. I will primarily focus discussion on Column 3 coefficients, as they incorporate the most comprehensive set of controls.
 
@@ -259,7 +259,7 @@ In the push factor model, model 3 coefficients are positive and statistically in
 %watch repetition
 %think about if it is ok to drop “last paragraph” here detailing heterogeneity checks
 
-\clearpage
+\FloatBarrier
 \subsection{Sex Heterogeneity}
 %hmmm how start this off
 %this is really not eloquent
@@ -300,7 +300,7 @@ Here, I run the same regressions as above, but only look at men. Tables \ref{tab
 %watch say gay men/men in same-sex relationships
 As can be seen in figures \ref{fig: sex_post_diffs} and \ref{fig: sex_ante_diffs}, parallel trends seem to hold for the men-only sample. This suggests compositional variation obscured trends in the main model, and less caution should be taken in utilizing a triple difference model to understand the relationship between gay men and marriage equality. This confirms results from \citet{1} and \citet{12}. However, similar to the main model, both push and pull factor column 3 coefficients are positive, statistically insignificant, and have 95 percent confidence intervals that include the null result (again, similarly, the pull factor column 1 coefficient has a smaller confidence interval). The larger coefficient magnitudes in the men-only sample compared to the main model suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships. For men in same-sex relationships, there is some evidence that \textit{Obergefell}-legalization increased migration to states relative to those that legalized earlier, but decreased migration out of those states.
 
-\clearpage
+\FloatBarrier
 \subsection{Region Heterogeneity}
 
 %state which way bias could go?
@@ -362,7 +362,7 @@ Similar to the main model, push factor column 3 coefficients for the south and m
 %would be cool to pull in outside evidence of laws/blowback in these regions
 
 
-\clearpage
+\FloatBarrier
 \subsection{Flow Heterogeneity}
 
 %WEAKEST SECTION - KEEP THINKING- and update corresponding sections as needed
@@ -370,7 +370,7 @@ Similar to the main model, push factor column 3 coefficients for the south and m
 %give section new name?
 %put this after popular support?
 %sigh clarity what I’m actually testing for…see empirical section 3 outcomes put in somewhere above
-In the main model, I follow \citet{1} and \citet{12} and do not differentiate between migration from \textit{Obergefell}- and non-\textit{Obergefell}- legalized states in the pull model and migration to \textit{Obergefell}- and non-\textit{Obergefell}- legalized states in the push model.  In my discussion of these results, I suggest that the differing effects of \textit{Obergefell} as a push and pull factor may stem from how individuals in \textit{Obergefell}-legalized states perceive these states compared to those living in non-\textit{Obergefell}-legalized states.  In this section, I test this theory using flow heterogeneity.  Specifically, I test whether individuals from states that had legalized same-sex marriage earlier were more likely to move to \textit{Obergefell}-legalized states after 2015, and whether individuals from \textit{Obergefell}-legalized states were more likely to move to non-\textit{Obergefell}-legalized states after 2015.
+In the main model, I follow \citet{1} and \citet{12} and do not differentiate between migration from \textit{Obergefell}- and non-\textit{Obergefell}- legalized states in the pull model and migration to \textit{Obergefell}- and non-\textit{Obergefell}- legalized states in the push model.  In my discussion of these results, I suggest that the differing effects of \textit{Obergefell} as a push and pull factor may stem from how individuals in \textit{Obergefell}-legalized states perceive these states compared to those living in non-\textit{Obergefell}-legalized states.  In this section, I test this theory using flow heterogeneity.  Specifically, I test whether individuals from states that had legalized same-sex marriage earlier were more likely to move to \textit{Obergefell}-legalized states after 2015, and whether individuals from \textit{Obergefell}-legalized states were more likely to move to states that legalized earlier after 2015.
 %better
 
 \begin{table}[htbp]
@@ -406,16 +406,14 @@ Figures \ref{fig: flows_post_diffs} and \ref{fig: flows_post_diffs} illustrate t
 
 %WEAKEST SECTION - KEEP THINKING
 
-\clearpage
+\FloatBarrier
 \subsection{Social Acceptance}
 
-Above, I have attempted to use heterogeneity to explain why some of my results were opposite to what was expected. I have not attempted to explain why my results are insignificant. One argument for why they are insignificant is that there are other, more important, factors impacting the migration decisions of individuals in same-sex relationships. One of these factors could be statewide support for individuals in same-sex relationships. If individuals in same-sex relationships index on perceived social acceptance more than legal same-sex marriage, social acceptance could dominate marriage-legalization effects.
-
-Table \ref{tab: pop_support} displays state-wide support for individuals in same-sex relationships in 2016. Larger values indicate less support while smaller values indicate more support. Data comes from \citet{29}.
+While I include state fixed effects in my model, I do not explicitly account for the level of popular support for gay people in each state. If there are varying levels of popular support for gay people across \textit{Obergefell}- legalized states, that could also complicate the analysis of the effect of \textit{Obergefell v. Hodges} on the migration decisions of individuals in same-sex relationships.
 
 \input{outputs/summary_stats/pop_support}
 
-In the following regressions, I interact this measure for popular support with the triple difference term from my main model. I do not include popular support as a separate control as popular support should be captured by state-fixed effects. If popular support does play a larger role, I expect the “pull factor” coefficient of interest to be more negative and the “push factor” coefficient to be more positive. I expect this because I expect less popular support to result in less migration to “locally-legalized” states after 2015 and more migration out of “locally-legalized” states after 2015. 
+Table \ref{tab: pop_support} displays state-wide support for individuals in same-sex relationships in 2016. Larger values indicate less support while smaller values indicate more support. Data comes from \citet{29}. In the following regressions, I interact this measure for popular support with the triple difference term from my main model. I do not include popular support as a separate control as popular support should be captured by state-fixed effects.
 
 \hfill
 \break
@@ -424,7 +422,7 @@ Social Acceptance Pull Factor Regression:
 \begin{equation}
 \begin{aligned}
 \text{m}_{itg} &= \gamma_t + \gamma_g + \gamma_s + \gamma_{tg} + \gamma_{ts} + \gamma_{sg} \\
-&\quad + \beta \cdot (\text{support}_g \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_g) \\
+&\quad + \beta_1 \cdot (\text{support}_g \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_g) \\
 &\quad + X_{it} + \epsilon_{itg}
 \end{aligned}
 \end{equation}
@@ -435,12 +433,12 @@ Social Acceptance Push Factor Regression:
 \begin{equation}
 \begin{aligned}
 \text{m}_{ith} &= \gamma_t + \gamma_h + \gamma_s + \gamma_{th} + \gamma_{ts} + \gamma_{sh} \\
-&\quad + \beta \cdot (\text{support}_h \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_h) \\
+&\quad + \beta_2 \cdot (\text{support}_h \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_h) \\
 &\quad + X_{it} + \epsilon_{ith}
 \end{aligned}
 \end{equation}
 
-Table \ref{tab: popsupport_expost_model} reports results from the social acceptance “pull factor” model. Table \ref{tab: popsupport_exante_model} reports results from the social acceptance “push factor” model. All coefficients are larger in magnitude than in the main model; however, the coefficients in the “push factor” model are larger in the opposite direction than predicted. This could indicate that legalization and popular support capture similar phenomena, both of which result in different outcomes than expected in the “push factor” model.
+Table \ref{tab: popsupport_expost_model} reports results from the social acceptance pull factor model. Similar to the main model, the column 3 coefficient is positive and statistically insignificant. The 95 percent confidence interval includes the null result. Unlike the main model, the column 3 coefficient is significantly larger. Table \ref{tab: popsupport_exante_model} reports results from the social acceptance push factor model. Similar patterns hold as in the pull model. This implies that relatively more same-sex individuals move to a \textit{Obergefell}-legalized state after 2015 when the state has more support for gay people. However, this also implies relatively more same-sex individuals leave a \textit{Obergefell}-legalized state after 2015 when the state has more support for gay people. 
 
 \begin{table}[htbp] %maybe put on top
     \centering
@@ -455,6 +453,10 @@ Table \ref{tab: popsupport_expost_model} reports results from the social accepta
     \input{outputs/regressions/popsupport_exante_model}
 \end{table}
 
+These results should be held with caution like all of my results; further, like the main model, parallel trends does not hold. However, this result simply implies that legalization and popular support capture similar phenomena, both of which (albeit weakly) relate to the idea that after 2015, more individuals in same-sex relationships relatively moved to \textit{Obergefell}-legalized states and left \textit{Obergefell} legalized states.
+%ok I got tired and this got messy, re-read and unify later
+
+\FloatBarrier %hmm float issues with this
 \section{Conclusion}
 
 In a landmark civil rights ruling, the Supreme Court federally legalized same-sex marriage in 2015. This begs the question, how did individuals in same-sex relationships respond to the geographic expansion of their rights? In this paper, I investigated to what extent migration patterns of individuals in same-sex and different-sex relationships converged after 2015. I did this by comparing migration patterns to states that locally legalized same-sex marriage and those that did not. I added to the literature by addressing the effects of federal legalization after 2015 and introducing the idea of a “dilution effect.”
@@ -549,8 +551,8 @@ I wrote earlier that the legal landscape for individuals in same-sex relationshi
 \end{figure}
 
 %regression tables
-\FloatBarrier
-\newpage
+\floatBarrier
+%\newpage
 \section{Additional Regression Tables}
 %additional sex tables
 \begin{table}[htbp]
