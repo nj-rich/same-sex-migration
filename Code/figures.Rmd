@@ -1118,7 +1118,7 @@ Pop Support Table
 gc()
 pop_support <- clean_df %>% #don't need survey object here
   distinct(expost_state, expost_support) %>%
-  mutate(support = 100 - expost_support) %>%
+  mutate(support = 100 - expost_support) %>% #need to update this
   arrange(support) %>%
   rename("State" = expost_state, "Support Level" = "support") %>%
   select(State, "Support Level") 

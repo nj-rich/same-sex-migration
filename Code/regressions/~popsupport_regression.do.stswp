@@ -5,7 +5,7 @@ pause off
 ssc install outreg2, replace
 
 
-*NOTE: MODIFIED OLD_LEGAL FRAME BASED ON MS FEEDBACK/POP SUPPORT SPEC. NEEDS- think if want to go back through any other regressions to update treatment var
+*NOTE: MODIFIED OLD_LEGAL FRAME BASED ON MS FEEDBACK/POP SUPPORT SPEC. NEEDS- think if want to go back through any other regressions to update t
 ///////////////////////// POP SUPPORT REGRESSIONS ////////////////////////////
 *normalize + take opposite of pop. support (anti support) for effects to line up to aggravate expected results (be careful naming conventions) (ADJUSTED)
 ///Models 1 and 2 inputs
