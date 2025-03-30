@@ -121,11 +121,9 @@ Before \textit{Obergefell v. Hodges}, gay individuals were more likely to move t
 What happened when \textit{Obergefell v. Hodges} legalized same-sex marriage in holdout states? If \textit{Obergefell} legalization functioned similarly to early state-wide legalization, then those holdout states should have seen \textit{fewer} gay people move out and \textit{more} move in. However, if \textit{Obergefell} legalization differed—for example, if there are diminishing returns to legalization, or state-wide legalization signals greater social acceptance than federal \textit{Obergefell} legalization—this might not have occurred. \textit{Obergefell}-legalized states might see little to no change in gay migration patterns, or even more out-migration and less in-migration.
 %mention other laws too?
 
-Suppose it is 2010, and a gay man is deciding between taking a job in Massachusetts (legalized in 2003) or North Carolina (legalized in 2015). All else being equal, marriage equality should increase the likelihood they take the job in Massachusetts. However, what if it is 2018? If he only cares about access to marriage, there should now be a higher chance he takes the North Carolina job. However, if he thinks that North Carolina is still less tolerant because it adopted same-sex marriage later, he may still be hesitant to move there.
+Suppose it is 2010, and a gay man is deciding between taking a job in Massachusetts (legalized in 2003) or North Carolina (legalized in 2015). All else being equal, marriage equality should increase the likelihood that they take the job in Massachusetts. However, what if it is 2018? If he only cares about access to marriage, there should now be a higher chance he takes the North Carolina job. However, if he thinks that North Carolina is still less tolerant because it adopted same-sex marriage later, he may still be hesitant to move there.
 
-This logic also works in the reverse: suppose it is 2010, and a gay woman is deciding whether to move out of North Carolina. In the absence of marriage equality, she might be more inclined to move. However, if it is 2018, and she only cares about same-sex marriage as a legal right, North Carolina’s late adoption of marriage equality should no longer factor into her decision. 
-
-
+This logic also works in the reverse: suppose it is 2010, and a gay woman is deciding whether to move out of North Carolina. In the absence of marriage equality, she might be more inclined to leave. However, if it is 2018, and she only cares about same-sex marriage as a legal right, North Carolina’s late adoption of marriage equality should no longer factor into her decision. 
 
 %why is she moving out? College? Use Maryland/Michigan to make more personal? (aka from my life)
 %paragraphs too short? call dilution effect/diminishing returns? just focus on time more? sigh interpretation direction... especially in push model
@@ -134,12 +132,11 @@ This logic also works in the reverse: suppose it is 2010, and a gay woman is dec
 \subsection{Empirical Framework}
 
 %hmm more clearly re-state question or rely on clarity and earlier sections?
-In this paper, I use a triple difference strategy to test if \textit{Obergefell} legalization is similar to or different from early state-wide legalization. This strategy allows me to compare migration rates between gay and straight people across \textit{Obergefell}-legalized states and states that legalized earlier. I do not use an event study like \citet{1} so I can specifically study the effect of \textit{Obergefell v. Hodges}. I do not use a probit model like \citet{12} so I can compare gay and straight people and \textit{Obergefell} and non-\textit{Obergefell} states directly.
+In this paper, I use a triple difference strategy to test if \textit{Obergefell} legalization is similar to or different from early state-wide legalization. A triple difference strategy allows me to compare migration rates between gay and straight people across \textit{Obergefell}-legalized states and states that legalized earlier. I do not use an event study like \citet{1} so I can specifically study the effect of \textit{Obergefell v. Hodges}. I do not use a probit model like \citet{12} so I can compare gay and straight people and \textit{Obergefell} and non-\textit{Obergefell} states directly.
 %think about this phrasing
 %I lose parallel trends sentences, but might be ok since I discuss parallel trends later (NOTE: NEED MENTION ASSUME RATES ARE DIFFERENT BEFORE 2015 BECAUSE OF PRIOR RESEARCH
 
-%abrupt transition
-My triple difference strategy includes two main regressions. In one, I compare migration rates \textit{from} states. Following \citet{12}, I call this my push factor regression. In the other, I compare migration rates \textit{to} states. I call this my pull factor regression. I do this to understand if marriage equality affects how gay people think about moving from a given state differently than to a given state. In the context of the example in Section 3.1, how does the decision to move to North Carolina compare to the decision to leave North Carolina? These regressions are as follows:
+My triple difference strategy includes two main regressions. In one, I compare migration rates \textit{from} states. Following \citet{12}, I call this my push factor regression. In the other, I compare migration rates \textit{to} states. I call this my pull factor regression. I do this to understand if marriage equality affects how gay people think about moving from a given state differently than to a given state. In the context of the example in Section 3.1, this allows me to compare the decision to move to North Carolina to the decision to leave North Carolina. These regressions are as follows:
 
 
 \hfill
@@ -262,56 +259,28 @@ In the push factor model, model 3 coefficients are positive and statistically in
 %watch repetition
 %think about if it is ok to drop “last paragraph” here detailing heterogeneity checks
 
-
 \clearpage
-\subsection{Flow Heterogeneity}
+\subsection{Sex Heterogeneity}
+%hmmm how start this off
+%this is really not eloquent
+Research by \citet{1} and \cite{12} found that marriage legalization impacted migration patterns of gay men more than gay women. They suggest that this difference could be partially explained by the varying levels of discrimination faced by each group, as gay men may experience higher levels of discrimination.  If gay men face more discrimination than gay women, they might be more sensitive to changes in marriage equality.
 
-One source of heterogeneity is from which type of state an individual might move in the “pull factor” model and to which type of state an individual might move in the “push factor” model. If fewer individuals in same-sex relationships move \textit{between} “locally-legalized” states after 2015, that could make the “push factor” model coefficient negative even if more individuals in same-sex relationships move from “locally-legalized” to “not-locally-legalized” states after 2015. This could help explain the opposite-than-expected main “push factor” regression results.
-
-Tables \ref{tab: ffed_expost_model}, \ref{tab: flocal_expost_model}, and \ref{tab: fstay_expost_model} present regression results from “pull factor” models in which the outcome variable indicates whether an individual migrated from a state with “locally-legalized” same-sex marriage, migrated from a state that had “not-locally-legalized” same-sex marriage, or whether an individual did not migrate from a different state. Tables \ref{tab: tfed_exante_model}, \ref{tab: tlocal_exante_model}, and \ref{tab: tstay_exante_model} present regression results from “push factor” models in which the outcome variable indicates whether an individual migrated to a state with “locally-legalized” same-sex marriage, migrated to a state that had “not-locally-legalized” same-sex marriage, or whether an individual did not migrate to a different state. All tables except tables \ref{tab: tfed_exante_model} and \ref{tab: tlocal_exante_model} can be found in the appendix. Figure \ref{fig: flows_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: flows_ante_diffs} illustrates the underlying trends of the “push factor” model with the modified outcome variables.
-
-As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. In line with the “dilution effect”, I would expect there to be slightly less migration between states that “locally legalized” same-sex marriage after 2015. I expect this as previously “not-locally-legalized” states become marginally more attractive for those in same-sex relationships. On the other hand, I would expect there to be more migration from states that “locally-legalized” same-sex marriage to states that had “not-locally-legalized” same-sex marriage after 2015, and less migration from states that had “not-locally-legalized” same-sex marriage to states that “locally-legalized” same-sex marriage after 2015. Figures \ref{fig: flows_post_diffs} and \ref{fig: flows_ante_diffs} illustrate that parallel trends do not hold for any of the modified outcome variables. However, it is important to note that the to (from) “not-locally-legalized” trends appear significantly less noisy.
-
-\begin{figure}[htbp]
+\begin{table}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
-    \caption{}
-    \label{fig: flows_post_diffs}
-\end{figure}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
-    \caption{}
-    \label{fig: flows_ante_diffs}
-\end{figure}
-
- The two coefficients of interest in this exercise are those in column 3  of table \ref{tab: tfed_exante_model} and table \ref{tab: tlocal_exante_model}. The coefficient in column 3 of table \ref{tab: tfed_exante_model} is negative and statistically insignificant and the coefficient in column 3 of table \ref{tab: tlocal_exante_model} is positive and statistically insignificant. The standard error in both columns suggests the true population mean could be 0 or of the opposite sign. This indicates that those in same-sex relationships were slightly less likely to move from “locally-legalized” states to “not-locally-legalized” states and slightly more likely to move to other “locally-legalized” states after 2015. This is the opposite of what I would have predicted under my theory. This then suggests that flow heterogeneity, as measured, does not help explain away the opposite-than-expected results in the main “push factor” regression. 
-
-\begin{table}[htbp] %finagling to get formatting right
-    \centering
-    \caption{Push Factor Model: To Not Locally Legalized}
-    \label{tab: tfed_exante_model}
-    \input{outputs/regressions/tfed_exante_model}
+    \caption{Pull Factor Model: Male}
+    \label{tab: male_expost_model}
+    \input{outputs/regressions/male_expost_model}
 \end{table}
 
 \begin{table}[htbp]
     \centering
-    \caption{Push Factor Model: To Locally Legalized}
-    \label{tab: tlocal_exante_model}
-    \input{outputs/regressions/tlocal_exante_model}
+    \caption{Push Factor Model: Male}
+    \label{tab: male_exante_model}
+    \input{outputs/regressions/male_exante_model}
 \end{table}
-
-%\subsection{State Comparisons- ie something like CA v TX}
-
-\clearpage
-\subsection{Sex Heterogeneity}
-
-Another source of heterogeneity is an individual’s sex. Research by \citet{1} and \citet{12} indicates same-sex marriage legalization could lead to larger behavioral changes for men than women in same-sex relationships. If federal legalization impacts men as expected but women differently, that could impact the main regression results.
-
-Tables \ref{tab: male_expost_model} and \ref{tab: female_expost_model} present regression results from “pull factor” models split by sex. Table \ref{tab: male_exante_model} and \ref{tab: female_expost_model} present regression results from “push factor” models split by sex. Figure \ref{fig: sex_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: sex_ante_diffs} illustrates the underlying trends of the “push factor” model by sex.
-
-As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. Like in the main model, plausible causal mechanisms are explained in earlier sections. Figures \ref{fig: sex_post_diffs} and \ref{fig: sex_ante_diffs} illustrate that parallel trends hold for men but not women. Further, the “pull factor” figure for men roughly corresponds with what I predicted.
-
+%\FloatBarrier
+Here, I run the same regressions as above, but only look at men. Tables \ref{tab: male_expost_model} and \ref{tab: male_exante_model} report regression results for the pull factor and push factor models respectively. Results for a women-only specification can be found in tables \ref{tab: female_expost_model} and \ref{tab: female_exante_model} in the appendix.
+%\FloatBarrier
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_post_diffs.png}
@@ -325,44 +294,22 @@ As these regressions are still triple difference models, assumptions of a plausi
     \label{fig: sex_ante_diffs}
 \end{figure}
 
-The two coefficients of interest in this exercise are those in column 3 of the push factor models. While it is interesting that the coefficients for men and women have opposite signs, even as they are all statistically insignificant, this does not provide greater insight why the main “push” model coefficients are negative: the model for men follows the main model coefficients. This then suggests that sex heterogeneity, as measured, does not help explain away the opposite-than-expected results in the main “push factor” regression.
-
-\clearpage %finagling to get formatting right
-\begin{table}[htbp] %maybe put some of these in the appendix
-    \centering
-    \caption{Pull Factor Model: Male}
-    \label{tab: male_expost_model}
-    \input{outputs/regressions/male_expost_model}
-\end{table}
-\begin{table}[htbp]
-    \centering
-    \caption{Pull Factor Model: Female}
-    \label{tab: female_expost_model}
-    \input{outputs/regressions/female_expost_model}
-\end{table}
-\begin{table}[htbp] %maybe put on top
-    \centering
-    \caption{Push Factor Model: Male}
-    \label{tab: male_exante_model}
-    \input{outputs/regressions/male_exante_model}
-\end{table}
-\begin{table}[htbp] %own dedicated page
-    \centering
-    \caption{Push Factor Model: Female}
-    \label{tab: female_exante_model}
-    \input{outputs/regressions/female_exante_model}
-\end{table}
+%separate out by gender to be clearer
+%need more comment on parallel trends here
+%comment on model 1?
+%watch say gay men/men in same-sex relationships
+As can be seen in figures \ref{fig: sex_post_diffs} and \ref{fig: sex_ante_diffs}, parallel trends seem to hold for the men-only sample. This suggests compositional variation obscured trends in the main model, and less caution should be taken in utilizing a triple difference model to understand the relationship between gay men and marriage equality. This confirms results from \citet{1} and \citet{12}. However, similar to the main model, both push and pull factor column 3 coefficients are positive, statistically insignificant, and have 95 percent confidence intervals that include the null result (again, similarly, the pull factor column 1 coefficient has a smaller confidence interval). The larger coefficient magnitudes in the men-only sample compared to the main model suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships. For men in same-sex relationships, there is some evidence that \textit{Obergefell}-legalization increased migration to states relative to those that legalized earlier, but decreased migration out of those states.
 
 \clearpage
 \subsection{Region Heterogeneity}
 
-Another source of heterogeneity is from which region an individual comes from in the “push factor” model and to which region an individual is in the “pull factor” model. While the main model includes state-level fixed effects, it does not directly control for distance between states. \citep{1} suggests distance impacts what type of state an individual moves to (from), as individuals are less likely to move to (from) states further away. If an individual’s region has relatively more “locally legalized” states, that could make the  “push factor” coefficient less positive as “not locally legalized” states are relatively further away. If an individual’s region has both “locally legalized” and “not locally legalized” states, coefficients of interest should be as predicted in line with the “dilution effect.” This heterogeneity could help explain the opposite-than-expected main “push factor” regression results. Summary statistics for region can be found in table \ref{region_1} in this section and table \ref{region_2} in the appendix. Notably, a lower fraction of individuals in same-sex relationships live in the midwest and south, where less states legalized same-sex marriage earlier.
-
+%state which way bias could go?
+\texit{Obergefell v. Hodges} only introduced marriage equality to states in the south and midwest, as defined by the Census. Approximately 50 percent of my sample lived in these regions, with individuals in same-sex relationships representing a notably smaller proportion compared to those in different-sex relationships (table \ref{region_1})\footnote{Table \ref{region_2} in the appendix includes statistics on the west and northeast.}. Many inter-state migrants travel across regions. However, as \citet{1} notes, distance likely affects migration decisions. Individuals further from \textit{Obergefell}-legalized states might be less sensitive to the effect of \textit{Obergefell v. Hodges} than individuals closer. Accounting for an individual’s region might help proxy the effect of distance.
 \input{outputs/summary_stats/regions_1}
 
-Tables \ref{tab: midwest_expost_model}, \ref{tab: south_expost_model}, \ref{tab: west_expost_model}, and \ref{tab: northeast_expost_model} presents regression results from “pull factor” models split by region. Tables \ref{tab: midwest_exante_model}, \ref{tab: south_exante_model}, \ref{tab: west_exante_model}, and \ref{tab: northeast_exante_model}  presents regression results from “push factor” models split by region. All tables except \ref{tab: midwest_exante_model} and \ref{tab: south_exante_model} can be found in the appendix. Figure \ref{fig: region_post_diffs} illustrates the underlying trends of the “pull factor” model while figure \ref{fig: region_ante_diffs} illustrates the underlying trends of the “push factor” model by region. The northeast and west “pull factor” figures are cut off after 2013 as all states in the northeast and west locally legalized same-sex marriage by 2014.
+%oi how to report tables without clogging everything up
+I do this by running the main pull factor regression on a sample of individuals in the south and midwest, respectively, and running the main push factor regression on a sample of individuals coming from the south and midwest, respectively. Tables \ref{tab: south_expost_model} and \ref{tab: south_exante_model} report results for the southern models and tables \ref{tab: midwest_expost_model} and \ref{tab: midwest_exante_model} report results for the midwestern models. Tables for the west and northeast can be found in the appendix (These include tables \ref{tab: west_expost_model}, \ref{tab: west_exante_model}, \ref{tab: northeast_expost_model}, and \ref{tab: northeast_exante_model}.).
 
-As these regressions are still triple difference models, assumptions of a plausible causal mechanism and parallel trends are still needed \citep{24, 25}. Like in the main model, plausible causal mechanisms are explained in earlier sections, albeit with further elaboration in the first paragraph of this subsection. Figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} illustrate that parallel trends roughly hold for the midwest and south “pull factor” models and for all “push factor” models. 
 
 \begin{figure}[htbp]
     \centering
@@ -378,23 +325,86 @@ As these regressions are still triple difference models, assumptions of a plausi
     \label{fig: region_ante_diffs}
 \end{figure}
 
-The coefficients of interest are in columns 3 of the midwest and south “push factor” model. This is because only the south and midwest had states that never “locally legalized” same-sex marriage. Both coefficients are negative and statistically insignificant. This then suggests that region heterogeneity, as measured, also does not help explain away to the opposite-than-expected results in the main “push factor” regression. 
+\floatBarrier
+%separate for south/midwest?
+%add in cites
+%add in more about sigs?
+As figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} show, parallel trends hold for the south and midwest. Like in the case of sex, this suggests that less caution need be taken in utilizing a triple difference model to understand the relationship between those in the south and midwest and marriage equality. 
+%say more here?
+\begin{table}[htbp]
+    \centering
+    \caption{Pull Factor Model: South}
+    \label{tab: south_expost_model}
+    \input{outputs/regressions/south_expost_model}
+\end{table}
+\begin{table}[htbp]
+    \centering
+    \caption{Pull Factor Model: Midwest}
+    \label{tab: midwest_expost_model}
+    \input{outputs/regressions/midwest_expost_model}
+\end{table}
+Similar to the main model, pull factor column 3 coefficients are positive and statistically insignificant. However, they are larger in magnitude with a relatively smaller confidence interval. Pull factor column 3 coefficients for the midwest are small and statistically insignificant (although positive in column 1).  As in the main model, the 95 percent confidence interval includes the null result. This suggests there is some evidence more individuals in same-sex relationships moved to southern \textit{Obergefell}-legalized states after 2015, but less moved to midwestern \textit{Obergefell}-legalized states after 2015. This could be related to regional migration trends as a whole, as migration to the South has increased while migration to the Midwest has declined since 2015 (CITE). 
 
-\clearpage
+\begin{table}[htbp] %finagling to get formatting to work
+    \centering
+    \caption{Push Factor Model: South}
+    \label{tab: south_exante_model}
+    \input{outputs/regressions/south_exante_model}
+\end{table}
 \begin{table}[htbp] %finagling to get formatting to work
     \centering
     \caption{Push Factor Model: Midwest}
     \label{tab: midwest_exante_model}
     \input{outputs/regressions/midwest_exante_model}
 \end{table}
+
+Similar to the main model, push factor column 3 coefficients for the south and midwest are positive and statistically insignificant (although negative for column 2 for the midwest). Like above, however, the southern coefficient is noticeably larger with a relatively smaller confidence interval. This suggests there is some evidence more individuals in same-sex relationships moved out of southern and midwestern \textit{Obergefell}-legalized states after 2015. Consistent with the main model, this then suggests that there could have been an in-state reaction to marriage equality less visible outside the \textit{Obergefell}-legalized states in these regions. These results would also suggest this effect was more pronounced in the south than the midwest.
+%would be cool to pull in outside evidence of laws/blowback in these regions
+
+
+\clearpage
+\subsection{Flow Heterogeneity}
+
+%WEAKEST SECTION - KEEP THINKING- and update corresponding sections as needed
+
+%give section new name?
+%put this after popular support?
+%sigh clarity what I’m actually testing for…see empirical section 3 outcomes put in somewhere above
+In the main model, I follow \citet{1} and \citet{12} and do not differentiate between migration from \textit{Obergefell}- and non-\textit{Obergefell}- legalized states in the pull model and migration to \textit{Obergefell}- and non-\textit{Obergefell}- legalized states in the push model.  In my discussion of these results, I suggest that the differing effects of \textit{Obergefell} as a push and pull factor may stem from how individuals in \textit{Obergefell}-legalized states perceive these states compared to those living in non-\textit{Obergefell}-legalized states.  In this section, I test this theory using flow heterogeneity.  Specifically, I test whether individuals from states that had legalized same-sex marriage earlier were more likely to move to \textit{Obergefell}-legalized states after 2015, and whether individuals from \textit{Obergefell}-legalized states were more likely to move to non-\textit{Obergefell}-legalized states after 2015.
+%better
+
 \begin{table}[htbp]
     \centering
-    \caption{Push Factor Model: South}
-    \label{tab: south_exante_model}
-    \input{outputs/regressions/south_exante_model}
+    \caption{Pull Factor Model: From a State that Legalized Before 2015}
+    \label{tab: flocal_expost_model}
+    \input{outputs/regressions/flocal_expost_model}
+\end{table}
+\begin{table}[htbp] %finagling to get formatting right
+    \centering
+    \caption{Push Factor Model: To a State that Legalized Before 2015}
+    \label{tab: tlocal_exante_model}
+    \input{outputs/regressions/tlocal_exante_model}
 \end{table}
 
+Table \ref{tab: flocal_expost_model} displays regression results from a modified pull factor model. Instead of the outcome variable being whether an individual migrated or not, the outcome variable is if an individual migrated from a state that had legalized same-sex marriage before \textit{Obergefell v. Hodges} or not. Table \ref{tab: tlocal_exante_model} displays regression results from a modified push factor model. Instead of the outcome variable being whether an individual migrated or not, the outcome variable is if an individual migrated to a state that had legalized same-sex marriage before \textit{Obergefell v. Hodges} or not. Further specifications- covering the from and to \textit{Obergefell}-legalized cases- can be found in the appendix (tables \ref{tab: ffed_expost_model} and \ref{tab: tfed_exante_model}).
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
+    \caption{}
+    \label{fig: flows_post_diffs}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
+    \caption{}
+    \label{fig: flows_ante_diffs}
+\end{figure}
+
+%need to update figures
+Figures \ref{fig: flows_post_diffs} and \ref{fig: flows_post_diffs} illustrate that parallel trends hold to some degree. This suggests that underlying trends are obfuscated to some degree in the main model by migration source or destination heterogeneity. The pull factor column 3 coefficient is negative and statistically insignificant (however, the column 1 coefficient is). The 95 percent confidence interval includes the null result. This implies that fewer individuals migrated from non-\textit{Obergefell}-legalized states to \textit{Obergefell}-legalized states after 2015.  Similarly, the push factor column 3 coefficient is negative and statistically insignificant (however, the column 1 coefficient is). The 95 percent confidence interval includes the null result. However, it is relatively large. This implies that fewer individuals migrated to \textit{Obergefell}-legalized states from non-\textit{Obergefell}-legalized states after 2015. Together, these results contradict my earlier theory. Perhaps, other differences between these state types keep individuals from moving between them.
+
+%WEAKEST SECTION - KEEP THINKING
 
 \clearpage
 \subsection{Social Acceptance}
@@ -542,50 +552,32 @@ I wrote earlier that the legal landscape for individuals in same-sex relationshi
 \FloatBarrier
 \newpage
 \section{Additional Regression Tables}
-%additional flow tables
-\begin{table}[htbp] %maybe put on top
-    \centering
-    \caption{Push Factor Model: To Same State}
-    \label{tab: tstay_exante_model}
-    \input{outputs/regressions/tstay_exante_model}
-\end{table}
+%additional sex tables
 \begin{table}[htbp]
     \centering
-    \caption{Pull Factor Model: From Not Locally Legalized}
-    \label{tab: ffed_expost_model}
-    \input{outputs/regressions/ffed_expost_model}
+    \caption{Pull Factor Model: Female}
+    \label{tab: female_expost_model}
+    \input{outputs/regressions/female_expost_model}
 \end{table}
-\begin{table}[htbp] %maybe put on top
+\begin{table}[htbp] %own dedicated page
     \centering
-    \caption{Pull Factor Model: From Locally Legalized}
-    \label{tab: flocal_expost_model}
-    \input{outputs/regressions/flocal_expost_model}
-\end{table}
-\begin{table}[htbp]
-    \centering
-    \caption{Pull Factor Model: From the Same State}
-    \label{tab: fstay_expost_model}
-    \input{outputs/regressions/fstay_expost_model}
+    \caption{Push Factor Model: Female}
+    \label{tab: female_exante_model}
+    \input{outputs/regressions/female_exante_model}
 \end{table}
 
 %additional region tables
-\begin{table}[htbp] %maybe put on top
-    \centering
-    \caption{Pull Factor Model: Midwest}
-    \label{tab: midwest_expost_model}
-    \input{outputs/regressions/midwest_expost_model}
-\end{table}
 \begin{table}[htbp]
-    \centering
-    \caption{Pull Factor Model: South}
-    \label{tab: south_expost_model}
-    \input{outputs/regressions/south_expost_model}
-\end{table}
-\begin{table}[htbp] %maybe put on top
     \centering
     \caption{Pull Factor Model: West}
     \label{tab: west_expost_model}
     \input{outputs/regressions/west_expost_model}
+\end{table}
+\begin{table}[htbp] %finagling to get formatting to work
+    \centering
+    \caption{Push Factor Model: West}
+    \label{tab: west_exante_model}
+    \input{outputs/regressions/west_exante_model}
 \end{table}
 \begin{table}[htbp]
     \centering
@@ -593,18 +585,25 @@ I wrote earlier that the legal landscape for individuals in same-sex relationshi
     \label{tab: northeast_expost_model}
     \input{outputs/regressions/northeast_expost_model}
 \end{table}
-\begin{table}[htbp] %maybe put on top
-    \centering
-    \caption{Push Factor Model: West}
-    \label{tab: west_exante_model}
-    \input{outputs/regressions/west_exante_model}
-\end{table}
-\FloatBarrier
-\begin{table}[htbp] %try htbp in future test in other doc if this works elsewhere lol wow
+\begin{table}[htbp] %finagling to get formatting to work
     \centering
     \caption{Push Factor Model: Northeast}
     \label{tab: northeast_exante_model}
-    \input{outputs/regressions/northeast_exante_model}
+    \input{outputs/regressions/midwest_exante_model}
+\end{table}
+
+%additional flow tables
+\begin{table}[htbp]
+    \centering
+    \caption{Pull Factor Model: From a State that Legalized After 2015}
+    \label{tab: ffed_expost_model}
+    \input{outputs/regressions/ffed_expost_model}
+\end{table}
+\begin{table}[htbp] %finagling to get formatting right
+    \centering
+    \caption{Push Factor Model: To a State that Legalized After 2015}
+    \label{tab: tfed_exante_model}
+    \input{outputs/regressions/tfed_exante_model}
 \end{table}
 
 %MA - maybe do not use
