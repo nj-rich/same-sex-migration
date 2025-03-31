@@ -1,0 +1,14 @@
+Ex-Ante Model: Male				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3: Male
+				
+ante_treatment	ante_treatment	-0.009	-0.005	-0.004
+		(0.010)	(0.035)	(0.039)
+Constant	Constant	0.099***	4.002***	3.978***
+		(0.000)	(0.089)	(0.100)
+				
+Observations		17,816	17,816	17,816
+R-squared		0.004	0.908	0.909
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
+See below.				

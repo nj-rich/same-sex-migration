@@ -1,0 +1,13 @@
+To the Same State				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+ante_treatment	ante_treatment	0.007	0.004	0.003
+		(0.010)	(0.023)	(0.025)
+Constant	Constant	0.900***	-3.141***	-3.087***
+		(0.000)	(0.084)	(0.108)
+				
+Observations		19,755	19,755	19,755
+R-squared		0.004	0.919	0.921
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				

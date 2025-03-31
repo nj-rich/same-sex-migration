@@ -1,0 +1,14 @@
+Ex-Ante Model													
+		(1)	(2)	(3)	(4)	(5)	(6)	(7)	(8)	(9)	(10)	(11)	(12)
+VARIABLES	LABELS	Model 1: South	Model 1: Midwest	Model 1: West	Model 1: Northeast	Model 2: South	Model 2: Midwest	Model 2: West	Model 2: Northeast	Model 3: South	Model 3: Midwest	Model 3: West	Model 3: Northeast
+													
+ante_treatment	ante_treatment	-0.003	-0.003	0.017**	0.002	-0.061	0.017	-0.061	0.017	-0.057	-0.004	-0.057	-0.004
+		(0.017)	(0.017)	(0.005)	(0.015)	(0.045)	(0.044)	(0.045)	(0.044)	(0.048)	(0.048)	(0.048)	(0.048)
+Constant	Constant	0.100***	0.095***	0.120***	0.072***	4.092***	4.167***	4.092***	4.167***	4.012***	4.651***	4.012***	4.651***
+		(0.000)	(0.000)	(0.000)	(0.000)	(0.128)	(0.159)	(0.128)	(0.159)	(0.156)	(0.366)	(0.156)	(0.366)
+													
+Observations		6,807	4,684	5,044	3,220	6,807	4,684	6,807	4,684	6,807	4,684	6,807	4,684
+R-squared		0.002	0.002	0.002	0.001	0.934	0.917	0.934	0.917	0.937	0.924	0.937	0.924
+Robust standard errors in parentheses													
+*** p<0.01, ** p<0.05, * p<0.1													
+See below.													

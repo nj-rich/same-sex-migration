@@ -1,0 +1,13 @@
+Ex-Post Model: Northeast				
+		(1)	(2)	(3)
+VARIABLES	LABELS	Model 1	Model 2	Model 3
+				
+post_treatment	post_treatment	0.002	-0.195***	-0.190***
+		(0.014)	(0.049)	(0.048)
+Constant	Constant	0.064***	3.873***	3.555***
+		(0.000)	(0.107)	(0.200)
+				
+Observations		3,011	3,011	3,011
+R-squared		0.001	0.936	0.940
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
