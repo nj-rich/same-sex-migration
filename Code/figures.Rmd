@@ -79,24 +79,25 @@ count_male_female <- summary_stats %>%
 
 gc()
 #count prop in post_old_legal state/not (with old_legal definition):
-count_in_old_legal <- summary_stats %>%
+count_in_new_legal <- summary_stats %>%
   group_by(year) %>%
-  summarize(prop_in_old_legal = survey_mean(expost_old_legal, na.rm = T)) %>%
-  select(-prop_in_old_legal_se)
+  summarize(prop_in_new_legal = survey_mean((1-expost_old_legal), na.rm = T)) %>%
+  select(-prop_in_new_legal_se)
 
 gc()
 #create joint table
 joint_overall_table <- count_male_female %>%
   left_join(count_samesex, by = "year") %>%
-  left_join(count_in_old_legal, by = "year") %>%
+  left_join(count_in_new_legal, by = "year") %>%
   mutate(across(-year, ~ . * 100)) %>%
-  setNames(c("Year", "% Female", "% Same-Sex", "% in Locally Legalized States")) %>%
+  setNames(c("Year", "% Female", "% Same-Sex", "% in States Without State-Level Marriage Equality")) %>%
   kable(caption = "Summary Statistics for Overall Population", format = "latex", booktabs = T, digits = 3) 
 
 #export joint table
 writeLines(joint_overall_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/overall_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
 
 #note frac v percent
+#hmm text wrapping
 ```
 
 Summary stats by Relationship Type By Variable
@@ -206,6 +207,32 @@ writeLines(joint_var_table_2, "/Users/njrich/Desktop/same-sex-migration/outputs/
 
 #watch column arranging
 ```
+
+State Type Stats
+```{r, include = F}
+gc()
+prop_newlegal_samesex <- summary_stats %>%
+  group_by(year, in_samesex) %>%
+  summarize(prop_in_newlegal = survey_mean((1-expost_old_legal), na.rm = T),
+            prop_from_newlegal = survey_mean((1-exante_old_legal), na.rm = T)) %>%
+  select(-prop_in_newlegal_se, -prop_from_newlegal_se) %>%
+  mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "oppositesex")) %>%
+  pivot_wider(names_from = in_samesex, values_from = prop_in_newlegal:prop_from_newlegal) %>%
+  ungroup
+
+prop_newlegal_samesex_export <- prop_newlegal_samesex %>%
+  mutate(across(-year, ~ . * 100)) %>%
+  setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
+  kable(caption = "Summary Statistics by State Type", format = "latex", booktabs = T, digits = 0) %>%
+  add_header_above(c(" " = 1, "% To States Without State-Level Marriage Equality" = 2, "% From States Without State-Level Marriage Equality" = 2))
+
+#export
+writeLines(prop_newlegal_samesex_export, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/prop_newlegal_samesex.tex") #for mac
+
+#hmmm.... add SE?
+```
+
+
 Region Stats
 ```{r, include = F}
 gc()
@@ -235,7 +262,7 @@ regions_2 <- prop_region_samesex %>%
   select(year, prop_west_samesex, prop_west_oppositesex, prop_northeast_samesex, prop_northeast_oppositesex) %>%
   mutate(across(-year, ~ . * 100)) %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
-  kable(caption = "Summary Statistics by Region (2)", format = "latex", booktabs = T, digits = 3) %>%
+  kable(caption = "Summary Statistics by Region (2)", format = "latex", booktabs = T, digits = 0) %>%
   add_header_above(c(" " = 1, "% in the West" = 2, "% in the Northeast" = 2))
 
 #export joint tables
@@ -243,7 +270,7 @@ writeLines(regions_1, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_
 writeLines(regions_2, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/regions_2.tex") 
 ```
 
-Main Trends/Differences Charts
+Main Model Trends/Differences Charts
 ```{r, include = F}
 gc()
 #Pull Factor
@@ -288,15 +315,16 @@ post_migrant_trendsdiffs_table <- post_migrant_trends_df %>%
 gc()
 post_migrant_diffs_chart <- post_migrant_trendsdiffs_table %>%
   select(year, samesex_diff, oppositesex_diff) %>%
+  mutate(diffs = -diffs) %>% #modified in light of model changes
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = "Pull Factor Triple Regression Visualized",
          x = "Year",
-         y = "Migration to Locally - Federally Legalized States",
+         y = "Migration Difference by State Type",
          linetype = "Subgroup") + #maybe move title to plot itself
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + #bc factor issues
-    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + #bc factor issues
+    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
                      labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
   scale_x_continuous(breaks = 2011:2019) +
   theme_apa() #can always go back to theme
@@ -345,11 +373,12 @@ gc()
 ante_migrant_diffs_chart <- ante_migrant_trendsdiffs_table %>%
   select(year, samesex_diff, oppositesex_diff) %>%
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+  mutate(diffs = -diffs) %>% #modified in light of model changes
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = "Push Factor Triple Regression Visualized",
          x = "Year",
-         y = "Migration to Locally - Federally Legalized States",
+         y = "Migration Difference by State Type",
          linetype = "Subgroup") + #maybe move title to plot itself
     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + #bc factor issues
     scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
@@ -387,7 +416,7 @@ gc()
 
 
 
-Main Flow Charts
+Flow Heterogeneity Charts
 ```{r, include = F}
 gc()
 #make dfs
@@ -431,14 +460,15 @@ make_flowdiffs_chart <- function(df, sel_title) {
   chart <- df %>%
   select(year, samesex_diff, oppositesex_diff) %>%
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+    mutate(diffs = -diffs) %>% #adjusted due to model changes
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = sel_title,
          x = "Year",
-         y = "Migration Locally - Not/Federally Legalized States", #ambiguous for purposes of from v. to
+         y = "Migration Difference by State Type", #ambiguous for purposes of from v. to
          linetype = "Subgroup") + 
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
-    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
+    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
                      labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
   scale_x_continuous(breaks = 2011:2019) +
   theme_apa()
@@ -612,14 +642,15 @@ make_diffs_chart <- function(df, sel_title, group, facet, facet_titles) {
   chart <- df %>%
   select(year, {{ group }}, samesex_diff, oppositesex_diff) %>%
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+  mutate(diffs = -diffs) #adjusted due to model changes
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = sel_title,
          x = "Year",
-         y = "Migration Locally - Not/Federally Legalized States", #ambiguous for purposes of from v. to
+         y = "Migration Difference by State Type", #ambiguous for purposes of from v. to
          linetype = "Subgroup") + 
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
-    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
+    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
                      labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
   scale_x_continuous(breaks = 2011:2019) +
   theme_apa() +
