@@ -33,6 +33,9 @@
 % Start the document
 \begin{document}
 
+\doublespacing
+%makes some stuff look weirder, other stuff better
+
 \maketitle
 
 
@@ -46,41 +49,26 @@ Same-sex marriage was federally legalized in the US in 2015. This paper investig
 % Main content section
 \section{Introduction}
 
-In 2015, same-sex marriage was federally legalized across the United States. This marked a landmark moment in the LGBTQ+ civil rights movement: same-sex relationships were now afforded the same legal rights as different-sex relationships across the country. Before 2015, some states had already legalized same-sex marriage. However, this left a patchwork of rules and regulations across the US for individuals in same-sex relationships. 2015 is important because it unified this patchwork.
+In 2015, the Supreme Court ruled in \textit{Obergefell v. Hodges} that all states must recognize same-sex marriage.This marked a landmark moment in the LGBTQ+ civil rights movement: same-sex couples now had access to the same legal legal protections as different-sex couples in the United States. Before 2015, 35 states and Washington D.C. had already legalized same-sex marriage. However, this left a patchwork of rules and regulations across the US for individuals in same-sex relationships. 2015 is important because it unified this patchwork.
 
-This then leads to the question, how did individuals in same-sex relationships respond to the geographic expansion of their rights? Might they feel more comfortable moving to places where they previously had fewer rights? In this paper, I investigate to what extent migration patterns of individuals in same-sex and different-sex relationships converged after 2015. I do this by using a triple difference regression on American Community Survey (ACS) data from 2011 through 2019 to compare migration patterns to states that locally legalized same-sex marriage and those that did not. 
+This then leads to the question, how did individuals in same-sex relationships respond to the geographic expansion of their rights? Might they feel more comfortable moving to places where they previously had fewer rights? In this paper, I investigate to what extent migration patterns of individuals in same-sex and different-sex relationships converged after 2015. Using a triple difference regression on American Community Survey (ACS) data from 2011 to 2019, I compare migration patterns between states that enacted same-sex marriage at the state level and those that did not.
+%love alternate phrasing: that legalized same-sex marriage independently and those where it was imposed federally.
 
-Researchers have investigated how heterogenous legal and social treatment have impacted individuals in same-sex relationships relative to those in different-sex relationships. Generally, individuals in same-sex and different-sex relationships have similar behavior and outcomes when treated equivalently, and different behaviors and outcomes when treated differently \citep{2}. For example, individuals in same-sex relationships were more likely than those in different-sex relationships to move to states with legal same-sex marriage \citep{1, 12}.
+Economic theory predicts that individuals choose to marry when the lifetime benefits outweigh the costs \citep{9}. Similarly, they predict that individuals migrate when the expected utility of living in a new state is greater than one's current state and moving costs \citep{8, 12}. Applying this framework, individuals in same-sex relationships might be inclined to migrate to states with same-sex marriage. Consistent with this prediction, research has found that before 2015, individuals in same-sex relationships were more likely to move to states with marriage equality \citep{1, 12}. 
+%missing facts: For example, they have shown that gay individuals are less likely to have children and often prefer to live in areas with lower levels of discrimination, such as San Francisco \citep{7, 8, 10, 11, 13}. 
 
-This also makes sense considering how economics traditionally understand migration. Economic theory predicts that an individual moves when the utility of a different location is larger than the utility of an individual’s current location and the costs of moving \citep{8, 12}. Before 2015, same-sex marriage legalization produced utility differentials across states.
+There has been less research on the effect of marriage equality after 2015. Specifically, there is less research on how \textit{Obergefell v. Hodges} affected migration rates to states that had not previously legalized same-sex marriage.This paper fills that gap. It does this by investigating if more gay people began to move to these \textit{Obergefell}-legalized states after 2015, relative to states that had legalized earlier. 
 
-Notably, there is less research on how federal legalization impacted state-by-state migration. This paper fills that gap. It also introduces the idea that federal legalization could “dilute” the effect of “local legalization.” Both state legalization of same-sex marriage and federal legalization of same-sex marriage are examples of legalization. However, while “local legalization” might give individuals in same-sex relationships an additional incentive to move to a state, federal legalization might “dilute” the effects of that benefit by giving all states, those that “locally legalized” and those that did not, that same potential benefit. 
+If \textit{Obergefell v. Hodges} increased the expected utility of states that had not previously legalized same-sex marriage, then my model would expect an increase in gay migration to and a decrease in gay migration out of these states after 2015. This would mean \textit{Obergefell} legalization had a similar effect to earlier state-wide legalization. However, if there were diminishing marginal returns to legalization—if marriage equality became less of a factor in gay individuals' migration decisions through time—then there might be a decrease in migration to and increase in migration out of these states after 2015 (and more might have left). Additionally, if \textit{Obergefell v. Hodges} provoked backlash in these states, it could have further added to these trends.
+%keep thinking about this
 
-Thus, under this framework, I expect the “local legalization” of same-sex marriage to be \textit{less} of a migration “pull factor” to a state after 2015. I also expect that having “not-locally-legalized” same-sex marriage to be \textit{less} of a “push factor” out of a state after 2015.
+As stated above, I test for these effects by performing a triple differences regression on ACS data from 2011 through 2019. In this data, I observe whether an individual is in a same-sex relationship and if they migrated from a different state in the year prior. Additionally, I use data from \citet{27} to identify states that independently legalized same-sex marriage and those where it was imposed federally. I use data from \citet{29} to measure state-level support for gay people compared to other groups.
 
-As stated above, I test for these effects by performing a triple differences regression on ACS data from 2011 through 2019. In this data, I observe whether an individual is in a same-sex relationship and if they lived in a different state a year prior. I also use data from \citet{1} to identify states that “locally legalized” same-sex marriage and from (ANES)  to identify the level of popular support individuals in same-sex relationships have across states.
+I find some evidence that individuals in same-sex relationships experienced both an increase in migration to and an increase in migration out of states that had federally-mandated marriage equality after 2015, relative to individuals in different-sex relationships and states that had legalized earlier. There are a few theories I explore to explain this. The perception of \textit{Obergefell}-legalized states could be different from outside and within these states: they might appear more welcoming to gay people from the outside than the inside. Migrants to \textit{Obergefell}-legalized states might be coming from different places than where migrants out of \textit{Obergefell}-legalized states are going to. However, it is important to note that across multiple model specifications, my results were statistically insignificant, had 95 percent confidence intervals that crossed zero, and did not consistently meet required assumptions. There might be systematic measurement concerns in identifying individuals in same-sex relationships, leading to a relatively small sample of LGBTQ+ individuals to draw precise inferences from.
+%help with this... go back to results
+%make sure my language is precise here
 
-I find statistically insignificant differences between where individuals in same-sex and different-sex relationships migrate before and after 2015. This is robust to several variations of my model. I suspect I get these results because of relatively poor data quality and because the relationship between same-sex marriage and migration is relatively weak. While the ACS has a large sample, the fraction that are identified as in same-sex relationships or as migrants is relatively small. While same-sex marriage legalization might have some impact on individuals’ migration decisions, it might matter more in other contexts. For example, I find a marked increase in identified individuals in same-sex relationships after 2015. 
-
-The rest of the paper is organized as follows: section 2 addresses the literature on individuals in same-sex relationships and migration, section 3 describes the theoretical and empirical models used in this paper, section 4 describes data sources, section 5 discusses results, and section 6 concludes.
-
-\section{Literature Review}
-\subsection{Same-Sex Marriage}
-In 2004, marriage licenses were available to same-sex couples in one state, Massachusetts (CITE). By 2013, this number had increased to eighteen (CITE). That same year, the Supreme Court's ruling in \textit{U.S. v. Windsor} granted same-sex couples access to federal marriage benefits for the first time (CITE). Two years later, the Supreme Court went even further, ruling in \textit{Obergefell v. Hodges} that all states must offer and recognize same-sex marriage (CITE). This means that in twelve years, same-sex couples went from having no legal right to marriage to full marriage equality. This marked a significant expansion of civil rights for gay people in the U.S.
-
-Economists understand this expansion of marriage access in a traditional utility framework: individuals marry if and only if the benefits are greater than the costs. Costs include legal fees and the intangible costs of finding a partner and the intangible costs of finding a partner worthwhile for marriage \citep{9}. There are at least 1,138 benefits listed in federal law, including rights related to citizenship, taxes, benefits, healthcare, and parenthood \citep{1, 8}. For example, non-married individuals cannot file a joint tax return. Other intangible benefits include social recognition and status, economies of scale, and signaling commitment \citep{8}. This means that increasing access to marriage increases access to these benefits; economists might then expect this to change gay peoples’ behavior. 
-
-\subsection{LGBTQ+ Economics}
-
-Gay people have differences compared to straight people, and gay men have differences compared to gay women \citep{2, 15}. For example, gay men and lesbian women tend to be more educated than heterosexual people \citep{2, 7, 11}. Same-sex cohabiting relationships tend to form at a lower rate than different-sex cohabiting relationships, and same-sex relationships tend to be less homogenous across age and racial lines \citep{2, 7}. Gay men tend to earn less than straight men, while lesbian women tend to earn more than straight women \citep{6}.
-%with studies to back up
-%think about men/women reference
-
-Gay people have historically been treated differently than straight people, facing legal discrimination and social alienation. While the differences between gay and straight people aren’t always a result of this, they are sometimes related \citep{2}. Those in same-sex relationships face higher costs to raising children, and thus tend to have children at lower rates than those in different-sex relationships \citep{8, 10, 11}. Additionally, because gay men generally prefer environments with less discrimination and are less likely to have children, they are more likely than straight men to live in expensive, high-amenity cities such as San Francisco \citep{7, 10, 11, 13}.
-%with studies to back up, incl men v women diffs.
-
-However, increasing marriage access has changed how gay people are treated. This has been shown to change certain outcomes for gay people. This paper focuses on how marriage access has affected migration patterns, but there are other impacts as well. For example, \citet{3} used a difference-in difference strategy on American Community Survey data to provide evidence that same-sex marriage legalization increased the likelihood of individuals in same-sex relationships being employed. Additionally, \citet{30} used a difference-in difference strategy on Community Population Survey data data to provide evidence that same-sex marriage legalization increased the likelihood of lesbian same-sex couples adopting a division of labor more similar to that of different-sex couples, with one partner more likely to specialize in paid employment and the other in unpaid housework and childcare. 
-%READ 30 PAPER
+The paper is structured as follows: Section 2 reviews the literature on LGBTQ+ individuals and migration. Section 3 outlines the theoretical framework and empirical models employed in my analysis. Section 4 details the data sources used in the study. Section 5 presents and discusses the results, while Section 6 provides concluding remarks.
 
 \subsection{Migration and LGBTQ+ Economics}
 Like marriage, economists also understand migration in a traditional utility framework \citep{12, 8}. When the perceived benefits of living in another state exceed those of one’s current state and outweigh the costs of moving, individuals may choose to move. Monetary factors might include state-related income differences and moving expenses \citep{1, 15, 16, 17}. Non-monetary factors might include distance from family, place attachment, and general satisfaction \citep{1, 15}. Migration decisions often vary across subpopulations because the importance of these factors can vary. For example, younger and more educated individuals are generally more likely to move between states, while families tend to be less mobile \citep{16, 17}. 
@@ -423,7 +411,7 @@ Social Acceptance Pull Factor Regression:
 \begin{equation}
 \begin{aligned}
 \text{m}_{itg} &= \gamma_t + \gamma_g + \gamma_s + \gamma_{tg} + \gamma_{ts} + \gamma_{sg} \\
-&\quad + \beta_1 \cdot (\text{support}_g \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_g) \\
+&\quad + \beta_1 \cdot (\text{support}_g \times \text{samesex}_i \times \text{post2015}_t \times \text{Obergefell legalized}_g) \\
 &\quad + X_{it} + \epsilon_{itg}
 \end{aligned}
 \end{equation}
@@ -434,7 +422,7 @@ Social Acceptance Push Factor Regression:
 \begin{equation}
 \begin{aligned}
 \text{m}_{ith} &= \gamma_t + \gamma_h + \gamma_s + \gamma_{th} + \gamma_{ts} + \gamma_{sh} \\
-&\quad + \beta_2 \cdot (\text{support}_h \times \text{samesex}_i \times \text{post2015}_t \times \text{locally legalized}_h) \\
+&\quad + \beta_2 \cdot (\text{support}_h \times \text{samesex}_i \times \text{post2015}_t \times \text{Obergefell legalized}_h) \\
 &\quad + X_{it} + \epsilon_{ith}
 \end{aligned}
 \end{equation}
@@ -491,65 +479,65 @@ I wrote earlier that the legal landscape for individuals in same-sex relationshi
 \newpage
 \section{Additional Difference Charts}
 %age
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_post_diffs.png}
-    \caption{}
-    \label{}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_post_diffs.png}
+ %   \caption{}
+ %   \label{}
+%\end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_ante_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/age_ante_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
 
 %child
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_post_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_post_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/child_ante_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]%{outputs/summary_stats/child_ante_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
 %Education
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_post_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_post_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_ante_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/educ_ante_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
 %income
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_post_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]%{outputs/summary_stats/inc_post_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_ante_diffs.png}
-    \caption{}
-    \label{fig: fig:enter-label}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/inc_ante_diffs.png}
+%    \caption{}
+%    \label{fig: fig:enter-label}
+%\end{figure}
 
 %regression tables
 \floatBarrier
