@@ -91,7 +91,7 @@ joint_overall_table <- count_male_female %>%
   left_join(count_in_new_legal, by = "year") %>%
   mutate(across(-year, ~ . * 100)) %>%
   setNames(c("Year", "% Female", "% Same-Sex", "% in States Without State-Level Marriage Equality")) %>%
-  kable(caption = "Summary Statistics for Overall Population", format = "latex", booktabs = T, digits = 3) 
+  kable(caption = "Summary Statistics for Overall Population", format = "latex", booktabs = T, digits = 0) 
 
 #export joint table
 writeLines(joint_overall_table, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/overall_table.tex") #NOTE: THIS IS FOR MAC, WILL NEED TO ADJUST FOR WINDOWS
@@ -188,7 +188,7 @@ joint_var_table_1 <- prop_mig_samesex %>%
   ungroup %>%
   mutate(across(-year, ~ . * 100)) %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>%
-  kable(caption = "Summary Statistics for Main Variables (1)", format = "latex", booktabs = T, digits = 3) %>%
+  kable(caption = "Summary Statistics for Main Variables (1)", format = "latex", booktabs = T, digits = 0) %>%
   add_header_above(c(" " = 1, "% Migrate" = 2, "% Female" = 2, "% Has Child" = 2))  
 
 joint_var_table_2 <- mean_age_samesex %>%
@@ -198,7 +198,7 @@ joint_var_table_2 <- mean_age_samesex %>%
   ungroup %>%
   mutate(across(-all_of(c("year", "Same-Sex Age", "Opposite-Sex Age", "Same-Sex Inc", "Opposite-Sex Inc")), ~ . * 100)) %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
-  kable(caption = "Summary Statistics for Main Variables (2)", format = "latex", booktabs = T, digits = 3) %>%
+  kable(caption = "Summary Statistics for Main Variables (2)", format = "latex", booktabs = T, digits = 0) %>%
   add_header_above(c(" " = 1, "Mean Age" = 2, "% College" = 2, "% White" = 2, "Mean Income" = 2))
 
 #export joint tables
@@ -255,7 +255,7 @@ regions_1 <- prop_region_samesex %>%
   select(year, prop_midwest_samesex, prop_midwest_oppositesex, prop_south_samesex, prop_south_oppositesex) %>%
   mutate(across(-year, ~ . * 100)) %>%
   setNames(c("Year", "Same-Sex", "Opposite-Sex", "Same-Sex", "Opposite-Sex")) %>% #needs work
-  kable(caption = "Summary Statistics by Region (1)", format = "latex", booktabs = T, digits = 3) %>%
+  kable(caption = "Summary Statistics by Region (1)", format = "latex", booktabs = T, digits = 0) %>%
   add_header_above(c(" " = 1, "% in the Midwest" = 2, "% in the South" = 2))
 
 regions_2 <- prop_region_samesex %>%
@@ -315,13 +315,13 @@ post_migrant_trendsdiffs_table <- post_migrant_trends_df %>%
 gc()
 post_migrant_diffs_chart <- post_migrant_trendsdiffs_table %>%
   select(year, samesex_diff, oppositesex_diff) %>%
-  mutate(diffs = -diffs) %>% #modified in light of model changes
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+  mutate(diffs = -diffs) %>% #modified in light of model changes
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = "Pull Factor Triple Regression Visualized",
          x = "Year",
-         y = "Migration Difference by State Type",
+         y = "Relative Migration to Obergefell States",
          linetype = "Subgroup") + #maybe move title to plot itself
     geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + #bc factor issues
     scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
@@ -378,7 +378,7 @@ ante_migrant_diffs_chart <- ante_migrant_trendsdiffs_table %>%
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = "Push Factor Triple Regression Visualized",
          x = "Year",
-         y = "Migration Difference by State Type",
+         y = "Relative Migration from Obergefell States",
          linetype = "Subgroup") + #maybe move title to plot itself
     geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + #bc factor issues
     scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "dashed"),
@@ -400,7 +400,7 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ante_diff
 # joint_trendsdiffs_table <- post_migrant_trendsdiffs_table %>%
 #   left_join(ante_migrant_trendsdiffs_table, by = "year") %>% 
 #   setNames(c("Year", "Locally Legalized", "Federally Legalized", "Difference", "Locally Legalized", "Federally Legalized", "Difference", "Locally Legalized", "Federally Legalized", "Difference", "Locally Legalized", "Federally Legalized", "Difference")) %>%
-#   kable(caption = "Migration Trends Data", format = "latex", booktabs = T, digits = 3) %>%
+#   kable(caption = "Migration Trends Data", format = "latex", booktabs = T, digits = 0) %>%
 #   add_header_above(c(" " = 1, "Same-Sex" = 2, " " = 1, "Opposite-Sex" = 2, " " = 1, "Same-Sex" = 2, " " = 1, "Opposite-Sex" = 2, " " = 1))  %>% #hmm reorganize to make more sense?
 #   add_header_above(c(" " = 1, "Fraction Moving To" = 6, "Fraction Moving From" = 6))
 # 
@@ -456,7 +456,7 @@ make_flowtrend_chart <- function(df, sel_title, frac_migrate) {
   return(chart)
 }
 
-make_flowdiffs_chart <- function(df, sel_title) {
+make_flowdiffs_chart_post <- function(df, sel_title) {
   chart <- df %>%
   select(year, samesex_diff, oppositesex_diff) %>%
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
@@ -465,7 +465,26 @@ make_flowdiffs_chart <- function(df, sel_title) {
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = sel_title,
          x = "Year",
-         y = "Migration Difference by State Type", #ambiguous for purposes of from v. to
+         y = "Relative Migration to Obergefell States", #ambiguous for purposes of from v. to
+         linetype = "Subgroup") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
+    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
+                     labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2011:2019) +
+  theme_apa()
+  return(chart)
+}
+
+make_flowdiffs_chart_ante <- function(df, sel_title) {
+  chart <- df %>%
+  select(year, samesex_diff, oppositesex_diff) %>%
+  pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+    mutate(diffs = -diffs) %>% #adjusted due to model changes
+  ggplot() +
+    geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
+    labs(title = sel_title,
+         x = "Year",
+         y = "Relative Migration from Obergefell States", #ambiguous for purposes of from v. to
          linetype = "Subgroup") + 
     geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
     scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
@@ -476,38 +495,38 @@ make_flowdiffs_chart <- function(df, sel_title) {
 }
 
 #Post
-#From Fed (of interest)
+#From Fed
 fed_post_df <- post_migrant_trends_df %>% #should help code run faster
   group_by(year, subgroup) %>%
   summarize(frac_ffed_migrate = survey_mean(fromfed_migrant, na.rm = T)) %>%
   select(-frac_ffed_migrate_se) %>%
   ungroup
   
-fed_post_trends_chart <- fed_post_df %>%
-  make_flowtrend_chart(sel_title = "Pull Factor Trends From Not/Fed Legalized", frac_migrate = frac_ffed_migrate) 
+#fed_post_trends_chart <- fed_post_df %>%
+#  make_flowtrend_chart(sel_title = "Pull Factor Trends From Not/Fed Legalized", frac_migrate = frac_ffed_migrate) 
 
 fed_post_diffs_chart <- fed_post_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_ffed_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart(sel_title = "Pull Factor Diffs From Not/Fed Legalized") 
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs From Obergefell States") 
 fed_post_diffs_chart
 gc()
-#From Local
+#From Local (of interest)
 local_post_df <- post_migrant_trends_df %>% #should help code run faster
   group_by(year, subgroup) %>%
   summarize(frac_flocal_migrate = survey_mean(fromlocal_migrant, na.rm = T)) %>%
   select(-frac_flocal_migrate_se) %>%
   ungroup
   
-local_post_trends_chart <- local_post_df %>%
-  make_flowtrend_chart(sel_title = "Pull Factor Trends From Locally Legalized", frac_migrate = frac_flocal_migrate)
+#local_post_trends_chart <- local_post_df %>%
+#  make_flowtrend_chart(sel_title = "Pull Factor Trends From Locally Legalized", frac_migrate = frac_flocal_migrate)
 
 local_post_diffs_chart <- local_post_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_flocal_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart(sel_title = "Pull Factor Diffs From Locally Legalized")
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs From non-Obergefell States")
 local_post_diffs_chart
 gc()
 #Post Stay (note: should technically be the same Pull Factor/Push Factor frame except for the fact states can change legal state between years)
@@ -517,49 +536,49 @@ stay_post_df <- post_migrant_trends_df %>% #note: should really only be one valu
   select(-frac_fstay_se) %>%
   ungroup
   
-stay_post_trends_chart <- stay_post_df %>%
-  make_flowtrend_chart(sel_title = "Pull Factor Trends From Stay", frac_migrate = frac_fstay)
+#stay_post_trends_chart <- stay_post_df %>%
+#  make_flowtrend_chart(sel_title = "Pull Factor Trends From Stay", frac_migrate = frac_fstay)
 
 stay_post_diffs_chart <- stay_post_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_fstay) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart(sel_title = "Pull Factor Diffs From Stay")
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs From the Same State")
 stay_post_diffs_chart
 #Ante
 gc()
-#To Fed (of interest)
+#To Fed
 fed_ante_df <- ante_migrant_trends_df %>% #should help code run faster
   group_by(year, subgroup) %>%
   summarize(frac_tfed_migrate = survey_mean(tofed_migrant, na.rm = T)) %>%
   select(-frac_tfed_migrate_se) %>%
   ungroup
   
-fed_ante_trends_chart <- fed_ante_df %>%
-  make_flowtrend_chart(sel_title = "Push Factor Trends To Not/Fed Legalized", frac_migrate = frac_tfed_migrate) 
+#fed_ante_trends_chart <- fed_ante_df %>%
+#  make_flowtrend_chart(sel_title = "Push Factor Trends To Not/Fed Legalized", frac_migrate = frac_tfed_migrate) 
 
 fed_ante_diffs_chart <- fed_ante_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_tfed_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart(sel_title = "Push Factor Diffs To Not/Fed Legalized") 
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs To Obergefell States") 
 fed_ante_diffs_chart
 gc()
-#To Local
+#To Local (of interest)
 local_ante_df <- ante_migrant_trends_df %>% #should help code run faster
   group_by(year, subgroup) %>%
   summarize(frac_tlocal_migrate = survey_mean(tolocal_migrant, na.rm = T)) %>%
   select(-frac_tlocal_migrate_se) %>%
   ungroup
   
-local_ante_trends_chart <- local_ante_df %>%
-  make_flowtrend_chart(sel_title = "Push Factor Trends To Locally Legalized", frac_migrate = frac_tlocal_migrate)
+#local_ante_trends_chart <- local_ante_df %>%
+#  make_flowtrend_chart(sel_title = "Push Factor Trends To Locally Legalized", frac_migrate = frac_tlocal_migrate)
 
 local_ante_diffs_chart <- local_ante_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_tlocal_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart(sel_title = "Push Factor Diffs To Locally Legalized")
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs To non-Obergefell States")
 local_ante_diffs_chart
 #Ante Stay (note: should technically be the same Pull Factor/Push Factor frame except for the fact states can change legal state between years)
 gc()
@@ -569,28 +588,32 @@ stay_ante_df <- ante_migrant_trends_df %>% #note: should really only be one valu
   select(-frac_tstay_se) %>%
   ungroup
   
-stay_ante_trends_chart <- stay_ante_df %>%
-  make_flowtrend_chart(sel_title = "Push Factor Trends To Stay", frac_migrate = frac_tstay)
+#stay_ante_trends_chart <- stay_ante_df %>%
+#  make_flowtrend_chart(sel_title = "Push Factor Trends To Stay", frac_migrate = frac_tstay)
 
 stay_ante_diffs_chart <- stay_ante_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_tstay) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart(sel_title = "Push Factor Diffs To Stay")
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs To the Same State")
 stay_ante_diffs_chart
 
 #Combine
 #flows_post_trends_chart <- ggarrange(fed_post_trends_chart, local_post_trends_chart, stay_post_trends_chart, nrow = 1, common.legend = T, legend = "right")
 #flows_ante_trends_chart <- ggarrange(fed_ante_trends_chart, local_ante_trends_chart, stay_ante_trends_chart, nrow = 1, common.legend = T, legend = "right")
-flows_post_diffs_chart <- ggarrange(fed_post_diffs_chart, local_post_diffs_chart, stay_post_diffs_chart, nrow = 1, common.legend = T, legend = "right")
-flows_ante_diffs_chart <- ggarrange(fed_ante_diffs_chart, local_ante_diffs_chart, stay_ante_diffs_chart, nrow = 1, common.legend = T, legend = "right")
+flows_post_diffs_chart_app <- ggarrange(fed_post_diffs_chart, stay_post_diffs_chart, nrow = 2, common.legend = T, legend = "right")
+flows_ante_diffs_chart_app <- ggarrange(fed_ante_diffs_chart, stay_ante_diffs_chart, nrow = 2, common.legend = T, legend = "right")
 
 #Save and Export
 #ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_trends.png", plot = flows_post_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_diffs.png", plot = flows_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_diffs_app.png", plot = flows_post_diffs_chart_app)
 #ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_trends.png", plot = flows_ante_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs.png", plot = flows_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs_app.png", plot = flows_ante_diffs_chart_app)
 #oop watch cohesive export size need to unify
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_diffs.png", plot = local_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs.png", plot = local_ante_diffs_chart)
+
+
 #more functionalize?
 #watch naming
 #darn naming conventions
@@ -638,25 +661,46 @@ make_trend_chart <- function(df, sel_title, facet, facet_titles) {
   return(chart)
 }
 
-make_diffs_chart <- function(df, sel_title, group, facet, facet_titles) {
+facet_make_diffs_chart_post <- function(df, sel_title, group, facet, facet_titles) {
   chart <- df %>%
   select(year, {{ group }}, samesex_diff, oppositesex_diff) %>%
   pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
-  mutate(diffs = -diffs) #adjusted due to model changes
+  mutate(diffs = -diffs) %>% #adjusted due to model changes
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = sel_title,
          x = "Year",
-         y = "Migration Difference by State Type", #ambiguous for purposes of from v. to
+         y = "Relative Migration to Obergefell States", #ambiguous for purposes of from v. to
          linetype = "Subgroup") + 
     geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
     scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
                      labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
   scale_x_continuous(breaks = 2011:2019) +
   theme_apa() +
-  facet_wrap(reformulate(facet), labeller = as_labeller(facet_titles))
+  facet_wrap(reformulate(facet), labeller = as_labeller(facet_titles), nrow = 2) #added nrow term
   return(chart)
 }
+
+facet_make_diffs_chart_ante <- function(df, sel_title, group, facet, facet_titles) {
+  chart <- df %>%
+  select(year, {{ group }}, samesex_diff, oppositesex_diff) %>%
+  pivot_longer(cols = c(samesex_diff, oppositesex_diff), names_to = "subgroup", values_to= "diffs") %>%
+  mutate(diffs = -diffs) %>% #adjusted due to model changes
+  ggplot() +
+    geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
+    labs(title = sel_title,
+         x = "Year",
+         y = "Relative Migration from Obergefell States", #ambiguous for purposes of from v. to
+         linetype = "Subgroup") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
+    scale_linetype_manual(values = c("samesex_diff" = "solid", "oppositesex_diff" = "longdash"),
+                     labels = c("samesex_diff" = "Same-Sex Individuals", "oppositesex_diff" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2011:2019) +
+  theme_apa() +
+  facet_wrap(reformulate(facet), labeller = as_labeller(facet_titles), nrow = 2) #added nrow term
+  return(chart)
+}
+#see functions saved earlier - flowdiffs ones which should work if need non-facet tables
 
 gc()
 ###Split by sex
@@ -669,7 +713,7 @@ gc()
 #   mutate(sex_label = if_else(sex == 1, "male", "female")) %>%
 #   make_trend_chart(sel_title = "Pull Factor Trends by Gender", facet = "sex_label", facet_titles = c("male" = "Men", "female" = "Women")) #use male/female?
 
-sex_post_diffs_chart <- post_migrant_trends_df %>%
+sex_post_diffs_df <- post_migrant_trends_df %>%
   group_by(year, sex, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
   select(-frac_migrate_se) %>%
@@ -677,9 +721,17 @@ sex_post_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  mutate(sex_label = if_else(sex == 1, "male", "female")) %>%
-  make_diffs_chart(sel_title = "Pull Factor Diffs by Gender", group = sex_label, facet = "sex_label", facet_titles = c("male" = "Men", "female" = "Women")) #use male/female?
-sex_post_diffs_chart
+  mutate(sex_label = if_else(sex == 1, "male", "female")) 
+
+men_post_diffs_chart <- sex_post_diffs_df %>%
+  filter(sex_label == "male") %>%
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs for Men") #use male/female?
+men_post_diffs_chart
+women_post_diffs_chart <- sex_post_diffs_df %>%
+  filter(sex_label == "female") %>%
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs for Women") #use male/female?
+women_post_diffs_chart
+
 gc()
 #Ante
 # sex_ante_trends_chart <- ante_migrant_trends_df %>%
@@ -690,7 +742,7 @@ gc()
 #   mutate(sex_label = if_else(sex == 1, "male", "female")) %>%
 #   make_trend_chart(sel_title = "Push Factor Trends by Gender", facet = "sex_label", facet_titles = c("male" = "Men", "female" = "Women")) #use male/female?
 
-sex_ante_diffs_chart <- post_migrant_trends_df %>%
+sex_ante_diffs_df <- post_migrant_trends_df %>%
   group_by(year, sex, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
   select(-frac_migrate_se) %>%
@@ -698,9 +750,16 @@ sex_ante_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  mutate(sex_label = if_else(sex == 1, "male", "female")) %>%
-  make_diffs_chart(sel_title = "Push Factor Diffs by Gender", group = sex_label, facet = "sex_label", facet_titles = c("male" = "Men", "female" = "Women")) #use male/female?
-sex_ante_diffs_chart
+  mutate(sex_label = if_else(sex == 1, "male", "female"))
+
+men_ante_diffs_chart <- sex_ante_diffs_df %>%
+  filter(sex_label == "male") %>%
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs for Men") #use male/female?
+men_ante_diffs_chart
+women_ante_diffs_chart <- sex_ante_diffs_df %>%
+  filter(sex_label == "female") %>%
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs for Women") #use male/female?
+women_ante_diffs_chart
 #takeaways: WOMEN ARE DRIVING Pull Factor/Push Factor DIFFERENCES YES MAKES SENSE OH LORDY
 
 gc()
@@ -731,7 +790,7 @@ age_post_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Pull Factor Diffs by Age", group = age_groups, facet = "age_groups", c("<23" = "<23", "23-32" = "23-32", "33-62" = "33-62", ">62" = ">62"))
+  facet_make_diffs_chart_post(sel_title = "Pull Factor Diffs by Age", group = age_groups, facet = "age_groups", c("<23" = "<23", "23-32" = "23-32", "33-62" = "33-62", ">62" = ">62"))
 age_post_diffs_chart
 
 gc()
@@ -761,7 +820,7 @@ age_ante_diffs_chart <- ante_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Push Factor Diffs by Age", group = age_groups, facet = "age_groups", c("<23" = "<23", "23-32" = "23-32", "33-62" = "33-62", ">62" = ">62"))
+  facet_make_diffs_chart_ante(sel_title = "Push Factor Diffs by Age", group = age_groups, facet = "age_groups", c("<23" = "<23", "23-32" = "23-32", "33-62" = "33-62", ">62" = ">62"))
 age_ante_diffs_chart
 #takeaways: minimal meaning, area most of interest is 23-32 (most mobile, period most likely to marry)
 
@@ -785,7 +844,7 @@ educ_post_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Pull Factor Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
+  facet_make_diffs_chart_post(sel_title = "Pull Factor Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
 educ_post_diffs_chart
 gc()
 #Ante
@@ -806,7 +865,7 @@ educ_ante_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Push Factor Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
+  facet_make_diffs_chart_ante(sel_title = "Push Factor Diffs by Education", group = college, facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
 educ_ante_diffs_chart
 #takeaways: kind of noisy, doesn't seem to follow predicted (post) trend
 
@@ -830,7 +889,7 @@ child_post_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Pull Factor Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
+  facet_make_diffs_chart_post(sel_title = "Pull Factor Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
 child_post_diffs_chart
 gc()
 #Ante
@@ -851,7 +910,7 @@ child_ante_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Push Factor Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
+  facet_make_diffs_chart_ante(sel_title = "Push Factor Diffs by Presence of Children", group = child, facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
 child_ante_diffs_chart
 #takeaways: noisy; no child post chart kind of interesting/follows predictions (ante looks similar)
 
@@ -881,7 +940,7 @@ inc_post_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Pull Factor Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
+  facet_make_diffs_chart_post(sel_title = "Pull Factor Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
 inc_post_diffs_chart
 
 gc()
@@ -909,7 +968,7 @@ inc_ante_diffs_chart <- post_migrant_trends_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Push Factor Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
+  facet_make_diffs_chart_ante(sel_title = "Push Factor Diffs by Income", group = income_group, facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
 inc_ante_diffs_chart
 #takeaways: noisy, (post) kind of follows hypothesis
 
@@ -925,16 +984,25 @@ gc()
 #   make_trend_chart(sel_title = "Pull Factor Trends by Region", facet = "expost_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
 
 gc()
-region_post_diffs_chart <- post_migrant_trends_df %>%
+region_post_diffs_df <- post_migrant_trends_df %>%
   group_by(year, expost_region, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
   select(-frac_migrate_se) %>%
   ungroup %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
-  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Pull Factor Diffs by Region", group = expost_region, facet = "expost_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
-region_post_diffs_chart
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal)
+
+midwest_south_post_diffs_chart <- region_post_diffs_df %>%
+  filter(expost_region %in% c("Midwest", "South")) %>%
+  facet_make_diffs_chart_post(sel_title = "Pull Factor Diffs in the Midwest and South", group = expost_region, facet = "expost_region", facet_titles = c("Midwest" = "Midwest", "South" = "South"))
+midwest_south_post_diffs_chart
+
+northeast_west_post_diffs_chart <- region_post_diffs_df %>%
+  filter(expost_region %in% c("Northeast", "West")) %>%
+  facet_make_diffs_chart_post(sel_title = "Pull Factor Diffs in the Northeast and West", group = expost_region, facet = "expost_region", facet_titles = c("Northeast" = "Northeast", "West" = "West"))
+northeast_west_post_diffs_chart
+
 gc()
 #Ante
 # region_ante_trends_chart <- ante_migrant_trends_df %>%
@@ -945,16 +1013,24 @@ gc()
 #   make_trend_chart(sel_title = "Push Factor Trends by Region", facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast")) #use male/female?
 
 gc()
-region_ante_diffs_chart <- post_migrant_trends_df %>%
+region_ante_diffs_df <- post_migrant_trends_df %>%
   group_by(year, exante_region, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
   select(-frac_migrate_se) %>%
   ungroup %>%
   pivot_wider(names_from = subgroup, values_from = frac_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
-  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_diffs_chart(sel_title = "Push Factor Diffs by Region", group = exante_region, facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast"))
-region_ante_diffs_chart
+  mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) 
+
+midwest_south_ante_diffs_chart <- region_ante_diffs_df %>%
+  filter(exante_region %in% c("Midwest", "South")) %>%
+  facet_make_diffs_chart_ante(sel_title = "Push Factor Diffs in the Midwest and South", group = exante_region, facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "South" = "South"))
+midwest_south_ante_diffs_chart
+
+northeast_west_ante_diffs_chart <- region_ante_diffs_df %>%
+  filter(exante_region %in% c("Northeast", "West")) %>%
+  facet_make_diffs_chart_ante(sel_title = "Push Factor Diffs in the Northeast and West", group = exante_region, facet = "exante_region", facet_titles = c("Northeast" = "Northeast", "West" = "West"))
+northeast_west_ante_diffs_chart
 #takeaways: South/Midwest very interesting, some logic issues, surprisng stability/clean trends
 #watch missing issues
 
@@ -963,9 +1039,14 @@ region_ante_diffs_chart
 gc()
 ###Export (oi map)
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_trends.png", plot = sex_post_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_diffs.png", plot = sex_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_diffs.png", plot = men_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_diffs.png", plot = women_post_diffs_chart)
+
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_trends.png", plot = sex_ante_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_diffs.png", plot = sex_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_diffs.png", plot = men_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_diffs.png", plot = women_ante_diffs_chart)
+
+#consider these later
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_post_trends.png", plot = age_post_trends_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_post_diffs.png", plot = age_post_diffs_chart)
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_ante_trends.png", plot = age_ante_trends_chart)
@@ -982,10 +1063,14 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/child_ant
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_post_diffs.png", plot = inc_post_diffs_chart)
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_ante_trends.png", plot = inc_ante_trends_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/inc_ante_diffs.png", plot = inc_ante_diffs_chart)
+
+
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_post_trends.png", plot = region_post_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_post_diffs.png", plot = region_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_post_diffs.png", plot = midwest_south_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_post_diffs_app.png", plot = northeast_west_post_diffs_chart)
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_ante_trends.png", plot = region_ante_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_ante_diffs.png", plot = region_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_ante_diffs.png", plot = midwest_south_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/region_ante_diffs_app.png", plot = northeast_west_ante_diffs_chart)
 #more slicing and dicing to do
 
 #more functions?
@@ -1090,16 +1175,32 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/MA_ante_t
 Predicted Charts (for illustration purposes)
 ```{r, include = F}
 #Function:
-make_ex_diffs_chart <- function(df, sel_title) {
+make_ex_diffs_chart_post <- function(df, sel_title) {
   chart <- df %>%
   ggplot() +
     geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
     labs(title = sel_title,
          x = "Year",
-         y = "Migration Locally - Not/Federally Legalized States",
+         y = "Relative Migration to Obergefell States",
          linetype = "Subgroup") + 
-    geom_vline(xintercept = 2015, color = "black", linetype = "dashed") + 
-    scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "dashed"), #adjust this as needs be later
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
+    scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "longdash"), #adjust this as needs be later
+                     labels = c("same_sex" = "Same-Sex Individuals", "opposite_sex" = "Opposite-Sex Individuals")) +
+  scale_x_continuous(breaks = 2011:2019) +
+  theme_apa() +
+  theme(axis.text.y = element_blank())
+  return(chart)
+}
+make_ex_diffs_chart_ante <- function(df, sel_title) {
+  chart <- df %>%
+  ggplot() +
+    geom_line(aes(x = year, y = diffs, linetype = subgroup)) + 
+    labs(title = sel_title,
+         x = "Year",
+         y = "Relative Migration from Obergefell States",
+         linetype = "Subgroup") + 
+    geom_vline(xintercept = 2015, color = "black", linetype = "dotted") + 
+    scale_linetype_manual(values = c("same_sex" = "solid", "opposite_sex" = "longdash"), #adjust this as needs be later
                      labels = c("same_sex" = "Same-Sex Individuals", "opposite_sex" = "Opposite-Sex Individuals")) +
   scale_x_continuous(breaks = 2011:2019) +
   theme_apa() +
@@ -1107,27 +1208,28 @@ make_ex_diffs_chart <- function(df, sel_title) {
   return(chart)
 }
 
+
 #Make predicted dfs/charts
 post_ex <- data.frame(
   year = 2011:2019,
-  same_sex = c(.5, .5, .5, .5, .2, .2, .2, .2, .2),
+  same_sex = c(-.5, -.5, -.5, -.5, -.2, -.2, -.2, -.2, -.2),
   opposite_sex = c(0, 0, 0, 0, 0, 0, 0, 0, 0)
   ) %>%
   pivot_longer(same_sex:opposite_sex, names_to = "subgroup", values_to = "diffs")
 
 ante_ex <- data.frame(
   year = 2011:2019,
-  same_sex = c(-.5, -.5, -.5, -.5, -.2, -.2, -.2, -.2, -.2),
+  same_sex = c(.5, .5, .5, .5, .2, .2, .2, .2, .2),
   opposite_sex = c(0, 0, 0, 0, 0, 0, 0, 0, 0)
 ) %>%
   pivot_longer(same_sex:opposite_sex, names_to = "subgroup", values_to = "diffs")
 
 #Make charts
 ex_post_diffs_chart <- post_ex %>%
-  make_ex_diffs_chart(sel_title = "Predicted Pull Factor Differences")
+  make_ex_diffs_chart_post(sel_title = "Predicted Pull Factor Differences")
 
 ex_ante_diffs_chart <- ante_ex %>%
-  make_ex_diffs_chart(sel_title = "Predicted Push Factor Differences")
+  make_ex_diffs_chart_ante(sel_title = "Predicted Push Factor Differences")
 
 #export charts
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/ex_post_diffs.png", plot = ex_post_diffs_chart)
@@ -1155,7 +1257,7 @@ pop_support <- clean_df %>% #don't need survey object here
   select(State, "Support Level") 
 
 pop_support_export <-pop_support %>%
-  kable(caption = "Support for Gay Men and Lesbian Women by State in 2016", format = "latex", booktabs = F, digits = 3, longtable = T)
+  kable(caption = "Support for Gay Men and Lesbian Women by State in 2016", format = "latex", booktabs = F, digits = 0, longtable = T)
 
 writeLines(pop_support_export, "/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/pop_support.tex")
 
