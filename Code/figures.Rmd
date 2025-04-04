@@ -526,7 +526,7 @@ local_post_diffs_chart <- local_post_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_flocal_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs From non-Obergefell States")
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs from non-Obergefell States")
 local_post_diffs_chart
 gc()
 #Post Stay (note: should technically be the same Pull Factor/Push Factor frame except for the fact states can change legal state between years)
@@ -543,7 +543,7 @@ stay_post_diffs_chart <- stay_post_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_fstay) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs From the Same State")
+  make_flowdiffs_chart_post(sel_title = "Pull Factor Diffs from the Same State")
 stay_post_diffs_chart
 #Ante
 gc()
@@ -561,7 +561,7 @@ fed_ante_diffs_chart <- fed_ante_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_tfed_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs To Obergefell States") 
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs to Obergefell States") 
 fed_ante_diffs_chart
 gc()
 #To Local (of interest)
@@ -578,7 +578,7 @@ local_ante_diffs_chart <- local_ante_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_tlocal_migrate) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs To non-Obergefell States")
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs to non-Obergefell States")
 local_ante_diffs_chart
 #Ante Stay (note: should technically be the same Pull Factor/Push Factor frame except for the fact states can change legal state between years)
 gc()
@@ -595,7 +595,7 @@ stay_ante_diffs_chart <- stay_ante_df %>%
   pivot_wider(names_from = subgroup, values_from = frac_tstay) %>%
   mutate(samesex_diff = samesex_oldlegal - samesex_newlegal) %>%
   mutate(oppositesex_diff = oppositesex_oldlegal - oppositesex_newlegal) %>%
-  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs To the Same State")
+  make_flowdiffs_chart_ante(sel_title = "Push Factor Diffs to the Same State")
 stay_ante_diffs_chart
 
 #Combine
