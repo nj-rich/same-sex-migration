@@ -259,7 +259,7 @@ Research by \citet{1} and \cite{12} found that marriage legalization impacted mi
     \label{tab: male_expost_model}
     \input{outputs/regressions/male_expost_model}
 \end{table}
-
+%fix formatting still- see Mac default/archive
 \begin{table}[htbp]
     \centering
     \caption{Push Factor Model: Men}
@@ -267,7 +267,7 @@ Research by \citet{1} and \cite{12} found that marriage legalization impacted mi
     \input{outputs/regressions/male_exante_model}
 \end{table}
 %\FloatBarrier
-Here, I run the same regressions as above, but only look at men. Tables \ref{tab: male_expost_model} and \ref{tab: male_exante_model} report regression results for the pull factor and push factor models respectively. Results for a women-only specification can be found in the appendix (Tables \ref{tab: female_expost_model} and \ref{tab: female_exante_model} and figures \ref{fig: women_post_diffs} and \ref{fig: women_ante_diffs}).
+Here, I run the same regressions as above, but only look at men. Tables \ref{tab: male_expost_model} and \ref{tab: male_exante_model} report regression results for the pull factor and push factor models respectively. Results for a women-only specification can be found in the appendix (Tables \ref{tab: female_expost_model} and \ref{tab: female_exante_model}).
 %\FloatBarrier
 \begin{figure}[htbp]
     \centering
@@ -286,7 +286,7 @@ Here, I run the same regressions as above, but only look at men. Tables \ref{tab
 %need more comment on parallel trends here
 %comment on model 1?
 %watch say gay men/men in same-sex relationships
-As can be seen in figures \ref{fig: men_post_diffs} and \ref{fig: men_ante_diffs}, parallel trends seem to hold for the men-only sample. This suggests compositional variation obscured trends in the main model, and less caution should be taken in utilizing a triple difference model to understand the relationship between gay men and marriage equality. This confirms results from \citet{1} and \citet{12}. However, similar to the main model, both push and pull factor column 3 coefficients are positive, statistically insignificant, and have 95 percent confidence intervals that include the null result (again, similarly, the pull factor column 1 coefficient has a smaller confidence interval). The larger coefficient magnitudes in the men-only sample compared to the main model suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships. For men in same-sex relationships, there is some evidence that \textit{Obergefell}-legalization increased migration to states relative to those that legalized earlier, but decreased migration out of those states.
+As can be seen in figures \ref{fig: men_post_diffs} and \ref{fig: men_ante_diffs}, parallel trends seem to hold for the men-only sample (figures for the women-only sample can be found in the appendix). This suggests compositional variation obscured trends in the main model, and less caution should be taken in utilizing a triple difference model to understand the relationship between gay men and marriage equality. This confirms results from \citet{1} and \citet{12}. However, similar to the main model, both push and pull factor column 3 coefficients are positive, statistically insignificant, and have 95 percent confidence intervals that include the null result (again, similarly, the pull factor column 1 coefficient has a smaller confidence interval). The larger coefficient magnitudes in the men-only sample compared to the main model suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships. For men in same-sex relationships, there is some evidence that \textit{Obergefell}-legalization increased migration to states relative to those that legalized earlier, but decreased migration out of those states.
 
 \FloatBarrier
 \subsection{Region Heterogeneity}
@@ -317,7 +317,7 @@ I do this by running the main pull factor regression on a sample of individuals 
 %separate for south/midwest?
 %add in cites
 %add in more about sigs?
-As figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} show, parallel trends hold for the south and midwest. Like in the case of sex, this suggests that less caution need be taken in utilizing a triple difference model to understand the relationship between those in the south and midwest and marriage equality. 
+As figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} show, parallel trends hold for the south and midwest. Like in the case of sex, this suggests that less caution need be taken in utilizing a triple difference model to understand the relationship between those in the south and midwest and marriage equality (Figures for the west and northeast can be found in the appendix). 
 %say more here?
 \begin{table}[htbp]
     \centering
@@ -563,9 +563,23 @@ Over the past twenty years, the legal landscape for individuals in same-sex rela
     \label{fig: women_ante_diffs}
 \end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_post_diffs_app.png}
+    \caption{}
+    \label{fig: region_post_diffs_app}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_ante_diffs_app.png}
+    \caption{}
+    \label{fig: region_ante_diffs_app}
+\end{figure}
+
 %regression tables
-\floatBarrier
-%\newpage
+\FloatBarrier
+\newpage
 \section{Additional Regression Tables}
 %additional sex tables
 \begin{table}[htbp]
