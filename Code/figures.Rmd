@@ -73,14 +73,14 @@ gc()
 prop_newlegal_samesex <- summary_stats %>% #dropped prior year; see sample changes each year make it hard to do this although accurate to my regression
   group_by(year, in_samesex) %>%
   summarize(prop_in_newlegal = survey_mean((1-expost_old_legal), na.rm = T)) %>%
-  select(-prop_in_newlegal_se, -prop_from_newlegal_se) %>%
+  select(-prop_in_newlegal_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "oppositesex")) %>%
   pivot_wider(names_from = in_samesex, values_from = prop_in_newlegal) %>%
   ungroup
 
 gc()
 #create joint table
-joint_overall_table <- count_male_female %>%
+joint_overall_table <- count_samesex %>%
   left_join(prop_newlegal_samesex, by = "year") %>%
   mutate(across(-year, ~ . * 100)) %>%
   setNames(c("Year", "% Same-Sex", "Same-Sex", "Opposite-Sex")) %>%
@@ -1243,7 +1243,7 @@ Pop Support Table
 gc()
 pop_support <- clean_df %>% #don't need survey object here
   distinct(expost_state, expost_support) %>%
-  mutate(support = 100 - expost_support) %>% #need to update this
+  mutate(support = expost_support) %>% #need to update this
   arrange(support) %>%
   rename("State" = expost_state, "Support Level" = "support") %>%
   select(State, "Support Level") 
