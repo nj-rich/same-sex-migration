@@ -1039,12 +1039,12 @@ northeast_west_ante_diffs_chart
 gc()
 ###Export (oi map)
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_trends.png", plot = sex_post_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_diffs.png", plot = men_post_diffs_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_post_diffs.png", plot = women_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/men_post_diffs.png", plot = men_post_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/women_post_diffs.png", plot = women_post_diffs_chart)
 
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_trends.png", plot = sex_ante_trends_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_diffs.png", plot = men_ante_diffs_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/sex_ante_diffs.png", plot = women_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/men_ante_diffs.png", plot = men_ante_diffs_chart)
+ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/women_ante_diffs.png", plot = women_ante_diffs_chart)
 
 #consider these later
 # ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/age_post_trends.png", plot = age_post_trends_chart)
