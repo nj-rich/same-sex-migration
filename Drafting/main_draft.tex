@@ -255,38 +255,38 @@ Research by \citet{1} and \cite{12} found that marriage legalization impacted mi
 
 \begin{table}[htbp]
     \centering
-    \caption{Pull Factor Model: Male}
+    \caption{Pull Factor Model: Men}
     \label{tab: male_expost_model}
     \input{outputs/regressions/male_expost_model}
 \end{table}
 
 \begin{table}[htbp]
     \centering
-    \caption{Push Factor Model: Male}
+    \caption{Push Factor Model: Men}
     \label{tab: male_exante_model}
     \input{outputs/regressions/male_exante_model}
 \end{table}
 %\FloatBarrier
-Here, I run the same regressions as above, but only look at men. Tables \ref{tab: male_expost_model} and \ref{tab: male_exante_model} report regression results for the pull factor and push factor models respectively. Results for a women-only specification can be found in tables \ref{tab: female_expost_model} and \ref{tab: female_exante_model} in the appendix.
+Here, I run the same regressions as above, but only look at men. Tables \ref{tab: male_expost_model} and \ref{tab: male_exante_model} report regression results for the pull factor and push factor models respectively. Results for a women-only specification can be found in the appendix (Tables \ref{tab: female_expost_model} and \ref{tab: female_exante_model} and figures \ref{fig: women_post_diffs} and \ref{fig: women_ante_diffs}).
 %\FloatBarrier
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_post_diffs.png}
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/men_post_diffs.png}
     \caption{}
-    \label{fig: sex_post_diffs}
+    \label{fig: men_post_diffs}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/sex_ante_diffs.png}
+    \includegraphics[width=1\linewidth]{outputs/summary_stats/men_ante_diffs.png}
     \caption{}
-    \label{fig: sex_ante_diffs}
+    \label{fig: men_ante_diffs}
 \end{figure}
 
 %separate out by gender to be clearer
 %need more comment on parallel trends here
 %comment on model 1?
 %watch say gay men/men in same-sex relationships
-As can be seen in figures \ref{fig: sex_post_diffs} and \ref{fig: sex_ante_diffs}, parallel trends seem to hold for the men-only sample. This suggests compositional variation obscured trends in the main model, and less caution should be taken in utilizing a triple difference model to understand the relationship between gay men and marriage equality. This confirms results from \citet{1} and \citet{12}. However, similar to the main model, both push and pull factor column 3 coefficients are positive, statistically insignificant, and have 95 percent confidence intervals that include the null result (again, similarly, the pull factor column 1 coefficient has a smaller confidence interval). The larger coefficient magnitudes in the men-only sample compared to the main model suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships. For men in same-sex relationships, there is some evidence that \textit{Obergefell}-legalization increased migration to states relative to those that legalized earlier, but decreased migration out of those states.
+As can be seen in figures \ref{fig: men_post_diffs} and \ref{fig: men_ante_diffs}, parallel trends seem to hold for the men-only sample. This suggests compositional variation obscured trends in the main model, and less caution should be taken in utilizing a triple difference model to understand the relationship between gay men and marriage equality. This confirms results from \citet{1} and \citet{12}. However, similar to the main model, both push and pull factor column 3 coefficients are positive, statistically insignificant, and have 95 percent confidence intervals that include the null result (again, similarly, the pull factor column 1 coefficient has a smaller confidence interval). The larger coefficient magnitudes in the men-only sample compared to the main model suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships. For men in same-sex relationships, there is some evidence that \textit{Obergefell}-legalization increased migration to states relative to those that legalized earlier, but decreased migration out of those states.
 
 \FloatBarrier
 \subsection{Region Heterogeneity}
