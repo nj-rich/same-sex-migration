@@ -2,8 +2,6 @@ Ex-Post Model: West
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
-post_treatment	post_treatment	0.027**	-0.134***	-0.131***
-		(0.011)	(0.031)	(0.034)
 Constant	Constant	0.142***	3.864***	3.809***
 		(0.000)	(0.180)	(0.158)
 				

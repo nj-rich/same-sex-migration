@@ -10,8 +10,8 @@ ssc install outreg2, replace
 ////Models 1 and 2 inputs
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
-gen post_treatment = in_samesex*expost_old_legal*post_2015
-gen ante_treatment = in_samesex*exante_old_legal*post_2015
+gen post_treatment = in_samesex*(1-expost_old_legal)*post_2015
+gen ante_treatment = in_samesex*(1-exante_old_legal)*post_2015
 xi i.race i.educ i.has_child
 collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment sex)
 
@@ -119,8 +119,8 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\fe
 ////Models 3 inputs
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta" 
-gen post_treatment = in_samesex*expost_old_legal*post_2015
-gen ante_treatment = in_samesex*exante_old_legal*post_2015
+gen post_treatment = in_samesex*(1-expost_old_legal)*post_2015
+gen ante_treatment = in_samesex*(1-exante_old_legal)*post_2015
 xi i.race i.educ i.has_child i.bpl
 collapse (mean) _I* age inctot (rawsum) perwt [pweight = perwt], by(year migrant in_samesex expost_old_legal exante_old_legal expost_state exante_state post_2015 post_treatment ante_treatment sex)
 

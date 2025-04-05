@@ -2,10 +2,10 @@ Ex-Ante Model: Midwest
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
-ante_treatment	ante_treatment	-0.003	0.017	-0.004
-		(0.017)	(0.044)	(0.048)
+ante_treatment	ante_treatment	0.003	-0.017	0.004
+		(0.017)	(0.046)	(0.048)
 Constant	Constant	0.095***	4.167***	4.651***
-		(0.000)	(0.159)	(0.366)
+		(0.000)	(0.159)	(0.367)
 				
 Observations		4,684	4,684	4,684
 R-squared		0.002	0.917	0.924

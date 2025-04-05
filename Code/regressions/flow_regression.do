@@ -14,8 +14,8 @@ ssc install outreg2, replace
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 
-gen post_treatment = in_samesex * expost_old_legal * post_2015
-gen ante_treatment = in_samesex * exante_old_legal * post_2015
+gen post_treatment = in_samesex*(1-expost_old_legal)*post_2015
+gen ante_treatment = in_samesex*(1-exante_old_legal)*post_2015
 gen stay = 1 - migrant
 
 xi i.sex i.race i.educ i.has_child
@@ -70,8 +70,8 @@ outreg2 using "C:\Users\njrich\Desktop\same-sex-migration\outputs\regressions\ts
 clear
 use "C:\Users\njrich\Downloads\clean_dataframe.dta"
 
-gen post_treatment = in_samesex * expost_old_legal * post_2015
-gen ante_treatment = in_samesex * exante_old_legal * post_2015
+gen post_treatment = in_samesex*(1-expost_old_legal)*post_2015
+gen ante_treatment = in_samesex*(1-exante_old_legal)*post_2015
 gen stay = 1 - migrant
 
 xi i.sex i.race i.educ i.has_child i.bpl

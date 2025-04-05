@@ -2,7 +2,7 @@ Ex-Post Model
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
-post_treatment	post_treatment	-0.010	-0.001	-0.002
+post_treatment	post_treatment	0.010	0.001	0.002
 		(0.008)	(0.026)	(0.030)
 Constant	Constant	0.103***	4.063***	3.913***
 		(0.000)	(0.131)	(0.108)

@@ -2,8 +2,8 @@ Ex-Post Model: Midwest
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
-post_treatment	post_treatment	-0.011	0.003	0.003
-		(0.016)	(0.060)	(0.056)
+post_treatment	post_treatment	0.011	-0.003	-0.003
+		(0.017)	(0.062)	(0.057)
 Constant	Constant	0.080***	3.771***	3.405***
 		(0.000)	(0.126)	(0.369)
 				

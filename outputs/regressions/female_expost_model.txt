@@ -2,8 +2,8 @@ Ex-Post Model: Female
 		(1)	(2)	(3)
 VARIABLES	LABELS	Model 1	Model 2	Model 3
 				
-post_treatment	post_treatment	-0.006	0.007	0.008
-		(0.012)	(0.029)	(0.032)
+post_treatment	post_treatment	0.006	-0.007	-0.008
+		(0.012)	(0.030)	(0.033)
 Constant	Constant	0.104***	3.856***	3.753***
 		(0.000)	(0.102)	(0.098)
 				
