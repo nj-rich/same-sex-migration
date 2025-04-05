@@ -131,16 +131,22 @@ My triple difference strategy includes two main regressions. In one, I compare m
 %<pull eqn>
 Pull Factor Regression:
 \begin{equation}
-\text{m}_{itg} = \gamma_t + \gamma_g + \gamma_s + \gamma_{tg} + \gamma_{ts} + \gamma_{sg} + \beta_1 \cdot (\text{samesex}_i \times \text{post2015}_t \times \text{Obergefell legalized}_g) 
-+ X_{it} + \epsilon_{itg}
+\begin{aligned}
+\text{m}_{itg} &= \gamma_t + \gamma_g + \gamma_s + \gamma_{tg} + \gamma_{ts} + \gamma_{sg} \\
+&\quad + \beta_1 \cdot (\text{samesex}_i \times \text{post2015}_t \times \text{Obergefell legalized}_g) \\
+&\quad + X_{it} + \epsilon_{itg}
+\end{aligned}
 \end{equation}
 
 \hfill
 \break
 Push Factor Regression:
 \begin{equation}
-\text{m}_{ith} = \gamma_t + \gamma_h + \gamma_s + \gamma_{th} + \gamma_{ts} + \gamma_{sh} + \beta_2 \cdot (\text{samesex}_i \times \text{post2015}_t \times \text{Obergefell legalized}_h) 
-+ X_{it} + \epsilon_{ith}
+\begin{aligned}
+\text{m}_{ith} &= \gamma_t + \gamma_h + \gamma_s + \gamma_{th} + \gamma_{ts} + \gamma_{sh} \\
+&\quad + \beta_2 \cdot (\text{support}_h \times \text{samesex}_i \times \text{post2015}_t \times \text{Obergefell legalized}_h) \\
+&\quad + X_{it} + \epsilon_{ith}
+\end{aligned}
 \end{equation}
 %watch variable labels
 %still need to work on the following (and above)
