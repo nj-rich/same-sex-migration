@@ -19,6 +19,7 @@
 \usepackage{tabularx}  %to help format tables
 \usepackage{caption} %to modify caption
 \usepackage{placeins} %for FloatBarrier
+\usepackage{chngcntr}     % Allows changing how counters behave
 %removes colon after number label
 \captionsetup[figure]{labelsep=space} %might remove if want to label figures differently
 
@@ -26,8 +27,9 @@
 \geometry{top=1in, bottom=1in, left=1in, right=1in}
 
 % Title setup
-\title{Gay Rights and Interstate Migration: Have People Changed Since 2015?\footnote{Acknowledgements: I am indebted to Dr. Reynoso, Dr. Mueller-Smith, Dr. Montgomery, and Dr. Dominguez for their invaluable guidance. I also appreciate all my friends and fellow economics honors students who read drafts and offered incredibly helpful advice. I also have to thank Eugenia Quintanilla for starting my social science research journey.}}
+\title{Moving Toward Equality: An Analysis of Interstate Migration After \textit{Obergefell v. Hodges}\footnote{Acknowledgements: I am indebted to Dr. Reynoso, Dr. Mueller-Smith, Dr. Montgomery, and Dr. Dominguez for their invaluable guidance on this thesis. I must also thank Eugenia Quintanilla, Dr. Wolfers, and Dr. Slemrod for introducing me to the world of research. Finally, I am especially thankful to my friends and fellow economics honors students who generously read drafts and offered thoughtful, constructive feedback along the way.}}
 \author{Noah Rich\footnote{University of Michigan, njrich@umich.edu.}}
+
 \date{\today}
 
 % Start the document
@@ -41,7 +43,7 @@
 
 % Abstract section
 \begin{abstract}
-Same-sex marriage was federally legalized in the US in 2015. This paper investigates to what extent migration patterns of individuals in same-sex and different-sex relationships converged after 2015. It does this by comparing migration patterns to states that locally legalized same-sex marriage and those that did not. It offers a novel analysis of federal marriage legalization and introduces the idea of a federal dilution effect, or the idea that federal policy change can dampen the effects of previously enacted state policy. Using a triple difference design and data from the American Community Survey from 2011 through 2019, I find no statistically significant difference between where individuals in same-sex and different-sex relationships migrate before and after 2015. I suggest that this could be due to data quality issues and a weak relationship between same-sex marriage legalization and migration. Future research might try to understand the “dilution effect” in other contexts with different tools.
+\textit{Obergefell v. Hodges} legalized same-sex marriage across the US in 2015. This paper originally investigates whether migration patterns of individuals in same-sex and different-sex relationships converged after 2015 by comparing migration patterns of states affected and unaffected by \textit{Obergefell}-driven marriage legalization. Using a triple-difference design and American Community Survey data from 2011–2019, I find some evidence that more individuals in same-sex relationships moved to \textit{Obergefell}-affected states after 2015, relative to other states and those in different-sex relationships. However, I also find some evidence of increased out-migration from these states. I explore why this occurs and find limited support that this \textit{cannot} be explained by perceptions differences between those inside and outside states affected by \textit{Obergefell}. While my results should be interpreted with caution, they contribute to literature showing that social policy can influence behavior. Future research should incorporate higher-quality data on LGBTQ+ people and explore additional effects of \textit{Obergefell}.
 \end{abstract}
 
 \newpage
@@ -488,9 +490,9 @@ In this paper, I investigated to what extent migration patterns of individuals i
 Using a triple differences empirical design, I found that individuals in same-sex relationships were more likely to move to states with federally-mandated marriage equality after 2015, relative to individuals in different-sex relationships and states that legalized same-sex marriage earlier. However, individuals in same-sex relationships were also more likely to move out of these states after 2015. These results should be taken with caution; necessary model assumptions were not consistently met, and results were characterized by large p-values and standard errors that included the null result.
 %does this mean anything?
 
-This provides some evidence that \textbackslash{}textit\{Obergefell\}-legalization made holdout states more appealing for individuals in same-sex relationships to move to, but not necessarily to stay in. This could suggest that \textbackslash{}textit\{Obergefell\} legalization improved the perception of holdout states by those living outside of them, if not those living in them. However, as seen in the flow heterogeneity regressions (section 4.4), increases in migration to \textbackslash{}textit\{Obergefell\}-legalized states seemed to be driven by migrants from other \textbackslash{}textit\{Obergefell\}-legalized states and increases in migration out of \textbackslash{}textit\{Obergefell\}-legalized states seemed to be driven by migrants moving to other \textbackslash{}textit\{Obergefell\} legalized states. Further, as seen in the popular support regressions (section 4.5), states with more popular support for gay people saw more in-migration and out-migration.
+This provides some evidence that \textit{Obergefell}-legalization made holdout states more appealing for individuals in same-sex relationships to move to, but not necessarily to stay in. This could suggest that \textit{Obergefell} legalization improved the perception of holdout states by those living outside of them, if not those living in them. However, as seen in the flow heterogeneity regressions (section 4.4), increases in migration to \textit{Obergefell}-legalized states seemed to be driven by migrants from other \textit{Obergefell}-legalized states and increases in migration out of \textit{Obergefell}-legalized states seemed to be driven by migrants moving to other \textit{Obergefell}-legalized states. Further, as seen in the popular support regressions (section 4.5), states with more popular support for gay people saw more in-migration and out-migration.
 
-The imprecision of my results highlights the importance of future research using datasets with richer representation of same-sex couples and the broader LGBTQ+ community. There are significant limitations to using census-identified co-habiting same-sex couples to proxy same-sex couples and the broader LGBTQ+ community. There are relatively few same-sex couples identified, and those that are might not reflect same-sex couples or the LGBTQ+ community at large. The implication that \textit{Obergefell}-legalization both pulled in individuals in same-sex relationships to states and pushed them out is puzzling, and also indicates the importance of further research. This research could investigate broader migration patterns between \texit{Obergefell}-legalized and non-\textit{Obergefell}-legalized states, differences in how individuals evaluate places to move to and where they currently live, and other implications of \textit{Obergefell v. Hodges}. 
+The imprecision of my results highlights the importance of future research using datasets with richer representation of same-sex couples and the broader LGBTQ+ community. There are significant limitations to using census-identified co-habiting same-sex couples to proxy same-sex couples and the broader LGBTQ+ community. There are relatively few same-sex couples identified, and those that are might not reflect same-sex couples or the LGBTQ+ community at large. The implication that \textit{Obergefell}-legalization both pulled in individuals in same-sex relationships to states and pushed them out is puzzling, and also indicates the importance of further research. This research could investigate broader migration patterns between \textit{Obergefell}-legalized and non-\textit{Obergefell}-legalized states, differences in how individuals evaluate places to move to and where they currently live, and other implications of \textit{Obergefell v. Hodges}. 
 %include LGBTQ+ community here? include more numbers?
 %need to justify these possible research choices?
 %oi clean up comments?
@@ -510,6 +512,8 @@ Over the past twenty years, the legal landscape for individuals in same-sex rela
 
 \newpage
 \appendix
+\counterwithin{figure}{section}  % Reset figure counter for each section in the appendix
+\counterwithin{table}{section} % Reset figure counter for each section in the appendix
 \FloatBarrier
 \section{More Summary Statistics}
 
