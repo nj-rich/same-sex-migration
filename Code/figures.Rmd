@@ -602,8 +602,8 @@ ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_pos
 #ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_trends.png", plot = flows_ante_trends_chart)
 ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs_app.png", plot = flows_ante_diffs_chart_app)
 #oop watch cohesive export size need to unify
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_diffs.png", plot = local_post_diffs_chart)
-ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs.png", plot = local_ante_diffs_chart)
+#ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_post_diffs.png", plot = local_post_diffs_chart)
+#ggsave("/Users/njrich/Desktop/same-sex-migration/outputs/summary_stats/flows_ante_diffs.png", plot = local_ante_diffs_chart)
 
 
 #more functionalize?
