@@ -20,6 +20,9 @@
 \usepackage{caption} %to modify caption
 \usepackage{placeins} %for FloatBarrier
 \usepackage{chngcntr}     % Allows changing how counters behave
+\usepackage{caption} %for subtables maybe
+\usepackage{subcaption} %for subtables maybe
+
 %removes colon after number label
 \captionsetup[figure]{labelsep=space} %might remove if want to label figures differently
 
@@ -180,8 +183,8 @@ Push Factor Regression:
 
 In both, dependent variable $m$ indicates whether individual $i$ migrated between year $t-1$ and $t$. $\gamma$ terms in both models are fixed-effects. $\gamma_t$ captures year-fixed effects for year $t$. $\gamma_s$ captures the effect of being in relationship type $s$ (same-sex or different-sex). In the pull factor model, $\gamma_g$ captures state-fixed effects for the state $g$ individual $i$ is a resident of in year $t$. In the push factor model, $\gamma_h$ captures state-fixed effects for the state $h$ individual $i$ was a resident of in year $t-1$. All other $\gamma$ terms capture interactions between these terms. 
 
-In both triple interactions, $\text{samesex}_i$ is a dummy variable that indicates whether individual $i$ is in a same-sex relationship. $\text{post2015}_t$ is a dummy variable that indicates whether year $t$ is on or after 2015. Before 2015, pull factor variable $\text{Obergefell-legalized}_g$ indicates whether state $g$ did not have marriage equality in year $t$. After 2015, $\text{Obergefell-legalized}_g$ indicates whether state $g$ obtained marriage equality from \textit{Obergefell v. Hodges} in year $t$. Before 2015, push factor variable $\text{Obergefell-legalized}_h$ is a dummy variable that indicates whether state $h$ did not have marriage equality in year $t$. After 2015, $\text{Obergefell-legalized}_h$ indicates whether state $h$ obtained marriage equality from \textit{Obergefell v. Hodges} in year $t$\footnote{In her push model, \citet{12} uses a state's legalization status from year $t-1$. In my push model, I use a state's legalization status from year $t$. \citet{12} does this ``since the decision to move is observed in the time
-period just after the decision was made." However, because the exact timing of migration, whether it occurred in year $t-1$ or $t$, is uncertain, both approaches can be considered valid.}.
+In both triple interactions, $\text{samesex}_i$ is a dummy variable that indicates whether individual $i$ is in a same-sex relationship. $\text{post2015}_t$ is a dummy variable that indicates whether year $t$ is on or after 2015. Before 2015, pull factor variable $\text{Obergefell-legalized}_g$ indicates whether state $g$ did not have marriage equality in year $t$. After 2015, $\text{Obergefell-legalized}_g$ indicates whether state $g$ obtained marriage equality from \textit{Obergefell v. Hodges} in year $t$. Before 2015, push factor variable $\text{Obergefell-legalized}_h$ is a dummy variable that indicates whether state $h$ did not have marriage equality in year $t$. After 2015, $\text{Obergefell-legalized}_h$ indicates whether state $h$ obtained marriage equality from \textit{Obergefell v. Hodges} in year $t$\footnote{In her push model, \citet{12} uses a state's legalization status from year $t-1$. In my push model, I use a state's legalization status from year $t$. She does this ``since the decision to move is observed in the time
+period just after the decision was made" \citep[2959]{12}. However, because the exact timing of migration, whether it occurred in year $t-1$ or $t$, is uncertain, both approaches can be considered valid.}.
 
 In both models, $X$ represents a vector of controls. $X$ can include sex, race, education, age, income, the presence of children in the household, and birth state (I describe when different controls are used in section 5). These controls are consistent with those used in similar studies by \citet{1}, \citet{3}, \citet{5}, \citet{7}, and \citet{12}. Table \ref{var_table_1} illustrates how these factors differentiate my populations of interest. Other differences can be found in table \ref{var_table_2} in the appendix.
 
@@ -208,7 +211,7 @@ The ACS records if an individual has a partner in their household, and if they a
 \FloatBarrier
 \input{outputs/summary_stats/overall_table}
 
-In my sample, I exclude individuals not in relationships, did not live in the United States in the previous year, or were born outside of the US. I exclude individuals not in relationships, so my regression directly compares individuals in relationships. This is similar to \citet{1}. I exclude migrants to the US so that my sample only consists of potential interstate migrants. I also exclude individuals born outside the US, because my model assumes that birthplace influences where individuals move. This follows a similar assumption used by \citet{12}. It is important to note \citet{1} also excludes individuals under age 30 because these individuals are in ``the education period... and the period of more intense job mobility." Although I control for age, I do not exclude those under 30 because I am also curious about this age group.
+In my sample, I exclude individuals not in relationships, did not live in the United States in the previous year, or were born outside of the US. I exclude individuals not in relationships, so my regression directly compares individuals in relationships. This is similar to \citet{1}. I exclude migrants to the US so that my sample only consists of potential interstate migrants. I also exclude individuals born outside the US, because my model assumes that birthplace influences where individuals move. This follows a similar assumption used by \citet{12}. It is important to note \citet[446]{1} also excludes individuals under age 30 because these individuals are in ``the education period... and the period of more intense job mobility." Although I control for age, I do not exclude those under 30 because I am also curious about this age group.
 %include why do not do other controls
 %watch move v migrate language
 %watch gay v indv. in same-sex relationships language (only use gay in model/as applicable in other studies)
@@ -225,20 +228,30 @@ All code, figures, and tables (excluding raw data) can be found here: \href{http
 \section{Results}
 In the following section, I discuss the results of my analysis. I begin by discussing the results of my main model. I then discuss how heterogeneity by sex and region could obfuscate underlying trends. I conclude by exploring how heterogeneous migration flow and state-level popular support for gay people may inform interpretations of the main model.
 
-In each subsection, I display figures to illustrate general trends. Figure \ref{fig: ex_post_diffs} shows an example of what trends might look like under a pull factor model, while Figure \ref{fig: ex_ante_diffs} illustrates potential trends under a push factor model.  The horizontal axis in both figures represents time. In pull factor models, the vertical axis is the difference in migration rates to \textit{Obergefell}-legalized states (before 2015, states without marriage equality) and non-Obergefell legalized states. In push factor models, the y axis is the difference in migration rates from \textit{Obergefell}-legalized states and non-Obergefell legalized states. 
+In each subsection, I display figures to illustrate general trends. Figure \ref{fig: ex_post_diffs} shows an example of what trends might look like under a pull factor model, while Figure \ref{fig: ex_ante_diffs} illustrates potential trends under a push factor model.  The horizontal axis in both figures represents time. In pull factor models, the vertical axis is the difference in migration rates to \textit{Obergefell}-legalized states (before 2015, states without marriage equality) and non-Obergefell legalized states. In push factor models, the vertical axis is the difference in migration rates from \textit{Obergefell}-legalized states and non-Obergefell legalized states. 
 
 \begin{figure}[htbp]
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_post_diffs.png}
     \centering
     \caption{}
     \label{fig: ex_post_diffs}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_post_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration to \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. This figure is \textbf{simulated}.
+    \end{minipage}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_ante_diffs.png}
     \caption{}
     \label{fig: ex_ante_diffs}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ex_ante_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration from \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. This figure is \textbf{simulated}.
+    \end{minipage}
 \end{figure}
 
 
@@ -248,16 +261,26 @@ I present results from my main pull factor model in table \ref{tab: expost_model
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/post_diffs.png}
     \caption{}
     \label{fig: post_diffs}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/post_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration to \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ante_diffs.png}
     \caption{}
     \label{fig: ante_diffs}
+    \includegraphics[width=0.75\linewidth]{outputs/summary_stats/ante_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration from \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 Before I discuss results, it is important to note that triple difference regressions assume parallel differences across groups \citep{23, 24, 25}. Figures \ref{fig: post_diffs} and \ref{fig: ante_diffs} show that this assumption is violated for these two main models. This might be related to how I define \textit{Obergefell}-legalized states: between 2011 and 2015, the composition of these states shifts as they rapidly adopt marriage equality at the state level. As a result, migration differences are influenced by varying definitions of \textit{Obergefell}-legalized states through time. This means that any results should be interpreted with caution.
@@ -276,7 +299,7 @@ Before I discuss results, it is important to note that triple difference regress
     \input{outputs/regressions/exante_model}
 \end{table}
 
-In the pull factor model, column 3 coefficients are positive and statistically insignificant. A 95 percent confidence interval includes the null result (although this is not the case for model 1). This suggests that there is some evidence that \textbackslash{}textit\{Obergefell v. Hodges\} increased relative gay migration to states that had not previously legalized same-sex marriage. However, this coefficient, 0.01, is smaller than the one reported by \textbackslash{}citet\{1\} for earlier, state-wide legalization (0.02). While my regression and sample differ from those used by \textbackslash{}citet\{1\}, these results provide some evidence that the effect of \textit{Obergefell} legalization on migration was likely smaller than that of earlier legalization. It is important to note that this evidence should be interpreted with caution because of the relatively large standard error and statistical insignificance. These attributes could be related more to the small fraction of individuals in same-sex relationships in my sample- at about one percent- then the relationship between \textbackslash{}textit\{Obergefell v. Hodges\} and migration, but more caution is still warranted.
+In the pull factor model, column 3 coefficients are positive and statistically insignificant. A 95 percent confidence interval includes the null result (although this is not the case for model 1). This suggests that there is some evidence that \textit{Obergefell v. Hodges} increased relative gay migration to states that had not previously legalized same-sex marriage. However, this coefficient, 0.01, is smaller than the one reported by \citet{1} for earlier, state-wide legalization (0.02). While my regression and sample differ from those used by \citet{1}, these results provide some evidence that the effect of \textit{Obergefell} legalization on migration was likely smaller than that of earlier legalization. It is important to note that this evidence should be interpreted with caution because of the relatively large standard error and statistical insignificance. These attributes could be related more to the small fraction of individuals in same-sex relationships in my sample- at about one percent- then the relationship between \textit{Obergefell v. Hodges} and migration, but more caution is still warranted.
 %formal statistics test here to compare
 
 In the push factor model, model 3 coefficients are positive and statistically insignificant. A 95 percent confidence interval includes the null result. This suggests that there is some support that \textit{Obergefell v. Hodges} also increased relative gay migration from states that had not previously legalized same-sex marriage. This would suggest that \textit{Obergefell} legalization also shared some differences with earlier, state-wide legalization. Perhaps, while \textit{Obergefell} legalization made all states look more similar from the outside, underlying social or institutional differences, visible only within states, persisted. However, for similar reasons as above, this evidence should also be interpreted with more caution.
@@ -286,8 +309,6 @@ In the push factor model, model 3 coefficients are positive and statistically in
 
 \FloatBarrier
 \subsection{Sex Heterogeneity}
-Research by \citet{1} and \cite{12} found that marriage legalization impacted migration patterns of gay men more than gay women. They suggest that this difference could be partially explained by the varying levels of discrimination faced by each group, as gay men may experience higher levels of discrimination.  If gay men face more discrimination than gay women, they might be more sensitive to changes in marriage equality.
-%hmm intro gender differences earlier?
 \begin{table}[htbp]
     \centering
     \caption{Pull Factor Model: Men}
@@ -301,58 +322,75 @@ Research by \citet{1} and \cite{12} found that marriage legalization impacted mi
     \label{tab: male_exante_model}
     \input{outputs/regressions/male_exante_model}
 \end{table}
+Research by \citet{1} and \cite{12} found that marriage legalization impacted migration patterns of gay men more than gay women. They suggest that this difference could be partially explained by the varying levels of discrimination faced by each group, as gay men may experience higher levels of discrimination.  If gay men face more discrimination than gay women, they might be more sensitive to changes in marriage equality.
+%hmm intro gender differences earlier?
 %\FloatBarrier
 Here, I run the same regressions as above, but only look at men. Tables \ref{tab: male_expost_model} and \ref{tab: male_exante_model} report regression results for the pull factor and push factor models respectively. Results for a women-only specification can be found in the appendix (Tables \ref{tab: female_expost_model} and \ref{tab: female_exante_model}).
 %\FloatBarrier
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/men_post_diffs.png}
     \caption{}
     \label{fig: men_post_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/men_post_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration to \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/men_ante_diffs.png}
     \caption{}
     \label{fig: men_ante_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/men_ante_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration from \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 %separate out by gender to be clearer
 %need more comment on parallel trends here
 %comment on model 1?
 %watch say gay men/men in same-sex relationships
-As shown in figures \textbackslash{}ref\{fig: men\_post\_diffs\} and \textbackslash{}ref\{fig: men\_ante\_diffs\}, parallel trends appear to hold for the men-only sample (figures for the women-only sample are provided in the appendix). This suggests that compositional variation may have obscured trends in the main model, and therefore, less caution is needed in interpreting these results. These findings align with the results from \textbackslash{}citet\{1\} and \textbackslash{}citet\{12\}. However, similar to the main model, the coefficients for both the push and pull factors in column 3 are positive, statistically insignificant, and have 95\% confidence intervals that include zero (similarly, the pull factor coefficient in column 1 also has a smaller confidence interval). This indicates there is some evidence that, after 2015, more men in same-sex relationships migrated to and from \textbackslash{}textit\{Obergefell\}-legalized states. Additionally, the larger magnitudes of the coefficients in the men-only sample, compared to the main model, suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships
+As shown in figures \ref{fig: men_post_diffs} and \ref{fig: men_ante_diffs}, parallel trends appear to hold for the men-only sample (figures for the women-only sample are provided in the appendix). This suggests that compositional variation may have obscured trends in the main model, and therefore, less caution is needed in interpreting these results. These findings align with the results from \citet{1} and \citet{12}. However, similar to the main model, the coefficients for both the push and pull factors in column 3 are positive, statistically insignificant, and have 95 percent confidence intervals that include zero (similarly, the pull factor coefficient in column 1 also has a smaller confidence interval). This indicates there is some evidence that, after 2015, more men in same-sex relationships migrated to and from \textit{Obergefell}-legalized states. Additionally, the larger magnitudes of the coefficients in the men-only sample, compared to the main model, suggest that the observed effects in the full sample are primarily driven by men in same-sex relationships.
 %consistency in write numbers English vs characters
 
 \FloatBarrier
 \subsection{Region Heterogeneity}
 
-%state which way bias could go?
-\textit{Obergefell v. Hodges} only introduced marriage equality to states in the south and midwest, as defined by the Census. Approximately 50 percent of my sample lived in these regions, with individuals in same-sex relationships representing a notably smaller proportion compared to those in different-sex relationships (table \ref{region_1})\footnote{Table \ref{region_2} in the appendix includes statistics on the west and northeast.}. Many inter-state migrants travel across regions. However, as \citet{1} note, distance likely affects migration decisions. Individuals further from \textit{Obergefell}-legalized states might be less sensitive to the effect of \textit{Obergefell v. Hodges} than individuals closer. Accounting for an individual’s region might help account for this effect.
 \input{outputs/summary_stats/regions_1}
+
+\textit{Obergefell v. Hodges} only introduced marriage equality to states in the south and midwest, as defined by the Census. Approximately 50 percent of my sample lived in these regions, with individuals in same-sex relationships representing a notably smaller proportion compared to those in different-sex relationships (table \ref{region_1})\footnote{Table \ref{region_2} in the appendix includes statistics on the west and northeast.}. Many inter-state migrants travel across regions. However, as \citet{1} note, distance likely affects migration decisions. Individuals further from \textit{Obergefell}-legalized states might be less sensitive to the effect of \textit{Obergefell v. Hodges} than individuals closer. Accounting for an individual’s region might help account for this effect.
+\FloatBarrier
+\begin{figure}[htbp]
+    \centering
+    \caption{}
+    \label{fig: region_post_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/region_post_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration to \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \caption{}
+    \label{fig: region_ante_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/region_ante_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration from \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
+\end{figure}
 
 %oi how to report tables without clogging everything up
 I account for this effect this by running the main pull factor regression on a sample of individuals in the south and midwest, respectively, and running the main push factor regression on a sample of individuals coming from the south and midwest, respectively. Tables \ref{tab: south_expost_model} and \ref{tab: south_exante_model} report results for the southern models and tables \ref{tab: midwest_expost_model} and \ref{tab: midwest_exante_model} report results for the midwestern models. Tables for the west and northeast can be found in the appendix (These include tables \ref{tab: west_expost_model}, \ref{tab: west_exante_model}, \ref{tab: northeast_expost_model}, and \ref{tab: northeast_exante_model}).
-
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_post_diffs.png}
-    \caption{}
-    \label{fig: region_post_diffs}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_ante_diffs.png}
-    \caption{}
-    \label{fig: region_ante_diffs}
-\end{figure}
-
-\floatBarrier
-%separate for south/midwest?
-%add in cites
-%add in more about sigs?
+\FloatBarrier
 As figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} show, parallel trends hold for the south and midwest (figures for the west and northeast can be found in the appendix). Like in the case of sex, this suggests that less caution need be taken in utilizing a triple difference model here. 
 %say more here?
 \begin{table}[htbp]
@@ -367,24 +405,25 @@ As figures \ref{fig: region_post_diffs} and \ref{fig: region_ante_diffs} show, p
     \label{tab: midwest_expost_model}
     \input{outputs/regressions/midwest_expost_model}
 \end{table}
+\FloatBarrier
 Similar to the main model, pull factor column 3 coefficients are positive and statistically insignificant. However, they are larger in magnitude with a relatively smaller confidence interval. Pull factor column 3 coefficients for the midwest are small and statistically insignificant (although positive in column 1).  As in the main model, the 95 percent confidence interval includes the null result. This suggests there is some evidence more individuals in same-sex relationships moved to southern \textit{Obergefell}-legalized states after 2015, but less moved to midwestern \textit{Obergefell}-legalized states after 2015. This could be related to regional migration trends as a whole, as the south grew faster than the midwest in the 2010s \citep{31}.
 
-\begin{table}[htbp] %finagling to get formatting to work
+\begin{table}[htbp]
     \centering
     \caption{Push Factor Model: South}
     \label{tab: south_exante_model}
     \input{outputs/regressions/south_exante_model}
 \end{table}
-\begin{table}[htbp] %finagling to get formatting to work
+\begin{table}[htbp]
     \centering
     \caption{Push Factor Model: Midwest}
     \label{tab: midwest_exante_model}
     \input{outputs/regressions/midwest_exante_model}
 \end{table}
 
+\FloatBarrier
 Similar to the main model, push factor column 3 coefficients for the south and midwest are positive and statistically insignificant (although negative for column 2 for the midwest). Like above, however, the southern coefficient is noticeably larger with a relatively smaller confidence interval. This suggests there is some evidence more individuals in same-sex relationships moved out of southern and midwestern \textit{Obergefell}-legalized states after 2015. Consistent with the main model, this then suggests that there could have been an in-state reaction to marriage equality less visible outside the \textit{Obergefell}-legalized states in these regions. These results would also suggest this effect was more pronounced in the south than the midwest.
 %would be cool to pull in outside evidence of laws/blowback in these regions
-
 
 \FloatBarrier
 \subsection{Flow Heterogeneity}
@@ -409,15 +448,25 @@ Table \ref{tab: flocal_expost_model} displays regression results from a modified
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs.png}
     \caption{}
     \label{fig: flows_post_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/flows_post_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the fraction who migrated to \textit{Obergefell}-legalized from non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
     \caption{}
     \label{fig: flows_ante_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/flows_ante_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the fraction who migrated from \textit{Obergefell}-legalized to non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 %need to update figures
@@ -515,6 +564,7 @@ Over the past twenty years, the legal landscape for individuals in same-sex rela
 \counterwithin{figure}{section}  % Reset figure counter for each section in the appendix
 \counterwithin{table}{section} % Reset figure counter for each section in the appendix
 \FloatBarrier
+
 \section{More Summary Statistics}
 
 \input{outputs/summary_stats/regions_2}
@@ -591,44 +641,74 @@ Over the past twenty years, the legal landscape for individuals in same-sex rela
 %gender
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/women_post_diffs.png}
     \caption{}
     \label{fig: women_post_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/women_post_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration to \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/women_ante_diffs.png}
     \caption{}
     \label{fig: women_ante_diffs}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/women_ante_diffs.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration from \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 %region
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_post_diffs_app.png}
     \caption{}
     \label{fig: region_post_diffs_app}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/region_post_diffs_app.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration to \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/region_ante_diffs_app.png}
     \caption{}
     \label{fig: region_ante_diffs_app}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/region_ante_diffs_app.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize The horizontal axis is time. The vertical axis is the difference in migration from \textit{Obergefell}-legalized states minus non-\textit{Obergefell}-legalized states. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 %flow
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_post_diffs_app.png}
     \caption{}
     \label{fig: flows_post_diffs_app}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/flows_post_diffs_app.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize In both figures, the horizontal axis is time. The vertical axis in the top figure is the fraction who migrated to \textit{Obergefell}-legalized from \textit{Obergefell}-legalized states. The vertical axis in the bottom figure is the fraction in \textit{Obergefell}-legalized who did not move. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\linewidth]{outputs/summary_stats/flows_ante_diffs_app.png}
     \caption{}
     \label{fig: flows_ante_diffs_app}
+    \includegraphics[width=.75\linewidth]{outputs/summary_stats/flows_ante_diffs_app.png}
+
+    \vspace{0.5em}
+    \begin{minipage}{0.75\linewidth}
+        \footnotesize In both figures, the horizontal axis is time. The vertical axis in the top figure is the fraction who migrated from \textit{Obergefell}-legalized to \textit{Obergefell}-legalized states. The vertical axis in the bottom figure is the fraction from \textit{Obergefell}-legalized who did not move. Data comes from \citet{28}.
+    \end{minipage}
 \end{figure}
 
 %regression tables
