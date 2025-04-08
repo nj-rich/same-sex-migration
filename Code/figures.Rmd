@@ -76,7 +76,8 @@ prop_newlegal_samesex <- summary_stats %>% #dropped prior year; see sample chang
   select(-prop_in_newlegal_se) %>%
   mutate(in_samesex = ifelse(in_samesex == 1, "samesex", "oppositesex")) %>%
   pivot_wider(names_from = in_samesex, values_from = prop_in_newlegal) %>%
-  ungroup
+  ungroup %>%
+  select(year, samesex, oppositesex) #reordered for clarity
 
 gc()
 #create joint table
