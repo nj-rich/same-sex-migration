@@ -735,7 +735,7 @@ gc()
 #   mutate(sex_label = if_else(sex == 1, "male", "female")) %>%
 #   make_trend_chart(sel_title = "Push Factor Trends by Gender", facet = "sex_label", facet_titles = c("male" = "Men", "female" = "Women")) #use male/female?
 
-sex_ante_diffs_df <- post_migrant_trends_df %>%
+sex_ante_diffs_df <- ante_migrant_trends_df %>% # fixed bug
   group_by(year, sex, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
   select(-frac_migrate_se) %>%
@@ -849,7 +849,7 @@ gc()
 #   ungroup %>%
 #   make_trend_chart(sel_title = "Push Factor Trends by Education", facet = "college", facet_titles = c("college" = ">=4 Years College", "notcollege" = "<4 Years College"))
 
-educ_ante_diffs_chart <- post_migrant_trends_df %>%
+educ_ante_diffs_chart <- ante_migrant_trends_df %>% ## FIXED (was post)
   mutate(college = ifelse(educ >= 10, "college", "notcollege")) %>%
   group_by(year, college, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
@@ -893,8 +893,8 @@ gc()
 #   select(-frac_migrate_se) %>%
 #   ungroup %>%
 #   make_trend_chart(sel_title = "Push Factor Trends by Presence of Children", facet = "child", facet_titles = c("yes" = "Children Present", "no" = "Children not Present"))
-
-child_ante_diffs_chart <- post_migrant_trends_df %>%
+ 
+child_ante_diffs_chart <- ante_migrant_trends_df %>% ## FIXED (was post)
   mutate(child = ifelse(has_child ==1, "yes", "no")) %>%
   group_by(year, child, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
@@ -949,7 +949,7 @@ gc()
 #   ungroup %>%
 #   make_trend_chart(sel_title = "Push Factor Trends by Income", facet = "income_group", facet_titles = c("above" = "Above Mean", "below" = "Below Mean"))
 
-inc_ante_diffs_chart <- post_migrant_trends_df %>%
+inc_ante_diffs_chart <- ante_migrant_trends_df %>% ## FIXED was post
     group_by(year) %>%
   mutate(mean_income = sum(perwt * inctot, na.rm = T) / sum(perwt, na.rm = T)) %>% #note: applies to whole year population, not separated, watch mean v median, own bootleg weight calculations
   ungroup() %>%
@@ -1006,7 +1006,7 @@ gc()
 #   make_trend_chart(sel_title = "Push Factor Trends by Region", facet = "exante_region", facet_titles = c("Midwest" = "Midwest", "West" = "West", "South" = "South", "Northeast" = "Northeast")) #use male/female?
 
 gc()
-region_ante_diffs_df <- post_migrant_trends_df %>%
+region_ante_diffs_df <- ante_migrant_trends_df %>% ## FIXED WAS POST
   group_by(year, exante_region, subgroup) %>%
   summarize(frac_migrate = survey_mean(migrant, na.rm = T)) %>%
   select(-frac_migrate_se) %>%

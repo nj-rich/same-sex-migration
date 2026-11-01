@@ -1,0 +1,8 @@
+/*
+Stata version of undergrad thesis for writing sample purposes
+*/
+
+
+////////////////////////////////////////////////////////////////////////////////
+// load data
+import delimited /home/rcenjr01/same-sex-migration/data

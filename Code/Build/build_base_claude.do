@@ -1,0 +1,229 @@
+* build_base.do
+* Builds the analysis file for the Obergefell migration paper from an IPUMS ACS extract.
+*
+* To build the Massachusetts file instead, change the three lines in Step 1:
+*   infile -> MA_W25pull.csv, outfile -> MA_base_df.dta, ma_only -> 1
+
+clear all
+set more off
+
+
+* ---------------------------------------------------------------
+* Settings
+* ---------------------------------------------------------------
+global data_path "/home/rcenjr01/same-sex-migration/data/"
+
+local ma_only 0
+
+
+* ---------------------------------------------------------------
+* State information (FIPS code, abbreviation, year legalized, region)
+* Legalization years from Gerstmann (2017).
+* Region: 1 = Northeast, 2 = Midwest, 3 = South, 4 = West
+* ---------------------------------------------------------------
+clear
+input fips str2 abbr legal_year region
+ 1 "AL" 2015 3
+ 2 "AK" 2014 4
+ 4 "AZ" 2014 4
+ 5 "AR" 2015 3
+ 6 "CA" 2013 4
+ 8 "CO" 2014 4
+ 9 "CT" 2008 1
+10 "DE" 2013 3
+11 "DC" 2009 3
+12 "FL" 2015 3
+13 "GA" 2015 3
+15 "HI" 2013 4
+16 "ID" 2014 4
+17 "IL" 2013 2
+18 "IN" 2014 2
+19 "IA" 2009 2
+20 "KS" 2014 2
+21 "KY" 2015 3
+22 "LA" 2015 3
+23 "ME" 2012 1
+24 "MD" 2012 3
+25 "MA" 2003 1
+26 "MI" 2015 2
+27 "MN" 2013 2
+28 "MS" 2015 3
+29 "MO" 2015 2
+30 "MT" 2014 4
+31 "NE" 2015 2
+32 "NV" 2014 4
+33 "NH" 2009 1
+34 "NJ" 2013 1
+35 "NM" 2013 4
+36 "NY" 2011 1
+37 "NC" 2014 3
+38 "ND" 2015 2
+39 "OH" 2015 2
+40 "OK" 2014 3
+41 "OR" 2014 4
+42 "PA" 2014 1
+44 "RI" 2013 1
+45 "SC" 2014 3
+46 "SD" 2015 2
+47 "TN" 2015 3
+48 "TX" 2015 3
+49 "UT" 2014 4
+50 "VT" 2009 1
+51 "VA" 2014 3
+53 "WA" 2012 4
+54 "WV" 2014 3
+55 "WI" 2014 2
+56 "WY" 2014 4
+end
+
+* One copy for the current state
+rename (fips abbr legal_year region) (statefip expost_state expost_legal_year expost_region)
+tempfile current_state
+save `current_state'
+
+* One copy for last year's state
+rename (statefip expost_state expost_legal_year expost_region) (past_state exante_state exante_legal_year exante_region)
+tempfile past_state
+save `past_state'
+
+
+* ---------------------------------------------------------------
+* Load the ACS extract
+* ---------------------------------------------------------------
+import delimited using "$data_path/W25_pull1.csv", clear case(lower)
+
+if `ma_only' == 1 {
+    keep if statefip == 25 | migplac1 == 25
+}
+
+* Keep people who live, and lived last year, in the 50 states or DC
+* (migplac1 = 0 means the person did not move)
+keep if statefip <= 56
+keep if migplac1 <= 56
+
+
+* ---------------------------------------------------------------
+* Step 4: Add state information for current and past state
+* ---------------------------------------------------------------
+gen past_state = migplac1
+replace past_state = statefip if migplac1 == 0
+
+merge m:1 statefip using `current_state', keep(match) nogenerate
+merge m:1 past_state using `past_state', keep(match) nogenerate
+
+
+* ---------------------------------------------------------------
+* Legal status
+* legal_state = 1 if the state had same-sex marriage in that year
+* old_legal   = before 2015: same as legal_state
+*               2015 and after: 1 unless the state legalized in 2015
+* ---------------------------------------------------------------
+gen expost_legal_state = (year >= expost_legal_year)
+gen exante_legal_state = (year >= exante_legal_year)
+
+gen expost_old_legal = expost_legal_state
+replace expost_old_legal = (expost_legal_year != 2015) if year >= 2015
+
+gen exante_old_legal = exante_legal_state
+replace exante_old_legal = (exante_legal_year != 2015) if year >= 2015
+
+
+* ---------------------------------------------------------------
+* Migration variables
+* A migrant moved to a DIFFERENT state. People who moved within their
+* own state have migplac1 == statefip and are not migrants.
+* ("local" = old_legal == 1, "fed" = old_legal == 0)
+* ---------------------------------------------------------------
+
+// base migration
+gen migrant = (migplac1 != 0 & migplac1 != statefip)
+
+
+// differentiate to/from states legalized via Obergefell/not
+gen tofed_migrant     = migrant & expost_old_legal == 0
+gen tolocal_migrant   = migrant & expost_old_legal == 1
+gen fromfed_migrant   = migrant & exante_old_legal == 0
+gen fromlocal_migrant = migrant & exante_old_legal == 1
+
+gen localtofed_migrant   = migrant & exante_old_legal == 1 & expost_old_legal == 0
+gen localtolocal_migrant = migrant & exante_old_legal == 1 & expost_old_legal == 1
+gen fedtofed_migrant     = migrant & exante_old_legal == 0 & expost_old_legal == 0
+gen fedtolocal_migrant   = migrant & exante_old_legal == 0 & expost_old_legal == 1
+
+// match by year (watch imperfections AND DIFFERENCES FROM ABOVE DEFINITIONS)
+foreach year in 2003 2008 2009 2011 2012 2013 2014 { // think: how get years (hmmm legal effects)
+	gen local`year'tofed_migrant = migrant & exante_legal_year == `year' & expost_legal_year == 2015
+	gen fedtolocal`year'_migrant = migrant & exante_legal_year == 2015 & expost_legal_year == `year'
+	gen local`year'tolocal`year'_migrant = migrant & exante_legal_year == `year' & expost_legal_year == `year'
+	gen local`year'tolocal_migrant = migrant & exante_legal_year == `year' & expost_legal_year != 2015
+	gen localtolocal`year'_migrant = migrant & exante_legal_year != 2015 & expost_legal_year == `year'
+}
+
+// state pairs
+egen state_pair = group(statefip past_state)
+
+// identify ex-ante and ex-post state by legalization wave
+
+
+* ---------------------------------------------------------------
+* Person variables
+* Check in the IPUMS codebook that sex_sp == 9 means "no spouse/partner".
+* ---------------------------------------------------------------
+replace sex_sp = . if sex_sp == 9
+
+gen in_samesex = (sex_sp == sex) if sex_sp != .
+gen post_2015  = (year >= 2015)
+gen has_child  = (nchild > 0)
+
+
+* ---------------------------------------------------------------
+* Drop missing or unreliable records
+* Stata prints how many observations each line drops.
+* ---------------------------------------------------------------
+drop if sex == 9
+drop if age == 999
+drop if educ == 99
+drop if empstat == 9
+drop if inctot == 9999998
+replace inctot = . if inctot == 9999999
+
+drop if qsex == 4          // own sex was imputed
+// drop if qsex_sp == 4       // partner's sex was imputed (needs qsex_sp in the extract)
+drop if qrace == 3         // check codebook: "allocated" may be 4, not 3
+
+drop if sex_sp == .        // keep only people with a spouse or partner
+drop if bpl > 56           // keep only people born in the US
+
+
+* ---------------------------------------------------------------
+* Keep the variables needed and save
+* ---------------------------------------------------------------
+// keep migrant tofed_migrant tolocal_migrant fromfed_migrant fromlocal_migrant ///
+//      localtofed_migrant localtolocal_migrant fedtofed_migrant fedtolocal_migrant ///
+//      in_samesex expost_old_legal exante_old_legal post_2015 ///
+//      sex age race educ occ ind bpl has_child inctot perwt year ///
+//      statefip past_state expost_state exante_state expost_region exante_region ///
+//      serial pernum
+
+compress
+save "$data_path/database_df.dta", replace
+
+
+* ---------------------------------------------------------------
+* Quick check (interstate migration should be about 2-3% per year)
+* ---------------------------------------------------------------
+tabstat migrant [aw = perwt], by(year)
+tabstat migrant [aw = perwt], by(in_samesex)
+tabstat in_samesex [aw = perwt], by(year)
+
+
+* ---------------------------------------------------------------
+* Quick Viz (pre-fixing control groups)
+* ---------------------------------------------------------------
+
+// 
+
+* ---------------------------------------------------------------
+* Notes
+* ---------------------------------------------------------------
+* check claude migration claims
